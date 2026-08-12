@@ -1,4 +1,5 @@
-import { Link } from "@tanstack/react-router"
+import * as React from "react"
+import { Link, useRouterState } from "@tanstack/react-router"
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,11 +17,14 @@ import {
 } from "@workspace/ui/components/sidebar"
 import { ChevronRightIcon } from "lucide-react"
 
-function NavLink({ url }: { url: string }) {
+function NavLink({
+  url,
+  ...props
+}: { url: string } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
   if (url.startsWith("/")) {
-    return <Link to={url} />
+    return <Link to={url} {...props} />
   }
-  return <a href={url} />
+  return <a href={url} {...props} />
 }
 
 export function NavMain({
@@ -37,12 +41,34 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) =>
-          item.items && item.items.length > 0 ? (
+        {items.map((item) => {
+          if (item.url.startsWith("/")) {
+            const isExact = pathname === item.url
+            const isChild =
+              pathname.startsWith(item.url + "/") ||
+              (item.items?.some((sub) => sub.url === pathname) ?? false)
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  isActive={isExact || isChild}
+                  render={<NavLink url={item.url} />}
+                  tooltip={item.title}
+                >
+                  {item.icon}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          }
+
+          return (
             <Collapsible
               key={item.title}
               defaultOpen={item.isActive}
@@ -58,9 +84,12 @@ export function NavMain({
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items.map((subItem) => (
+                  {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton render={<NavLink url={subItem.url} />}>
+                      <SidebarMenuSubButton
+                        isActive={pathname === subItem.url}
+                        render={<NavLink url={subItem.url} />}
+                      >
                         <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -68,18 +97,8 @@ export function NavMain({
                 </SidebarMenuSub>
               </CollapsibleContent>
             </Collapsible>
-          ) : (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                render={<NavLink url={item.url} />}
-                tooltip={item.title}
-              >
-                {item.icon}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           )
-        )}
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )

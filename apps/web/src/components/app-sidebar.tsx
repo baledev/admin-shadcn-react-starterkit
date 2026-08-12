@@ -56,7 +56,6 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: <LayoutDashboardIcon />,
-      isActive: true,
     },
     {
       title: "Playground",
