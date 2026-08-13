@@ -22,11 +22,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
+import NotificationsBlock from "@/components/notifications-block"
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context }) => {
     if (!context.auth.user) {
-      throw redirect({ to: "/login" })
+      throw redirect({ to: "/sign-in" })
     }
   },
   component: AuthLayout,
@@ -70,6 +71,7 @@ function AuthLayout() {
               </BreadcrumbList>
             </Breadcrumb>
             <div className="ms-auto flex items-center gap-2">
+              <NotificationsBlock />
               <ThemeToggle />
             </div>
           </div>
