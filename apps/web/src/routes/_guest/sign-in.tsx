@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { GalleryVerticalEnd } from "lucide-react"
 
-import { LoginForm } from "@/components/login-form"
+import { SignInForm } from "@/components/signin-form"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-export const Route = createFileRoute("/_guest/login")({
-  component: LoginPage,
+export const Route = createFileRoute("/_guest/sign-in")({
+  component: SignInPage,
 })
 
-function LoginPage() {
+function SignInPage() {
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="absolute top-4 right-4">
@@ -21,7 +21,7 @@ function LoginPage() {
           </div>
           Acme Inc.
         </a>
-        <LoginForm />
+        <SignInForm />
       </div>
     </div>
   )
