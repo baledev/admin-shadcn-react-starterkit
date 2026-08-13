@@ -95,6 +95,10 @@ import { Button } from "@workspace/ui/components/button";
 
 This starter kit currently includes sign-in, sign-up/sign-out, and a dashboard page. More admin pages (users, settings, reports, etc.) are planned as the project grows.
 
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for setup instructions, commit/coding conventions, and the PR process. This project also follows a [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## License
 
 Licensed under the [MIT License](./LICENSE) — you're free to use, modify, and distribute this starter kit for personal or commercial projects, with no obligation beyond keeping the original copyright notice. See the [LICENSE](./LICENSE) file for the full text.
