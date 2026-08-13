@@ -12,11 +12,11 @@ export function App() {
   const auth = React.useMemo<AuthContext>(
     () => ({
       user,
-      login: async (nextUser) => {
+      signIn: async (nextUser) => {
         persistUser(nextUser)
         setUser(nextUser)
       },
-      logout: async () => {
+      signOut: async () => {
         persistUser(null)
         setUser(null)
       },
@@ -24,11 +24,26 @@ export function App() {
     [user]
   )
 
-  const router = React.useMemo(() => createAppRouter(auth), [auth])
+  const [router] = React.useState(() =>
+    createAppRouter({
+      user: loadStoredUser(),
+      signIn: async () => {},
+      signOut: async () => {},
+    })
+  )
+
+  const prevUser = React.useRef<AuthUser | null>(user)
+
+  React.useEffect(() => {
+    if (prevUser.current !== user) {
+      prevUser.current = user
+      router.invalidate()
+    }
+  }, [user, router])
 
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <RouterProvider router={router} context={{ auth }} />
     </ThemeProvider>
   )
 }

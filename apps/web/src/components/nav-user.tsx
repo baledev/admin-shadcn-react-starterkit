@@ -34,9 +34,8 @@ export function NavUser({
   const router = useRouter()
   const auth = router.options.context.auth
 
-  async function handleLogout() {
-    await auth.logout()
-    await router.invalidate()
+  async function handleSignOut() {
+    await auth.signOut()
   }
   return (
     <SidebarMenu>
@@ -104,7 +103,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
+            <DropdownMenuItem onClick={handleSignOut}>
               <LogOutIcon
               />
               Log out

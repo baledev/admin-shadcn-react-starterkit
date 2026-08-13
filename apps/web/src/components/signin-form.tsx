@@ -35,8 +35,7 @@ export function SignInForm({
       .replace(/[._-]+/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase())
 
-    await auth.login({ name, email: email || "m@example.com" })
-    await router.invalidate()
+    await auth.signIn({ name, email: email || "m@example.com" })
   }
 
   return (
@@ -96,7 +95,7 @@ export function SignInForm({
                 <Input id="password" type="password" required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Sign-in</Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to="/sign-up">Sign up</Link>
                 </FieldDescription>

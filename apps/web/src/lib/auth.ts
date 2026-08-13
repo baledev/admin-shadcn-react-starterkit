@@ -6,8 +6,8 @@ export type AuthUser = {
 
 export type AuthContext = {
   user: AuthUser | null
-  login: (user: AuthUser) => Promise<void>
-  logout: () => Promise<void>
+  signIn: (user: AuthUser) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 const STORAGE_KEY = "auth:user"
