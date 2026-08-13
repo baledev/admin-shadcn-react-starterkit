@@ -22,6 +22,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@workspace/ui/components/sheet"
+import StatusIndicator from "@workspace/ui/components/8starlabs-ui/status-indicator"
 import { cn } from "@/lib/utils"
 
 type NotificationIcon = typeof IconBell
@@ -107,7 +108,16 @@ export default function NotificationsBlock() {
                 render={<Button variant="ghost" size="icon" />}
                 aria-label="Open notifications"
             >
-                <IconBell className="size-4" aria-hidden="true" />
+                <span className="relative">
+                    <IconBell className="size-4" aria-hidden="true" />
+                    {unreadCount > 0 && (
+                        <StatusIndicator
+                            state="active"
+                            size="sm"
+                            className="absolute -end-0.5 -top-0.5 gap-0"
+                        />
+                    )}
+                </span>
             </SheetTrigger>
 
             <SheetContent side="right" className="w-full p-0 sm:max-w-md">
