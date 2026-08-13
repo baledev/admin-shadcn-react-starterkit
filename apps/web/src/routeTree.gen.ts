@@ -14,7 +14,7 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as GuestRouteImport } from './routes/_guest'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
-import { Route as GuestSignInRouteImport } from ./ routes / _guest / sign -in -in '
+import { Route as GuestSignInRouteImport } from './routes/_guest/sign-in'
 import { Route as GuestSignUpRouteImport } from './routes/_guest/sign-up'
 
 const IndexRoute = IndexRouteImport.update({
@@ -81,14 +81,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/dashboard' | '/settings' | '/sign-in' | '/sign-up'
   id:
-  | '__root__'
-  | '/'
-  | '/_auth'
-  | '/_guest'
-  | '/_auth/dashboard'
-  | '/_auth/settings'
-  | '/_guest/sign-in'
-  | '/_guest/sign-up'
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/_guest'
+    | '/_auth/dashboard'
+    | '/_auth/settings'
+    | '/_guest/sign-in'
+    | '/_guest/sign-up'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
