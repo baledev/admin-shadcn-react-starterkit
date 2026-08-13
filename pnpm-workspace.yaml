@@ -5,3 +5,9 @@ packages:
 allowBuilds:
   esbuild: true
   msw: false
+
+minimumReleaseAgeExclude:
+  - '@tanstack/react-router@1.170.27'
+  - '@tanstack/router-core@1.171.22'
+  - '@tanstack/router-generator@1.167.28'
+  - '@tanstack/router-plugin@1.168.30'
