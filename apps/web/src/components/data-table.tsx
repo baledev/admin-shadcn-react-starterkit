@@ -19,15 +19,9 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import {
-    IconChevronDown,
-    IconChevronLeft,
-    IconChevronRight,
-    IconChevronsLeft,
-    IconChevronsRight,
     IconCircleCheckFilled,
     IconDotsVertical,
     IconGripVertical,
-    IconLayoutColumns,
     IconLoader,
     IconPlus,
     IconTrendingUp,
@@ -105,9 +99,9 @@ import {
     TabsList,
     TabsTrigger,
 } from "@workspace/ui/components/tabs"
+import { DataTablePagination } from "@/components/data-table-base"
 
-// New in v9: declare the features this table uses — anything you don't
-// register is tree-shaken out of the bundle.
+// ─── Features ─────────────────────────────────────────────────────────────────
 const features = tableFeatures({
     columnFilteringFeature,
     columnVisibilityFeature,
@@ -131,12 +125,9 @@ type TableItem = {
 
 const columnHelper = createColumnHelper<typeof features, TableItem>()
 
-// Create a separate component for the drag handle
+// ─── Drag handle ──────────────────────────────────────────────────────────────
 function DragHandle({ id }: { id: number }) {
-    const { attributes, listeners } = useSortable({
-        id,
-    })
-
+    const { attributes, listeners } = useSortable({ id })
     return (
         <Button
             {...attributes}
@@ -151,6 +142,7 @@ function DragHandle({ id }: { id: number }) {
     )
 }
 
+// ─── Columns ──────────────────────────────────────────────────────────────────
 const columns = columnHelper.columns([
     columnHelper.display({
         id: "drag",
@@ -186,9 +178,7 @@ const columns = columnHelper.columns([
     }),
     columnHelper.accessor("header", {
         header: "Header",
-        cell: ({ row }) => {
-            return <TableCellViewer item={row.original} />
-        },
+        cell: ({ row }) => <TableCellViewer item={row.original} />,
         enableHiding: false,
     }),
     columnHelper.accessor("type", {
@@ -266,11 +256,7 @@ const columns = columnHelper.columns([
         header: "Reviewer",
         cell: ({ row }) => {
             const isAssigned = row.original.reviewer !== "Assign reviewer"
-
-            if (isAssigned) {
-                return row.original.reviewer
-            }
-
+            if (isAssigned) return row.original.reviewer
             return (
                 <>
                     <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
@@ -323,15 +309,11 @@ const columns = columnHelper.columns([
     }),
 ])
 
-function DraggableRow({
-    row,
-}: {
-    row: Row<typeof features, TableItem>
-}) {
+// ─── Draggable row ────────────────────────────────────────────────────────────
+function DraggableRow({ row }: { row: Row<typeof features, TableItem> }) {
     const { transform, transition, setNodeRef, isDragging } = useSortable({
         id: row.original.id,
     })
-
     return (
         <TableRow
             data-state={row.getIsSelected() && "selected"}
@@ -352,18 +334,13 @@ function DraggableRow({
     )
 }
 
-export function DataTable({
-    data: initialData,
-}: {
-    data: TableItem[]
-}) {
+// ─── Main component ───────────────────────────────────────────────────────────
+export function DataTable({ data: initialData }: { data: TableItem[] }) {
     const [data, setData] = React.useState(() => initialData)
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<ColumnVisibilityState>({})
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [pagination, setPagination] = React.useState({
         pageIndex: 0,
@@ -412,11 +389,13 @@ export function DataTable({
         }
     }
 
+    const { pageIndex, pageSize } = pagination
+    const pageCount = table.getPageCount()
+    const filteredRows = table.getFilteredRowModel().rows
+    const selectedCount = table.getFilteredSelectedRowModel().rows.length
+
     return (
-        <Tabs
-            defaultValue="outline"
-            className="w-full flex-col justify-start gap-6"
-        >
+        <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
             <div className="flex items-center justify-between">
                 <Label htmlFor="view-selector" className="sr-only">
                     View
@@ -449,10 +428,8 @@ export function DataTable({
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
-                            <IconLayoutColumns />
                             <span className="hidden lg:inline">Customize Columns</span>
                             <span className="lg:hidden">Columns</span>
-                            <IconChevronDown />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-56">
                             {table
@@ -462,20 +439,18 @@ export function DataTable({
                                         typeof column.accessorFn !== "undefined" &&
                                         column.getCanHide()
                                 )
-                                .map((column) => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) =>
-                                                column.toggleVisibility(!!value)
-                                            }
-                                        >
-                                            {column.id}
-                                        </DropdownMenuCheckboxItem>
-                                    )
-                                })}
+                                .map((column) => (
+                                    <DropdownMenuCheckboxItem
+                                        key={column.id}
+                                        className="capitalize"
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={(value) =>
+                                            column.toggleVisibility(!!value)
+                                        }
+                                    >
+                                        {column.id}
+                                    </DropdownMenuCheckboxItem>
+                                ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <Button variant="outline" size="sm">
@@ -484,10 +459,12 @@ export function DataTable({
                     </Button>
                 </div>
             </div>
+
             <TabsContent
                 value="outline"
                 className="relative flex flex-col gap-4 overflow-auto"
             >
+                {/* Table with DnD */}
                 <div className="overflow-hidden rounded-lg border">
                     <DndContext
                         collisionDetection={closestCenter}
@@ -500,15 +477,13 @@ export function DataTable({
                             <TableHeader className="sticky top-0 z-10 bg-muted">
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <TableRow key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => {
-                                            return (
-                                                <TableHead key={header.id} colSpan={header.colSpan}>
-                                                    {header.isPlaceholder ? null : (
-                                                        <FlexRender header={header} />
-                                                    )}
-                                                </TableHead>
-                                            )
-                                        })}
+                                        {headerGroup.headers.map((header) => (
+                                            <TableHead key={header.id} colSpan={header.colSpan}>
+                                                {header.isPlaceholder ? null : (
+                                                    <FlexRender header={header} />
+                                                )}
+                                            </TableHead>
+                                        ))}
                                     </TableRow>
                                 ))}
                             </TableHeader>
@@ -536,101 +511,38 @@ export function DataTable({
                         </Table>
                     </DndContext>
                 </div>
-                <div className="flex items-center justify-between px-4">
-                    <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-                        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                        {table.getFilteredRowModel().rows.length} row(s) selected.
-                    </div>
-                    <div className="flex w-full items-center gap-8 lg:w-fit">
-                        <div className="hidden items-center gap-2 lg:flex">
-                            <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                                Rows per page
-                            </Label>
-                            <Select
-                                value={`${table.state.pagination.pageSize}`}
-                                onValueChange={(value) => {
-                                    table.setPageSize(Number(value))
-                                }}
-                            >
-                                <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                                    <SelectValue placeholder={table.state.pagination.pageSize} />
-                                </SelectTrigger>
-                                <SelectContent side="top">
-                                    {[10, 20, 30, 40, 50].map((pageSize) => (
-                                        <SelectItem key={pageSize} value={`${pageSize}`}>
-                                            {pageSize}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex w-fit items-center justify-center text-sm font-medium">
-                            Page {table.state.pagination.pageIndex + 1} of{" "}
-                            {table.getPageCount()}
-                        </div>
-                        <div className="ml-auto flex items-center gap-2 lg:ml-0">
-                            <Button
-                                variant="outline"
-                                className="hidden h-8 w-8 p-0 lg:flex"
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            >
-                                <span className="sr-only">Go to first page</span>
-                                <IconChevronsLeft />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="size-8"
-                                size="icon"
-                                onClick={() => table.previousPage()}
-                                disabled={!table.getCanPreviousPage()}
-                            >
-                                <span className="sr-only">Go to previous page</span>
-                                <IconChevronLeft />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="size-8"
-                                size="icon"
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            >
-                                <span className="sr-only">Go to next page</span>
-                                <IconChevronRight />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="hidden size-8 lg:flex"
-                                size="icon"
-                                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                                disabled={!table.getCanNextPage()}
-                            >
-                                <span className="sr-only">Go to last page</span>
-                                <IconChevronsRight />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+
+                {/* Pagination — shared primitive */}
+                <DataTablePagination
+                    pageIndex={pageIndex}
+                    pageCount={Math.max(1, pageCount)}
+                    pageSize={pageSize}
+                    selectedCount={selectedCount}
+                    totalCount={filteredRows.length}
+                    onPageChange={(index) =>
+                        setPagination((p) => ({ ...p, pageIndex: index }))
+                    }
+                    onPageSizeChange={(size) =>
+                        setPagination({ pageIndex: 0, pageSize: size })
+                    }
+                    pageSizeOptions={[10, 20, 30, 40, 50]}
+                />
             </TabsContent>
-            <TabsContent
-                value="past-performance"
-                className="flex flex-col px-4 lg:px-6"
-            >
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+
+            <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">
+                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
             </TabsContent>
             <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
             </TabsContent>
-            <TabsContent
-                value="focus-documents"
-                className="flex flex-col px-4 lg:px-6"
-            >
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+            <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
+                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
             </TabsContent>
         </Tabs>
     )
 }
 
+// ─── Chart data & config ──────────────────────────────────────────────────────
 const chartData = [
     { month: "January", desktop: 186, mobile: 80 },
     { month: "February", desktop: 305, mobile: 200 },
@@ -641,19 +553,13 @@ const chartData = [
 ]
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
-        color: "var(--primary)",
-    },
-    mobile: {
-        label: "Mobile",
-        color: "var(--primary)",
-    },
+    desktop: { label: "Desktop", color: "var(--primary)" },
+    mobile: { label: "Mobile", color: "var(--primary)" },
 } satisfies ChartConfig
 
+// ─── TableCellViewer ──────────────────────────────────────────────────────────
 function TableCellViewer({ item }: { item: TableItem }) {
     const isMobile = useIsMobile()
-
     return (
         <Drawer>
             <DrawerTrigger
@@ -677,10 +583,7 @@ function TableCellViewer({ item }: { item: TableItem }) {
                                 <AreaChart
                                     accessibilityLayer
                                     data={chartData}
-                                    margin={{
-                                        left: 0,
-                                        right: 10,
-                                    }}
+                                    margin={{ left: 0, right: 10 }}
                                 >
                                     <CartesianGrid vertical={false} />
                                     <XAxis
@@ -741,20 +644,12 @@ function TableCellViewer({ item }: { item: TableItem }) {
                                         <SelectValue placeholder="Select a type" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="Table of Contents">
-                                            Table of Contents
-                                        </SelectItem>
-                                        <SelectItem value="Executive Summary">
-                                            Executive Summary
-                                        </SelectItem>
-                                        <SelectItem value="Technical Approach">
-                                            Technical Approach
-                                        </SelectItem>
+                                        <SelectItem value="Table of Contents">Table of Contents</SelectItem>
+                                        <SelectItem value="Executive Summary">Executive Summary</SelectItem>
+                                        <SelectItem value="Technical Approach">Technical Approach</SelectItem>
                                         <SelectItem value="Design">Design</SelectItem>
                                         <SelectItem value="Capabilities">Capabilities</SelectItem>
-                                        <SelectItem value="Focus Documents">
-                                            Focus Documents
-                                        </SelectItem>
+                                        <SelectItem value="Focus Documents">Focus Documents</SelectItem>
                                         <SelectItem value="Narrative">Narrative</SelectItem>
                                         <SelectItem value="Cover Page">Cover Page</SelectItem>
                                     </SelectContent>
@@ -792,9 +687,7 @@ function TableCellViewer({ item }: { item: TableItem }) {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                                    <SelectItem value="Jamik Tashpulatov">
-                                        Jamik Tashpulatov
-                                    </SelectItem>
+                                    <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
                                     <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -803,9 +696,7 @@ function TableCellViewer({ item }: { item: TableItem }) {
                 </div>
                 <DrawerFooter>
                     <Button>Submit</Button>
-                    <DrawerClose render={<Button variant="outline" />}>
-                        Done
-                    </DrawerClose>
+                    <DrawerClose render={<Button variant="outline" />}>Done</DrawerClose>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

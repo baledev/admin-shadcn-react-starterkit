@@ -17,13 +17,7 @@ import {
     type SortingState,
 } from "@tanstack/react-table"
 import {
-    IconChevronDown,
-    IconChevronLeft,
-    IconChevronRight,
-    IconChevronsLeft,
-    IconChevronsRight,
     IconDotsVertical,
-    IconLayoutColumns,
     IconPlus,
     IconSearch,
     IconX,
@@ -34,36 +28,23 @@ import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
 import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@workspace/ui/components/popover"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@workspace/ui/components/select"
 import { Separator } from "@workspace/ui/components/separator"
 import {
-    Table,
-    TableBody,
     TableCell,
-    TableHead,
-    TableHeader,
     TableRow,
 } from "@workspace/ui/components/table"
+import { DataTable } from "@/components/data-table-base"
 import {
     type Customer,
     PLAN_OPTIONS,
@@ -233,6 +214,16 @@ const columns = columnHelper.columns([
     }),
 ])
 
+const COLUMN_LABELS: Record<string, string> = {
+    totalSpend: "Total Spend",
+    joinedAt: "Joined",
+    phone: "Phone",
+    country: "Country",
+    status: "Status",
+    plan: "Plan",
+    email: "Email",
+}
+
 // ─── Faceted filter component ─────────────────────────────────────────────────
 type FacetedFilterOption = { label: string; value: string }
 
@@ -289,10 +280,7 @@ function FacetedFilter({
                     </>
                 )}
             </PopoverTrigger>
-            <PopoverContent
-                align="start"
-                className="w-44 p-0"
-            >
+            <PopoverContent align="start" className="w-44 p-0">
                 <div className="border-b px-2 py-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wide">
                     {label}
                 </div>
@@ -325,17 +313,15 @@ function FacetedFilter({
                     })}
                 </div>
                 {selected.length > 0 && (
-                    <>
-                        <div className="border-t p-1">
-                            <button
-                                type="button"
-                                onClick={() => onSelectionChange([])}
-                                className="flex w-full cursor-default items-center justify-center rounded-sm px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none"
-                            >
-                                Clear filters
-                            </button>
-                        </div>
-                    </>
+                    <div className="border-t p-1">
+                        <button
+                            type="button"
+                            onClick={() => onSelectionChange([])}
+                            className="flex w-full cursor-default items-center justify-center rounded-sm px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none"
+                        >
+                            Clear filters
+                        </button>
+                    </div>
                 )}
             </PopoverContent>
         </Popover>
@@ -347,9 +333,7 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<ColumnVisibilityState>({})
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [pagination, setPagination] = React.useState({
         pageIndex: 0,
@@ -375,11 +359,10 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
         onPaginationChange: setPagination,
-        // Global search via name/email/country column filter override
         filterFns: {},
     })
 
-    // ── Derived filtered rows (search + column filters applied together) ───────
+    // ── Derived: column-filtered rows, then global search ────────────────────
     const columnFilteredRows = table.getFilteredRowModel().rows
 
     const filteredRows = React.useMemo(() => {
@@ -393,7 +376,7 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
         )
     }, [search, columnFilteredRows])
 
-    // ── Paginated view from filteredRows ──────────────────────────────────────
+    // ── Paginated slice ───────────────────────────────────────────────────────
     const { pageIndex, pageSize } = pagination
     const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize))
     const pagedRows = filteredRows.slice(
@@ -423,12 +406,17 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
         setPagination((p) => ({ ...p, pageIndex: 0 }))
     }
 
+    const selectedCount = filteredRows.filter((r) => r.getIsSelected()).length
+
     return (
-        <div className="flex flex-col gap-4">
-            {/* ── Toolbar ── */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                {/* Left: search + faceted filters */}
-                <div className="flex flex-wrap items-center gap-2">
+        <DataTable
+            table={table}
+            rows={pagedRows}
+            columnCount={columns.length}
+            columnLabels={COLUMN_LABELS}
+            emptyMessage="No customers found."
+            toolbar={
+                <>
                     {/* Global search */}
                     <div className="relative">
                         <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -443,15 +431,13 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
                         />
                     </div>
 
-                    {/* Status faceted filter */}
+                    {/* Faceted filters */}
                     <FacetedFilter
                         label="Status"
                         options={STATUS_OPTIONS}
                         selected={getFacetValues("status")}
                         onSelectionChange={(v) => setFacetFilter("status", v)}
                     />
-
-                    {/* Plan faceted filter */}
                     <FacetedFilter
                         label="Plan"
                         options={PLAN_OPTIONS}
@@ -471,165 +457,31 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
                             <IconX className="ml-1 size-3.5" />
                         </Button>
                     )}
-                </div>
-
-                {/* Right: column visibility */}
-                <div className="flex items-center gap-2">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="h-8" />}>
-                            <IconLayoutColumns className="size-4" />
-                            <span className="hidden lg:inline">Columns</span>
-                            <IconChevronDown className="size-3.5" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44">
-                            <DropdownMenuGroup>
-                                {table
-                                    .getAllColumns()
-                                    .filter(
-                                        (col) =>
-                                            typeof col.accessorFn !== "undefined" && col.getCanHide()
-                                    )
-                                    .map((col) => (
-                                        <DropdownMenuCheckboxItem
-                                            key={col.id}
-                                            className="capitalize"
-                                            checked={col.getIsVisible()}
-                                            onCheckedChange={(value) =>
-                                                col.toggleVisibility(!!value)
-                                            }
-                                        >
-                                            {col.id === "totalSpend"
-                                                ? "Total Spend"
-                                                : col.id === "joinedAt"
-                                                  ? "Joined"
-                                                  : col.id}
-                                        </DropdownMenuCheckboxItem>
-                                    ))}
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            </div>
-
-            {/* ── Table ── */}
-            <div className="overflow-hidden rounded-lg border">
-                <Table>
-                    <TableHeader className="sticky top-0 z-10 bg-muted">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id} colSpan={header.colSpan}>
-                                        {header.isPlaceholder ? null : (
-                                            <FlexRender header={header} />
-                                        )}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {pagedRows.length ? (
-                            pagedRows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            <FlexRender cell={cell} />
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center text-muted-foreground"
-                                >
-                                    No customers found.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-
-            {/* ── Pagination ── */}
-            <div className="flex items-center justify-between px-1">
-                <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-                    {filteredRows.filter((r) => r.getIsSelected()).length} of{" "}
-                    {filteredRows.length} row(s) selected.
-                </div>
-                <div className="flex w-full items-center gap-8 lg:w-fit">
-                    <div className="hidden items-center gap-2 lg:flex">
-                        <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                            Rows per page
-                        </Label>
-                        <Select
-                            value={`${pageSize}`}
-                            onValueChange={(value) => {
-                                setPagination({ pageIndex: 0, pageSize: Number(value) })
-                            }}
-                        >
-                            <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                                <SelectValue placeholder={pageSize} />
-                            </SelectTrigger>
-                            <SelectContent side="top">
-                                {[10, 20, 30, 50].map((ps) => (
-                                    <SelectItem key={ps} value={`${ps}`}>
-                                        {ps}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="flex w-fit items-center justify-center text-sm font-medium">
-                        Page {pageIndex + 1} of {pageCount}
-                    </div>
-                    <div className="ml-auto flex items-center gap-2 lg:ml-0">
-                        <Button
-                            variant="outline"
-                            className="hidden h-8 w-8 p-0 lg:flex"
-                            onClick={() => setPagination((p) => ({ ...p, pageIndex: 0 }))}
-                            disabled={pageIndex === 0}
-                        >
-                            <span className="sr-only">Go to first page</span>
-                            <IconChevronsLeft />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="size-8"
-                            size="icon"
-                            onClick={() => setPagination((p) => ({ ...p, pageIndex: p.pageIndex - 1 }))}
-                            disabled={pageIndex === 0}
-                        >
-                            <span className="sr-only">Go to previous page</span>
-                            <IconChevronLeft />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="size-8"
-                            size="icon"
-                            onClick={() => setPagination((p) => ({ ...p, pageIndex: p.pageIndex + 1 }))}
-                            disabled={pageIndex >= pageCount - 1}
-                        >
-                            <span className="sr-only">Go to next page</span>
-                            <IconChevronRight />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="hidden size-8 lg:flex"
-                            size="icon"
-                            onClick={() => setPagination((p) => ({ ...p, pageIndex: pageCount - 1 }))}
-                            disabled={pageIndex >= pageCount - 1}
-                        >
-                            <span className="sr-only">Go to last page</span>
-                            <IconChevronsRight />
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </>
+            }
+            renderRow={(row) => (
+                <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                >
+                    {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                            <FlexRender cell={cell} />
+                        </TableCell>
+                    ))}
+                </TableRow>
+            )}
+            pagination={{
+                pageIndex,
+                pageCount,
+                pageSize,
+                selectedCount,
+                totalCount: filteredRows.length,
+                onPageChange: (index) =>
+                    setPagination((p) => ({ ...p, pageIndex: index })),
+                onPageSizeChange: (size) =>
+                    setPagination({ pageIndex: 0, pageSize: size }),
+            }}
+        />
     )
 }
