@@ -26,6 +26,7 @@ import {
   Settings2Icon,
   TerminalIcon,
   TerminalSquareIcon,
+  UsersIcon,
 } from "lucide-react"
 
 const data = {
@@ -56,6 +57,11 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: <LayoutDashboardIcon />,
+    },
+    {
+      title: "Customers",
+      url: "/customers",
+      icon: <UsersIcon />,
     },
     {
       title: "Playground",
