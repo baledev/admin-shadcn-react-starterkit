@@ -69,7 +69,6 @@ import {
 } from "@workspace/ui/components/drawer"
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
@@ -86,11 +85,7 @@ import {
 } from "@workspace/ui/components/select"
 import { Separator } from "@workspace/ui/components/separator"
 import {
-    Table,
-    TableBody,
     TableCell,
-    TableHead,
-    TableHeader,
     TableRow,
 } from "@workspace/ui/components/table"
 import {
@@ -99,7 +94,10 @@ import {
     TabsList,
     TabsTrigger,
 } from "@workspace/ui/components/tabs"
-import { DataTablePagination } from "@/components/data-table-base"
+import {
+    DataTable,
+    DataTableColumnVisibility,
+} from "@workspace/ui/components/data-table"
 
 // ─── Features ─────────────────────────────────────────────────────────────────
 const features = tableFeatures({
@@ -426,33 +424,7 @@ export function DashboardDataTable({ data: initialData }: { data: TableItem[] })
                     <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
                 </TabsList>
                 <div className="flex items-center gap-2">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
-                            <span className="hidden lg:inline">Customize Columns</span>
-                            <span className="lg:hidden">Columns</span>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                            {table
-                                .getAllColumns()
-                                .filter(
-                                    (column) =>
-                                        typeof column.accessorFn !== "undefined" &&
-                                        column.getCanHide()
-                                )
-                                .map((column) => (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <DataTableColumnVisibility table={table} />
                     <Button variant="outline" size="sm">
                         <IconPlus />
                         <span className="hidden lg:inline">Add Section</span>
@@ -464,69 +436,40 @@ export function DashboardDataTable({ data: initialData }: { data: TableItem[] })
                 value="outline"
                 className="relative flex flex-col gap-4 overflow-auto"
             >
-                {/* Table with DnD */}
-                <div className="overflow-hidden rounded-lg border">
-                    <DndContext
-                        collisionDetection={closestCenter}
-                        modifiers={[restrictToVerticalAxis]}
-                        onDragEnd={handleDragEnd}
-                        sensors={sensors}
-                        id={sortableId}
+                <DndContext
+                    collisionDetection={closestCenter}
+                    modifiers={[restrictToVerticalAxis]}
+                    onDragEnd={handleDragEnd}
+                    sensors={sensors}
+                    id={sortableId}
+                >
+                    <SortableContext
+                        items={dataIds}
+                        strategy={verticalListSortingStrategy}
                     >
-                        <Table>
-                            <TableHeader className="sticky top-0 z-10 bg-muted">
-                                {table.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => (
-                                            <TableHead key={header.id} colSpan={header.colSpan}>
-                                                {header.isPlaceholder ? null : (
-                                                    <FlexRender header={header} />
-                                                )}
-                                            </TableHead>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableHeader>
-                            <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                                {table.getRowModel().rows?.length ? (
-                                    <SortableContext
-                                        items={dataIds}
-                                        strategy={verticalListSortingStrategy}
-                                    >
-                                        {table.getRowModel().rows.map((row) => (
-                                            <DraggableRow key={row.id} row={row} />
-                                        ))}
-                                    </SortableContext>
-                                ) : (
-                                    <TableRow>
-                                        <TableCell
-                                            colSpan={columns.length}
-                                            className="h-24 text-center"
-                                        >
-                                            No results.
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </DndContext>
-                </div>
-
-                {/* Pagination — shared primitive */}
-                <DataTablePagination
-                    pageIndex={pageIndex}
-                    pageCount={Math.max(1, pageCount)}
-                    pageSize={pageSize}
-                    selectedCount={selectedCount}
-                    totalCount={filteredRows.length}
-                    onPageChange={(index) =>
-                        setPagination((p) => ({ ...p, pageIndex: index }))
-                    }
-                    onPageSizeChange={(size) =>
-                        setPagination({ pageIndex: 0, pageSize: size })
-                    }
-                    pageSizeOptions={[10, 20, 30, 40, 50]}
-                />
+                        <DataTable
+                            table={table}
+                            rows={table.getRowModel().rows}
+                            columnCount={columns.length}
+                            emptyMessage="No results."
+                            showColumnVisibility={false}
+                            tableBodyClassName="**:data-[slot=table-cell]:first:w-8"
+                            renderRow={(row) => <DraggableRow row={row} />}
+                            pagination={{
+                                pageIndex,
+                                pageCount: Math.max(1, pageCount),
+                                pageSize,
+                                selectedCount,
+                                totalCount: filteredRows.length,
+                                onPageChange: (index) =>
+                                    setPagination((p) => ({ ...p, pageIndex: index })),
+                                onPageSizeChange: (size) =>
+                                    setPagination({ pageIndex: 0, pageSize: size }),
+                                pageSizeOptions: [10, 20, 30, 40, 50],
+                            }}
+                        />
+                    </SortableContext>
+                </DndContext>
             </TabsContent>
 
             <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">

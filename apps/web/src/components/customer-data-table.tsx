@@ -18,7 +18,6 @@ import {
 } from "@tanstack/react-table"
 import {
     IconDotsVertical,
-    IconPlus,
     IconSearch,
     IconX,
 } from "@tabler/icons-react"
@@ -35,16 +34,13 @@ import {
 } from "@workspace/ui/components/dropdown-menu"
 import { Input } from "@workspace/ui/components/input"
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@workspace/ui/components/popover"
-import { Separator } from "@workspace/ui/components/separator"
-import {
     TableCell,
     TableRow,
 } from "@workspace/ui/components/table"
-import { DataTable } from "@/components/data-table-base"
+import {
+    DataTable,
+    DataTableFacetedFilter,
+} from "@workspace/ui/components/data-table"
 import {
     type Customer,
     PLAN_OPTIONS,
@@ -224,110 +220,6 @@ const COLUMN_LABELS: Record<string, string> = {
     email: "Email",
 }
 
-// ─── Faceted filter component ─────────────────────────────────────────────────
-type FacetedFilterOption = { label: string; value: string }
-
-function FacetedFilter({
-    label,
-    options,
-    selected,
-    onSelectionChange,
-}: {
-    label: string
-    options: FacetedFilterOption[]
-    selected: string[]
-    onSelectionChange: (values: string[]) => void
-}) {
-    const toggle = (value: string) => {
-        if (selected.includes(value)) {
-            onSelectionChange(selected.filter((v) => v !== value))
-        } else {
-            onSelectionChange([...selected, value])
-        }
-    }
-
-    return (
-        <Popover>
-            <PopoverTrigger
-                render={
-                    <Button variant="outline" size="sm" className="h-8 gap-1 border-dashed" />
-                }
-            >
-                <IconPlus className="size-3.5" />
-                {label}
-                {selected.length > 0 && (
-                    <>
-                        <Separator orientation="vertical" className="mx-0.5 h-4" />
-                        <span className="flex items-center gap-1">
-                            {selected.length > 1 ? (
-                                <Badge variant="secondary" className="rounded-sm px-1 text-xs font-normal">
-                                    {selected.length} selected
-                                </Badge>
-                            ) : (
-                                options
-                                    .filter((o) => selected.includes(o.value))
-                                    .map((o) => (
-                                        <Badge
-                                            key={o.value}
-                                            variant="secondary"
-                                            className="rounded-sm px-1 text-xs font-normal"
-                                        >
-                                            {o.label}
-                                        </Badge>
-                                    ))
-                            )}
-                        </span>
-                    </>
-                )}
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-44 p-0">
-                <div className="border-b px-2 py-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                    {label}
-                </div>
-                <div className="p-1">
-                    {options.map((option) => {
-                        const checked = selected.includes(option.value)
-                        return (
-                            <button
-                                key={option.value}
-                                type="button"
-                                onClick={() => toggle(option.value)}
-                                className="flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm capitalize transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
-                            >
-                                <div
-                                    className={`flex size-4 shrink-0 items-center justify-center rounded-sm border ${
-                                        checked
-                                            ? "border-primary bg-primary text-primary-foreground"
-                                            : "border-input"
-                                    }`}
-                                >
-                                    {checked && (
-                                        <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
-                                            <polyline points="20 6 9 17 4 12" />
-                                        </svg>
-                                    )}
-                                </div>
-                                {option.label}
-                            </button>
-                        )
-                    })}
-                </div>
-                {selected.length > 0 && (
-                    <div className="border-t p-1">
-                        <button
-                            type="button"
-                            onClick={() => onSelectionChange([])}
-                            className="flex w-full cursor-default items-center justify-center rounded-sm px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none"
-                        >
-                            Clear filters
-                        </button>
-                    </div>
-                )}
-            </PopoverContent>
-        </Popover>
-    )
-}
-
 // ─── Main component ───────────────────────────────────────────────────────────
 export function CustomerDataTable({ data }: { data: Customer[] }) {
     const [rowSelection, setRowSelection] = React.useState({})
@@ -432,13 +324,13 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
                     </div>
 
                     {/* Faceted filters */}
-                    <FacetedFilter
+                    <DataTableFacetedFilter
                         label="Status"
                         options={STATUS_OPTIONS}
                         selected={getFacetValues("status")}
                         onSelectionChange={(v) => setFacetFilter("status", v)}
                     />
-                    <FacetedFilter
+                    <DataTableFacetedFilter
                         label="Plan"
                         options={PLAN_OPTIONS}
                         selected={getFacetValues("plan")}
