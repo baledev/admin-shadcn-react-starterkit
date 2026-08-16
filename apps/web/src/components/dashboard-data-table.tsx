@@ -335,7 +335,7 @@ function DraggableRow({ row }: { row: Row<typeof features, TableItem> }) {
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export function DataTable({ data: initialData }: { data: TableItem[] }) {
+export function DashboardDataTable({ data: initialData }: { data: TableItem[] }) {
     const [data, setData] = React.useState(() => initialData)
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import data from "@/lib/data.json"
 import { SectionCards } from "@/components/section-cards"
 import { ChartAreaInteractive } from "@/components/chart-area-interactives"
-import { DataTable } from "@/components/data-table"
+import { DashboardDataTable } from "@/components/dashboard-data-table"
 
 export const Route = createFileRoute("/_auth/dashboard")({
   component: DashboardPage,
@@ -15,7 +15,7 @@ function DashboardPage() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
           <SectionCards />
           <ChartAreaInteractive />
-          <DataTable data={data} />
+          <DashboardDataTable data={data} />
         </div>
       </div>
     </div>
