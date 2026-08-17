@@ -23,7 +23,12 @@ import {
     IconPlus,
 } from "@tabler/icons-react"
 import { FlexRender } from "@tanstack/react-table"
-import type { Table } from "@tanstack/react-table"
+import type {
+    Row,
+    RowData,
+    Table,
+    TableFeatures,
+} from "@tanstack/react-table"
 
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
@@ -59,24 +64,38 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+/**
+ * Broad table/row/column/header types used internally for rendering.
+ * The `any` feature generic makes TanStack resolve every feature API, so all
+ * methods used below (getVisibleCells, getIsSelected, getCanHide, ...) exist.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyTable = Table<any, any>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyRow = Row<any, any>
 
 /** Optional label map so callers can override ugly column IDs (e.g. "totalSpend" → "Total Spend") */
 type ColumnLabelMap = Record<string, string>
 
 // ─── DataTableColumnVisibility ────────────────────────────────────────────────
 
-export interface DataTableColumnVisibilityProps {
-    table: AnyTable
+export interface DataTableColumnVisibilityProps<
+    TFeatures extends TableFeatures,
+    TData extends RowData,
+> {
+    table: Table<TFeatures, TData>
     /** Override display labels for column ids. Falls back to `col.id`. */
     columnLabels?: ColumnLabelMap
 }
 
-export function DataTableColumnVisibility({
-    table,
+export function DataTableColumnVisibility<
+    TFeatures extends TableFeatures,
+    TData extends RowData,
+>({
+    table: tableProp,
     columnLabels = {},
-}: DataTableColumnVisibilityProps) {
+}: DataTableColumnVisibilityProps<TFeatures, TData>) {
+    const table = tableProp as AnyTable
     const hidableColumns = table
         .getAllColumns()
         .filter(
@@ -331,21 +350,22 @@ export function DataTableFacetedFilter({
 
 // ─── DataTable (full shell) ───────────────────────────────────────────────────
 
-export interface DataTableProps {
-    table: AnyTable
+export interface DataTableProps<
+    TFeatures extends TableFeatures,
+    TData extends RowData,
+> {
+    table: Table<TFeatures, TData>
     /**
      * The rows to render in the table body. Pass your already-paginated,
      * already-filtered rows here so the shell stays generic.
      */
-    rows: ReturnType<AnyTable["getRowModel"]>["rows"]
+    rows: Row<TFeatures, TData>[]
     /** Number of columns — used for the empty-state colspan. */
     columnCount: number
     /** Toolbar content rendered above the table (search, faceted filters, etc.) */
     toolbar?: React.ReactNode
     /** Rendered inside each TableRow — defaults to standard FlexRender cells. */
-    renderRow?: (
-        row: ReturnType<AnyTable["getRowModel"]>["rows"][number]
-    ) => React.ReactNode
+    renderRow?: (row: Row<TFeatures, TData>) => React.ReactNode
     /** Text shown when `rows` is empty. */
     emptyMessage?: string
     /** Pagination props. When omitted the pagination bar is not rendered. */
@@ -358,8 +378,11 @@ export interface DataTableProps {
     tableBodyClassName?: string
 }
 
-export function DataTable({
-    table,
+export function DataTable<
+    TFeatures extends TableFeatures,
+    TData extends RowData,
+>({
+    table: tableProp,
     rows,
     columnCount,
     toolbar,
@@ -369,7 +392,8 @@ export function DataTable({
     columnLabels,
     showColumnVisibility = true,
     tableBodyClassName,
-}: DataTableProps) {
+}: DataTableProps<TFeatures, TData>) {
+    const table = tableProp as AnyTable
     return (
         <div className="flex flex-col gap-4">
             {/* ── Toolbar ── */}
@@ -413,13 +437,17 @@ export function DataTable({
                                 ) : (
                                     <TableRow
                                         key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
+                                        data-state={
+                                            (row as AnyRow).getIsSelected() && "selected"
+                                        }
                                     >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                <FlexRender cell={cell} />
-                                            </TableCell>
-                                        ))}
+                                        {(row as AnyRow)
+                                            .getVisibleCells()
+                                            .map((cell) => (
+                                                <TableCell key={cell.id}>
+                                                    <FlexRender cell={cell} />
+                                                </TableCell>
+                                            ))}
                                     </TableRow>
                                 )
                             )

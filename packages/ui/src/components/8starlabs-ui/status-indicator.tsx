@@ -3,7 +3,6 @@ import { cn } from "@workspace/ui/lib/utils";
 
 interface StatusIndicatorProps {
   state: "active" | "down" | "fixing" | "idle";
-  color?: string;
   label?: string;
   className?: string;
   size?: "sm" | "md" | "lg";
@@ -38,7 +37,6 @@ const getSizeClasses = (size: StatusIndicatorProps["size"]) => {
 
 const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   state = "idle",
-  color,
   label,
   className,
   size = "md",

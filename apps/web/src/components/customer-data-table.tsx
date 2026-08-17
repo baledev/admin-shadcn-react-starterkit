@@ -251,7 +251,6 @@ export function CustomerDataTable({ data }: { data: Customer[] }) {
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
         onPaginationChange: setPagination,
-        filterFns: {},
     })
 
     // ── Derived: column-filtered rows, then global search ────────────────────
