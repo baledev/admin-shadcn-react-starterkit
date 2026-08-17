@@ -28,6 +28,7 @@ import {
   TerminalSquareIcon,
   UsersIcon,
 } from "lucide-react"
+import { IconLayoutKanban } from "@tabler/icons-react"
 
 const data = {
   user: {
@@ -62,6 +63,11 @@ const data = {
       title: "Customers",
       url: "/customers",
       icon: <UsersIcon />,
+    },
+    {
+      title: "Kanban",
+      url: "/kanban",
+      icon: <IconLayoutKanban />,
     },
     {
       title: "Playground",
