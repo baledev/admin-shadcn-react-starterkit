@@ -1,3 +1,4 @@
+import * as React from "react"
 import {
   useRouterState,
   createFileRoute,
@@ -7,6 +8,10 @@ import {
 } from "@tanstack/react-router"
 
 import { AppSidebar } from "@/components/app-sidebar"
+import {
+  CommandSearchDialog,
+  CommandSearchTrigger,
+} from "@/components/command-search"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
   Breadcrumb,
@@ -40,6 +45,7 @@ function titleCase(value: string) {
 }
 
 function AuthLayout() {
+  const [commandOpen, setCommandOpen] = React.useState(false)
   const matches = useRouterState({ select: (state) => state.matches })
   const leaf = matches[matches.length - 1]
   const crumbLabel = leaf
@@ -71,6 +77,7 @@ function AuthLayout() {
               </BreadcrumbList>
             </Breadcrumb>
             <div className="ms-auto flex items-center gap-2">
+              <CommandSearchTrigger onClick={() => setCommandOpen(true)} />
               <NotificationsBlock />
               <ThemeToggle />
             </div>
@@ -80,6 +87,7 @@ function AuthLayout() {
           <Outlet />
         </div>
       </SidebarInset>
+      <CommandSearchDialog open={commandOpen} onOpenChange={setCommandOpen} />
     </SidebarProvider>
   )
 }
