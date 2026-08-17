@@ -34,13 +34,14 @@ function SettingsPage() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <PageHeader
-            title="Settings"
-            description="Manage your account and workspace preferences."
-          />
+          <div className="w-full max-w-3xl">
+            <PageHeader
+              title="Settings"
+              description="Manage your account and workspace preferences."
+            />
 
-          <div className="flex flex-col gap-8 md:flex-row">
-            <nav className="flex shrink-0 flex-col gap-1">
+            <div className="mt-8 flex flex-col gap-8 md:flex-row">
+              <nav className="flex shrink-0 flex-col gap-1">
               {sections.map((section) => {
                 const Icon = section.icon
                 return (
@@ -179,10 +180,10 @@ function SettingsPage() {
                 </div>
               )}
 
-              <div className="mt-8 flex justify-end gap-2 border-t border-border pt-5">
-                <Button variant="outline">Cancel</Button>
+              <div className="mt-8">
                 <Button>Save changes</Button>
               </div>
+            </div>
             </div>
           </div>
         </div>
