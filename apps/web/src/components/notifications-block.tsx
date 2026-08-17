@@ -23,7 +23,7 @@ import {
     SheetTrigger,
 } from "@workspace/ui/components/sheet"
 import StatusIndicator from "@workspace/ui/components/8starlabs-ui/status-indicator"
-import { cn } from "@/lib/utils"
+import { cn } from "@workspace/ui/lib/utils"
 
 type NotificationIcon = typeof IconBell
 
