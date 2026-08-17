@@ -2,6 +2,7 @@ import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { CustomerDataTable } from "@/components/customer-data-table"
+import { PageHeader } from "@/components/page-header"
 import { customersData } from "@/lib/customers-data"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
@@ -36,13 +37,10 @@ function CustomersPage() {
         <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-2">
                 <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                    <div className="flex items-center justify-between px-1">
-                        <div>
-                            <h1 className="text-xl font-semibold">Customers</h1>
-                            <p className="text-sm text-muted-foreground">
-                                Manage your customer accounts and subscriptions.
-                            </p>
-                        </div>
+                    <PageHeader
+                        title="Customers"
+                        description="Manage your customer accounts and subscriptions."
+                    >
                         <Sheet open={open} onOpenChange={setOpen}>
                             <SheetTrigger
                                 render={<Button size="sm" />}
@@ -60,7 +58,7 @@ function CustomersPage() {
                                 <AddCustomerForm onSuccess={() => setOpen(false)} />
                             </SheetContent>
                         </Sheet>
-                    </div>
+                    </PageHeader>
                     <CustomerDataTable data={customersData} />
                 </div>
             </div>

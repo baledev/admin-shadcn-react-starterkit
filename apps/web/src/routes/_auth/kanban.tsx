@@ -31,6 +31,7 @@ import { Badge } from "@workspace/ui/components/badge"
 import { Card, CardContent } from "@workspace/ui/components/card"
 import { ScrollArea } from "@workspace/ui/components/scroll-area"
 import { IconPlus } from "@tabler/icons-react"
+import { PageHeader } from "@/components/page-header"
 
 export const Route = createFileRoute("/_auth/kanban")({
   component: KanbanPage,
@@ -329,14 +330,10 @@ function KanbanPage() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="mb-8 border-b border-border pb-5">
-            <p className="mb-1 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-              Acme Workspace
-            </p>
-            <h1 className="font-heading text-2xl font-bold tracking-tight">
-              Project Board
-            </h1>
-          </div>
+          <PageHeader
+            title="Project Board"
+            subtitle="Acme Workspace"
+          />
 
           <DndContext
             id="kanban-3-board"
