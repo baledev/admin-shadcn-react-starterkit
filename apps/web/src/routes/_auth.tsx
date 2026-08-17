@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router"
 
 import { AppSidebar } from "@/components/app-sidebar"
+import { AnnouncementContext } from "@/routes/__root"
 import {
   CommandSearchDialog,
   CommandSearchTrigger,
@@ -28,6 +29,7 @@ import {
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
 import NotificationsBlock from "@/components/notifications"
+import { ANNOUNCEMENT_HEIGHT } from "@/components/announcement"
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context }) => {
@@ -46,6 +48,7 @@ function titleCase(value: string) {
 
 function AuthLayout() {
   const [commandOpen, setCommandOpen] = React.useState(false)
+  const announcementVisible = React.useContext(AnnouncementContext)
   const matches = useRouterState({ select: (state) => state.matches })
   const leaf = matches[matches.length - 1]
   const crumbLabel = leaf
@@ -53,7 +56,15 @@ function AuthLayout() {
     : "Home"
 
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      style={
+        {
+          "--announcement-offset": announcementVisible
+            ? `${ANNOUNCEMENT_HEIGHT}px`
+            : "0px",
+        } as React.CSSProperties
+      }
+    >
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -88,6 +99,6 @@ function AuthLayout() {
         </div>
       </SidebarInset>
       <CommandSearchDialog open={commandOpen} onOpenChange={setCommandOpen} />
-    </SidebarProvider>
+      </SidebarProvider>
   )
 }

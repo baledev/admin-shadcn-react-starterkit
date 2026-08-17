@@ -134,3 +134,7 @@
     @apply font-sans;
     }
 }
+
+[data-slot="sidebar-container"] {
+  top: var(--announcement-offset, 0px);
+}
