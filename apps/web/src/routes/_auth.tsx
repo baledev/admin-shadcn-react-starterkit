@@ -27,7 +27,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
-import NotificationsBlock from "@/components/notifications-block"
+import NotificationsBlock from "@/components/notifications"
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context }) => {
