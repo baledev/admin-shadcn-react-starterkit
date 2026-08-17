@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "@tanstack/react-router"
+import { AnnouncementContext } from "@/routes/__root"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -127,6 +128,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
   const authUser = router.options.context.auth.user
+  const announcementVisible = React.useContext(AnnouncementContext)
 
   const user = authUser
     ? {
@@ -138,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="px-2 pt-2 pb-0">
+      <SidebarHeader className={announcementVisible ? "pt-4" : ""}>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
