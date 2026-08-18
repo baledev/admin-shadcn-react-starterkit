@@ -29,7 +29,7 @@ import {
   TerminalSquareIcon,
   UsersIcon,
 } from "lucide-react"
-import { IconCalendar, IconLayoutKanban, IconPackage, IconReceipt, IconShoppingCart } from "@tabler/icons-react"
+import { IconCalendar, IconLayoutKanban, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
 
 const data = {
   user: {
@@ -79,6 +79,11 @@ const data = {
       title: "Invoices",
       url: "/invoices",
       icon: <IconReceipt />,
+    },
+    {
+      title: "Team",
+      url: "/team",
+      icon: <IconUsers />,
     },
     {
       title: "Kanban",
