@@ -16,6 +16,7 @@ import { Route as AuthCalendarRouteImport } from './routes/_auth/calendar'
 import { Route as AuthCustomersRouteImport } from './routes/_auth/customers'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthKanbanRouteImport } from './routes/_auth/kanban'
+import { Route as AuthOrdersRouteImport } from './routes/_auth/orders'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
 import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
@@ -55,6 +56,11 @@ const AuthKanbanRoute = AuthKanbanRouteImport.update({
   path: '/kanban',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthOrdersRoute = AuthOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
   '/kanban': typeof AuthKanbanRoute
+  '/orders': typeof AuthOrdersRoute
   '/settings': typeof AuthSettingsRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/reset-password': typeof GuestResetPasswordRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
   '/kanban': typeof AuthKanbanRoute
+  '/orders': typeof AuthOrdersRoute
   '/settings': typeof AuthSettingsRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/reset-password': typeof GuestResetPasswordRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/_auth/customers': typeof AuthCustomersRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/kanban': typeof AuthKanbanRoute
+  '/_auth/orders': typeof AuthOrdersRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/reset-password': typeof GuestResetPasswordRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/customers'
     | '/dashboard'
     | '/kanban'
+    | '/orders'
     | '/settings'
     | '/forgot-password'
     | '/reset-password'
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/customers'
     | '/dashboard'
     | '/kanban'
+    | '/orders'
     | '/settings'
     | '/forgot-password'
     | '/reset-password'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/_auth/customers'
     | '/_auth/dashboard'
     | '/_auth/kanban'
+    | '/_auth/orders'
     | '/_auth/settings'
     | '/_guest/forgot-password'
     | '/_guest/reset-password'
@@ -218,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthKanbanRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/orders': {
+      id: '/_auth/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AuthOrdersRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -261,6 +280,7 @@ interface AuthRouteChildren {
   AuthCustomersRoute: typeof AuthCustomersRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthKanbanRoute: typeof AuthKanbanRoute
+  AuthOrdersRoute: typeof AuthOrdersRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
 }
 
@@ -269,6 +289,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthCustomersRoute: AuthCustomersRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthKanbanRoute: AuthKanbanRoute,
+  AuthOrdersRoute: AuthOrdersRoute,
   AuthSettingsRoute: AuthSettingsRoute,
 }
 
