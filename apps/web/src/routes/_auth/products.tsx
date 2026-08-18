@@ -41,8 +41,10 @@ import {
 import { Separator } from "@workspace/ui/components/separator"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@workspace/ui/components/sheet"
@@ -224,8 +226,9 @@ function ProductSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col gap-5 overflow-y-auto px-6 py-5"
+          className="flex flex-1 flex-col overflow-hidden"
         >
+          <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-6 py-5">
           {/* Name */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="product-name">Name</Label>
@@ -328,21 +331,16 @@ function ProductSheet({
               })()}
             </div>
           )}
+          </div>
 
-          <Separator />
-
-          <div className="flex justify-end gap-2 pb-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
+          <SheetFooter>
             <Button type="submit">
               {isEditing ? "Save Changes" : "Add Product"}
             </Button>
-          </div>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Cancel
+            </SheetClose>
+          </SheetFooter>
         </form>
       </SheetContent>
     </Sheet>

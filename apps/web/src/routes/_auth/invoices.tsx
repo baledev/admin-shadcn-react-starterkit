@@ -171,19 +171,14 @@ function InvoicePreviewSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-lg flex flex-col gap-0 p-0">
         <SheetHeader className="px-6 pt-6 pb-4">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <SheetTitle className="font-mono text-lg">
-                {invoice.id}
-              </SheetTitle>
-              <SheetDescription className="mt-1">
-                Invoice preview
-              </SheetDescription>
-            </div>
-            <Badge variant="outline" className={`ring-1 ${statusMeta.chip}`}>
-              {statusMeta.label}
-            </Badge>
-          </div>
+          <SheetTitle className="font-mono text-lg">{invoice.id}</SheetTitle>
+          <SheetDescription>Invoice preview</SheetDescription>
+          <Badge
+            variant="outline"
+            className={`w-fit ring-1 ${statusMeta.chip}`}
+          >
+            {statusMeta.label}
+          </Badge>
         </SheetHeader>
 
         <Separator />
