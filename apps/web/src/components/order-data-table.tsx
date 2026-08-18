@@ -17,7 +17,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table"
 import {
+  IconBan,
   IconDotsVertical,
+  IconEye,
   IconSearch,
   IconX,
 } from "@tabler/icons-react"
@@ -38,6 +40,7 @@ import {
   DataTable,
   DataTableFacetedFilter,
 } from "@workspace/ui/components/data-table"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type Order,
   STATUS_META,
@@ -72,7 +75,10 @@ function StatusBadge({ status }: { status: Order["status"] }) {
 
 // ─── Column definitions ───────────────────────────────────────────────────────
 
-function buildColumns(onViewDetail: (order: Order) => void) {
+function buildColumns(
+  onViewDetail: (order: Order) => void,
+  onRequestCancel: (order: Order) => void
+) {
   return columnHelper.columns([
     columnHelper.display({
       id: "select",
@@ -162,40 +168,52 @@ function buildColumns(onViewDetail: (order: Order) => void) {
     columnHelper.display({
       id: "actions",
       enableHiding: false,
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-                size="icon"
-                onClick={(event) => event.stopPropagation()}
-              />
-            }
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem
-              onClick={(event) => {
-                event.stopPropagation()
-                onViewDetail(row.original)
-              }}
+      cell: ({ row }) => {
+        // A delivered or already-cancelled order is past the point of cancelling.
+        const canCancel =
+          row.original.status !== "cancelled" &&
+          row.original.status !== "delivered"
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+                  size="icon"
+                  onClick={(event) => event.stopPropagation()}
+                />
+              }
             >
-              View details
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={(event) => event.stopPropagation()}
-            >
-              Cancel order
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+              <IconDotsVertical />
+              <span className="sr-only">Open menu</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onViewDetail(row.original)
+                }}
+              >
+                <IconEye className="mr-2 size-4" aria-hidden="true" />
+                View details
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                disabled={!canCancel}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onRequestCancel(row.original)
+                }}
+              >
+                <IconBan className="mr-2 size-4" aria-hidden="true" />
+                Cancel order
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
     }),
   ])
 }
@@ -214,9 +232,14 @@ const COLUMN_LABELS: Record<string, string> = {
 interface OrderDataTableProps {
   data: Order[]
   onViewDetail: (order: Order) => void
+  onCancelOrder: (order: Order) => void
 }
 
-export function OrderDataTable({ data, onViewDetail }: OrderDataTableProps) {
+export function OrderDataTable({
+  data,
+  onViewDetail,
+  onCancelOrder,
+}: OrderDataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<ColumnVisibilityState>({})
@@ -229,9 +252,10 @@ export function OrderDataTable({ data, onViewDetail }: OrderDataTableProps) {
     pageSize: 10,
   })
   const [search, setSearch] = React.useState("")
+  const [pendingCancel, setPendingCancel] = React.useState<Order | null>(null)
 
   const columns = React.useMemo(
-    () => buildColumns(onViewDetail),
+    () => buildColumns(onViewDetail, setPendingCancel),
     [onViewDetail]
   )
 
@@ -302,75 +326,100 @@ export function OrderDataTable({ data, onViewDetail }: OrderDataTableProps) {
   const selectedCount = filteredRows.filter((r) => r.getIsSelected()).length
 
   return (
-    <DataTable
-      table={table}
-      rows={pagedRows}
-      columnCount={columns.length}
-      columnLabels={COLUMN_LABELS}
-      emptyMessage="No orders found."
-      toolbar={
-        <>
-          {/* Global search */}
-          <div className="relative">
-            <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search orders..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setPagination((p) => ({ ...p, pageIndex: 0 }))
-              }}
-              className="h-8 w-64 pl-8"
+    <>
+      <DataTable
+        table={table}
+        rows={pagedRows}
+        columnCount={columns.length}
+        columnLabels={COLUMN_LABELS}
+        emptyMessage="No orders found."
+        toolbar={
+          <>
+            {/* Global search */}
+            <div className="relative">
+              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search orders..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setPagination((p) => ({ ...p, pageIndex: 0 }))
+                }}
+                className="h-8 w-64 pl-8"
+              />
+            </div>
+
+            {/* Faceted filter */}
+            <DataTableFacetedFilter
+              label="Status"
+              options={STATUS_OPTIONS}
+              selected={getFacetValues("status")}
+              onSelectionChange={(v) => setFacetFilter("status", v)}
             />
-          </div>
 
-          {/* Faceted filter */}
-          <DataTableFacetedFilter
-            label="Status"
-            options={STATUS_OPTIONS}
-            selected={getFacetValues("status")}
-            onSelectionChange={(v) => setFacetFilter("status", v)}
-          />
-
-          {/* Reset */}
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2 text-muted-foreground"
-              onClick={resetAllFilters}
-            >
-              Reset
-              <IconX className="ml-1 size-3.5" />
-            </Button>
-          )}
-        </>
-      }
-      renderRow={(row) => (
-        <TableRow
-          key={row.id}
-          data-state={row.getIsSelected() && "selected"}
-          className="cursor-pointer"
-          onClick={() => onViewDetail(row.original)}
-        >
-          {row.getVisibleCells().map((cell) => (
-            <TableCell key={cell.id}>
-              <FlexRender cell={cell} />
-            </TableCell>
-          ))}
-        </TableRow>
-      )}
-      pagination={{
-        pageIndex,
-        pageCount,
-        pageSize,
-        selectedCount,
-        totalCount: filteredRows.length,
-        onPageChange: (index) =>
-          setPagination((p) => ({ ...p, pageIndex: index })),
-        onPageSizeChange: (size) =>
-          setPagination({ pageIndex: 0, pageSize: size }),
-      }}
-    />
+            {/* Reset */}
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-muted-foreground"
+                onClick={resetAllFilters}
+              >
+                Reset
+                <IconX className="ml-1 size-3.5" />
+              </Button>
+            )}
+          </>
+        }
+        renderRow={(row) => (
+          <TableRow
+            key={row.id}
+            data-state={row.getIsSelected() && "selected"}
+            className="cursor-pointer"
+            onClick={() => onViewDetail(row.original)}
+          >
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                <FlexRender cell={cell} />
+              </TableCell>
+            ))}
+          </TableRow>
+        )}
+        pagination={{
+          pageIndex,
+          pageCount,
+          pageSize,
+          selectedCount,
+          totalCount: filteredRows.length,
+          onPageChange: (index) =>
+            setPagination((p) => ({ ...p, pageIndex: index })),
+          onPageSizeChange: (size) =>
+            setPagination({ pageIndex: 0, pageSize: size }),
+        }}
+      />
+      <ConfirmDialog
+        open={pendingCancel !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingCancel(null)
+        }}
+        title="Cancel this order?"
+        description={
+          <>
+            Order{" "}
+            <span className="font-medium text-foreground">
+              {pendingCancel?.id}
+            </span>{" "}
+            for {pendingCancel?.customerName} will be marked as cancelled and
+            excluded from revenue. This action cannot be undone.
+          </>
+        }
+        confirmLabel="Cancel Order"
+        cancelLabel="Keep Order"
+        onConfirm={() => {
+          if (pendingCancel) onCancelOrder(pendingCancel)
+          setPendingCancel(null)
+        }}
+      />
+    </>
   )
 }

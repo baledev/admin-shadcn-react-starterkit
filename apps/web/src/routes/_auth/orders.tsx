@@ -11,6 +11,7 @@ import {
 import { PageHeader } from "@/components/page-header"
 import { OrderDataTable } from "@/components/order-data-table"
 import { type Order, computeStats, initialOrders, STATUS_META } from "@/lib/orders-data"
+import { toIsoDate } from "@/lib/date-utils"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import {
@@ -305,12 +306,24 @@ function OrderDetailSheet({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function OrdersPage() {
+  const [orders, setOrders] = React.useState<Order[]>(initialOrders)
   const [selectedOrder, setSelectedOrder] = React.useState<Order | null>(null)
   const [sheetOpen, setSheetOpen] = React.useState(false)
 
   function handleViewDetail(order: Order) {
     setSelectedOrder(order)
     setSheetOpen(true)
+  }
+
+  function handleCancelOrder(order: Order) {
+    const cancelled: Order = {
+      ...order,
+      status: "cancelled",
+      updatedAt: toIsoDate(new Date()),
+    }
+    setOrders((prev) => prev.map((o) => (o.id === order.id ? cancelled : o)))
+    // Keep an open detail sheet in sync with the row it was opened from.
+    setSelectedOrder((curr) => (curr?.id === order.id ? cancelled : curr))
   }
 
   return (
@@ -327,11 +340,12 @@ function OrdersPage() {
             </Button>
           </PageHeader>
 
-          <OrderStatCards orders={initialOrders} />
+          <OrderStatCards orders={orders} />
 
           <OrderDataTable
-            data={initialOrders}
+            data={orders}
             onViewDetail={handleViewDetail}
+            onCancelOrder={handleCancelOrder}
           />
         </div>
       </div>

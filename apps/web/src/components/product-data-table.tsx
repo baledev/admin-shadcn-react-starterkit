@@ -40,6 +40,7 @@ import {
   DataTable,
   DataTableFacetedFilter,
 } from "@workspace/ui/components/data-table"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type Product,
   CATEGORY_META,
@@ -106,7 +107,7 @@ function ProductThumb({
 
 function buildColumns(
   onEdit: (product: Product) => void,
-  onDelete: (product: Product) => void
+  onRequestDelete: (product: Product) => void
 ) {
   return columnHelper.columns([
     columnHelper.display({
@@ -219,7 +220,7 @@ function buildColumns(
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant="destructive"
-              onClick={() => onDelete(row.original)}
+              onClick={() => onRequestDelete(row.original)}
             >
               <IconTrash className="mr-2 size-4" aria-hidden="true" />
               Delete
@@ -264,10 +265,11 @@ export function ProductDataTable({
     pageSize: 10,
   })
   const [search, setSearch] = React.useState("")
+  const [pendingDelete, setPendingDelete] = React.useState<Product | null>(null)
 
   const columns = React.useMemo(
-    () => buildColumns(onEdit, onDelete),
-    [onEdit, onDelete]
+    () => buildColumns(onEdit, setPendingDelete),
+    [onEdit]
   )
 
   const table = useTable({
@@ -337,79 +339,101 @@ export function ProductDataTable({
   const selectedCount = filteredRows.filter((r) => r.getIsSelected()).length
 
   return (
-    <DataTable
-      table={table}
-      rows={pagedRows}
-      columnCount={columns.length}
-      columnLabels={COLUMN_LABELS}
-      emptyMessage="No products found."
-      toolbar={
-        <>
-          {/* Global search */}
-          <div className="relative">
-            <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search products..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setPagination((p) => ({ ...p, pageIndex: 0 }))
-              }}
-              className="h-8 w-64 pl-8"
+    <>
+      <DataTable
+        table={table}
+        rows={pagedRows}
+        columnCount={columns.length}
+        columnLabels={COLUMN_LABELS}
+        emptyMessage="No products found."
+        toolbar={
+          <>
+            {/* Global search */}
+            <div className="relative">
+              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setPagination((p) => ({ ...p, pageIndex: 0 }))
+                }}
+                className="h-8 w-64 pl-8"
+              />
+            </div>
+
+            {/* Faceted filters */}
+            <DataTableFacetedFilter
+              label="Category"
+              options={CATEGORY_OPTIONS}
+              selected={getFacetValues("category")}
+              onSelectionChange={(v) => setFacetFilter("category", v)}
             />
-          </div>
+            <DataTableFacetedFilter
+              label="Stock Status"
+              options={STOCK_STATUS_OPTIONS}
+              selected={getFacetValues("stockStatus")}
+              onSelectionChange={(v) => setFacetFilter("stockStatus", v)}
+            />
 
-          {/* Faceted filters */}
-          <DataTableFacetedFilter
-            label="Category"
-            options={CATEGORY_OPTIONS}
-            selected={getFacetValues("category")}
-            onSelectionChange={(v) => setFacetFilter("category", v)}
-          />
-          <DataTableFacetedFilter
-            label="Stock Status"
-            options={STOCK_STATUS_OPTIONS}
-            selected={getFacetValues("stockStatus")}
-            onSelectionChange={(v) => setFacetFilter("stockStatus", v)}
-          />
-
-          {/* Reset */}
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2 text-muted-foreground"
-              onClick={resetAllFilters}
-            >
-              Reset
-              <IconX className="ml-1 size-3.5" />
-            </Button>
-          )}
-        </>
-      }
-      renderRow={(row) => (
-        <TableRow
-          key={row.id}
-          data-state={row.getIsSelected() && "selected"}
-        >
-          {row.getVisibleCells().map((cell) => (
-            <TableCell key={cell.id}>
-              <FlexRender cell={cell} />
-            </TableCell>
-          ))}
-        </TableRow>
-      )}
-      pagination={{
-        pageIndex,
-        pageCount,
-        pageSize,
-        selectedCount,
-        totalCount: filteredRows.length,
-        onPageChange: (index) =>
-          setPagination((p) => ({ ...p, pageIndex: index })),
-        onPageSizeChange: (size) =>
-          setPagination({ pageIndex: 0, pageSize: size }),
-      }}
-    />
+            {/* Reset */}
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-muted-foreground"
+                onClick={resetAllFilters}
+              >
+                Reset
+                <IconX className="ml-1 size-3.5" />
+              </Button>
+            )}
+          </>
+        }
+        renderRow={(row) => (
+          <TableRow
+            key={row.id}
+            data-state={row.getIsSelected() && "selected"}
+          >
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                <FlexRender cell={cell} />
+              </TableCell>
+            ))}
+          </TableRow>
+        )}
+        pagination={{
+          pageIndex,
+          pageCount,
+          pageSize,
+          selectedCount,
+          totalCount: filteredRows.length,
+          onPageChange: (index) =>
+            setPagination((p) => ({ ...p, pageIndex: index })),
+          onPageSizeChange: (size) =>
+            setPagination({ pageIndex: 0, pageSize: size }),
+        }}
+      />
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null)
+        }}
+        title="Delete product?"
+        description={
+          <>
+            <span className="font-medium text-foreground">
+              {pendingDelete?.name}
+            </span>{" "}
+            will be permanently removed. This action cannot be undone.
+          </>
+        }
+        confirmLabel="Delete"
+        onConfirm={() => {
+          if (pendingDelete) onDelete(pendingDelete)
+          setPendingDelete(null)
+        }}
+      />
+    </>
   )
 }

@@ -21,6 +21,7 @@ import {
   IconSearch,
   IconShield,
   IconTrash,
+  IconUserCheck,
   IconUserX,
   IconX,
 } from "@tabler/icons-react"
@@ -42,6 +43,7 @@ import {
   DataTable,
   DataTableFacetedFilter,
 } from "@workspace/ui/components/data-table"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type TeamMember,
   type TeamRole,
@@ -98,12 +100,18 @@ function formatRelativeTime(dateStr: string) {
   })
 }
 
+// ─── Pending confirmation ─────────────────────────────────────────────────────
+
+type PendingAction =
+  | { type: "role"; member: TeamMember; nextRole: TeamRole }
+  | { type: "deactivate"; member: TeamMember }
+  | { type: "remove"; member: TeamMember }
+
 // ─── Column definitions ───────────────────────────────────────────────────────
 
 function buildColumns(
-  onChangeRole: (member: TeamMember, newRole: TeamRole) => void,
   onToggleStatus: (member: TeamMember) => void,
-  onRemove: (member: TeamMember) => void
+  onRequestAction: (action: PendingAction) => void
 ) {
   return columnHelper.columns([
     columnHelper.display({
@@ -231,7 +239,11 @@ function buildColumns(
                   const roles: TeamRole[] = ["admin", "member", "viewer"]
                   const currIdx = roles.indexOf(row.original.role as TeamRole)
                   const nextRole = roles[(currIdx + 1) % roles.length]
-                  onChangeRole(row.original, nextRole)
+                  onRequestAction({
+                    type: "role",
+                    member: row.original,
+                    nextRole,
+                  })
                 }}
               >
                 <IconShield className="mr-2 size-4" aria-hidden="true" />
@@ -239,9 +251,20 @@ function buildColumns(
               </DropdownMenuItem>
               <DropdownMenuItem
                 disabled={isOwner}
-                onClick={() => onToggleStatus(row.original)}
+                onClick={() => {
+                  // Reactivating is restorative — no confirmation needed.
+                  if (row.original.status === "deactivated") {
+                    onToggleStatus(row.original)
+                    return
+                  }
+                  onRequestAction({ type: "deactivate", member: row.original })
+                }}
               >
-                <IconUserX className="mr-2 size-4" aria-hidden="true" />
+                {row.original.status === "deactivated" ? (
+                  <IconUserCheck className="mr-2 size-4" aria-hidden="true" />
+                ) : (
+                  <IconUserX className="mr-2 size-4" aria-hidden="true" />
+                )}
                 {row.original.status === "deactivated"
                   ? "Reactivate"
                   : "Deactivate"}
@@ -250,7 +273,9 @@ function buildColumns(
               <DropdownMenuItem
                 variant="destructive"
                 disabled={isOwner}
-                onClick={() => onRemove(row.original)}
+                onClick={() =>
+                  onRequestAction({ type: "remove", member: row.original })
+                }
               >
                 <IconTrash className="mr-2 size-4" aria-hidden="true" />
                 Remove
@@ -297,10 +322,11 @@ export function TeamDataTable({
     pageSize: 10,
   })
   const [search, setSearch] = React.useState("")
+  const [pending, setPending] = React.useState<PendingAction | null>(null)
 
   const columns = React.useMemo(
-    () => buildColumns(onChangeRole, onToggleStatus, onRemove),
-    [onChangeRole, onToggleStatus, onRemove]
+    () => buildColumns(onToggleStatus, setPending),
+    [onToggleStatus]
   )
 
   const table = useTable({
@@ -369,79 +395,126 @@ export function TeamDataTable({
   const selectedCount = filteredRows.filter((r) => r.getIsSelected()).length
 
   return (
-    <DataTable
-      table={table}
-      rows={pagedRows}
-      columnCount={columns.length}
-      columnLabels={COLUMN_LABELS}
-      emptyMessage="No team members found."
-      toolbar={
-        <>
-          {/* Global search */}
-          <div className="relative">
-            <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search team members..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setPagination((p) => ({ ...p, pageIndex: 0 }))
-              }}
-              className="h-8 w-64 pl-8"
+    <>
+      <DataTable
+        table={table}
+        rows={pagedRows}
+        columnCount={columns.length}
+        columnLabels={COLUMN_LABELS}
+        emptyMessage="No team members found."
+        toolbar={
+          <>
+            {/* Global search */}
+            <div className="relative">
+              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search team members..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setPagination((p) => ({ ...p, pageIndex: 0 }))
+                }}
+                className="h-8 w-64 pl-8"
+              />
+            </div>
+
+            {/* Faceted filters */}
+            <DataTableFacetedFilter
+              label="Role"
+              options={ROLE_OPTIONS}
+              selected={getFacetValues("role")}
+              onSelectionChange={(v) => setFacetFilter("role", v)}
             />
-          </div>
+            <DataTableFacetedFilter
+              label="Status"
+              options={STATUS_OPTIONS}
+              selected={getFacetValues("status")}
+              onSelectionChange={(v) => setFacetFilter("status", v)}
+            />
 
-          {/* Faceted filters */}
-          <DataTableFacetedFilter
-            label="Role"
-            options={ROLE_OPTIONS}
-            selected={getFacetValues("role")}
-            onSelectionChange={(v) => setFacetFilter("role", v)}
-          />
-          <DataTableFacetedFilter
-            label="Status"
-            options={STATUS_OPTIONS}
-            selected={getFacetValues("status")}
-            onSelectionChange={(v) => setFacetFilter("status", v)}
-          />
-
-          {/* Reset */}
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2 text-muted-foreground"
-              onClick={resetAllFilters}
-            >
-              Reset
-              <IconX className="ml-1 size-3.5" />
-            </Button>
-          )}
-        </>
-      }
-      renderRow={(row) => (
-        <TableRow
-          key={row.id}
-          data-state={row.getIsSelected() && "selected"}
-        >
-          {row.getVisibleCells().map((cell) => (
-            <TableCell key={cell.id}>
-              <FlexRender cell={cell} />
-            </TableCell>
-          ))}
-        </TableRow>
-      )}
-      pagination={{
-        pageIndex,
-        pageCount,
-        pageSize,
-        selectedCount,
-        totalCount: filteredRows.length,
-        onPageChange: (index) =>
-          setPagination((p) => ({ ...p, pageIndex: index })),
-        onPageSizeChange: (size) =>
-          setPagination({ pageIndex: 0, pageSize: size }),
-      }}
-    />
+            {/* Reset */}
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-muted-foreground"
+                onClick={resetAllFilters}
+              >
+                Reset
+                <IconX className="ml-1 size-3.5" />
+              </Button>
+            )}
+          </>
+        }
+        renderRow={(row) => (
+          <TableRow
+            key={row.id}
+            data-state={row.getIsSelected() && "selected"}
+          >
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                <FlexRender cell={cell} />
+              </TableCell>
+            ))}
+          </TableRow>
+        )}
+        pagination={{
+          pageIndex,
+          pageCount,
+          pageSize,
+          selectedCount,
+          totalCount: filteredRows.length,
+          onPageChange: (index) =>
+            setPagination((p) => ({ ...p, pageIndex: index })),
+          onPageSizeChange: (size) =>
+            setPagination({ pageIndex: 0, pageSize: size }),
+        }}
+      />
+      {pending ? (
+        <ConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open) setPending(null)
+          }}
+          title={
+            pending.type === "role"
+              ? `Change role to ${ROLE_META[pending.nextRole].label}?`
+              : pending.type === "deactivate"
+                ? "Deactivate member?"
+                : "Remove member?"
+          }
+          description={
+            <>
+              <span className="font-medium text-foreground">
+                {pending.member.name}
+              </span>{" "}
+              {pending.type === "role"
+                ? `will be moved from ${ROLE_META[pending.member.role].label} to ${ROLE_META[pending.nextRole].label}, changing what they can access.`
+                : pending.type === "deactivate"
+                  ? "will lose access to this workspace until reactivated."
+                  : "will be permanently removed from this workspace. This action cannot be undone."}
+            </>
+          }
+          confirmLabel={
+            pending.type === "role"
+              ? "Change Role"
+              : pending.type === "deactivate"
+                ? "Deactivate"
+                : "Remove"
+          }
+          variant={pending.type === "role" ? "default" : "destructive"}
+          onConfirm={() => {
+            if (pending.type === "role") {
+              onChangeRole(pending.member, pending.nextRole)
+            } else if (pending.type === "deactivate") {
+              onToggleStatus(pending.member)
+            } else {
+              onRemove(pending.member)
+            }
+            setPending(null)
+          }}
+        />
+      ) : null}
+    </>
   )
 }

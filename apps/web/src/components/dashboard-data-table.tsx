@@ -20,10 +20,15 @@ import {
 import { CSS } from "@dnd-kit/utilities"
 import {
     IconCircleCheckFilled,
+    IconCopy,
     IconDotsVertical,
     IconGripVertical,
     IconLoader,
+    IconPencil,
     IconPlus,
+    IconStar,
+    IconStarFilled,
+    IconTrash,
     IconTrendingUp,
 } from "@tabler/icons-react"
 import {
@@ -98,6 +103,7 @@ import {
     DataTable,
     DataTableColumnVisibility,
 } from "@workspace/ui/components/data-table"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 
 // ─── Features ─────────────────────────────────────────────────────────────────
 const features = tableFeatures({
@@ -141,171 +147,216 @@ function DragHandle({ id }: { id: number }) {
 }
 
 // ─── Columns ──────────────────────────────────────────────────────────────────
-const columns = columnHelper.columns([
-    columnHelper.display({
-        id: "drag",
-        header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.id} />,
-    }),
-    columnHelper.display({
-        id: "select",
-        header: ({ table }) => (
-            <div className="flex items-center justify-center">
-                <Checkbox
-                    checked={table.getIsAllPageRowsSelected()}
-                    indeterminate={
-                        !table.getIsAllPageRowsSelected() &&
-                        table.getIsSomePageRowsSelected()
-                    }
-                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select all"
-                />
-            </div>
-        ),
-        cell: ({ row }) => (
-            <div className="flex items-center justify-center">
-                <Checkbox
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select row"
-                />
-            </div>
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    }),
-    columnHelper.accessor("header", {
-        header: "Header",
-        cell: ({ row }) => <TableCellViewer item={row.original} />,
-        enableHiding: false,
-    }),
-    columnHelper.accessor("type", {
-        header: "Section Type",
-        cell: ({ row }) => (
-            <div className="w-32">
-                <Badge variant="outline" className="px-1.5 text-muted-foreground">
-                    {row.original.type}
-                </Badge>
-            </div>
-        ),
-    }),
-    columnHelper.accessor("status", {
-        header: "Status",
-        cell: ({ row }) => (
-            <Badge variant="outline" className="px-1.5 text-muted-foreground">
-                {row.original.status === "Done" ? (
-                    <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-                ) : (
-                    <IconLoader />
-                )}
-                {row.original.status}
-            </Badge>
-        ),
-    }),
-    columnHelper.accessor("target", {
-        header: () => <div className="w-full text-right">Target</div>,
-        cell: ({ row }) => (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-                        loading: `Saving ${row.original.header}`,
-                        success: "Done",
-                        error: "Error",
-                    })
-                }}
-            >
-                <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-                    Target
-                </Label>
-                <Input
-                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-                    defaultValue={row.original.target}
-                    id={`${row.original.id}-target`}
-                />
-            </form>
-        ),
-    }),
-    columnHelper.accessor("limit", {
-        header: () => <div className="w-full text-right">Limit</div>,
-        cell: ({ row }) => (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-                        loading: `Saving ${row.original.header}`,
-                        success: "Done",
-                        error: "Error",
-                    })
-                }}
-            >
-                <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-                    Limit
-                </Label>
-                <Input
-                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-                    defaultValue={row.original.limit}
-                    id={`${row.original.id}-limit`}
-                />
-            </form>
-        ),
-    }),
-    columnHelper.accessor("reviewer", {
-        header: "Reviewer",
-        cell: ({ row }) => {
-            const isAssigned = row.original.reviewer !== "Assign reviewer"
-            if (isAssigned) return row.original.reviewer
-            return (
-                <>
-                    <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-                        Reviewer
-                    </Label>
-                    <Select>
-                        <SelectTrigger
-                            className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-                            size="sm"
-                            id={`${row.original.id}-reviewer`}
-                        >
-                            <SelectValue placeholder="Assign reviewer" />
-                        </SelectTrigger>
-                        <SelectContent align="end">
-                            <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                            <SelectItem value="Jamik Tashpulatov">
-                                Jamik Tashpulatov
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </>
-            )
-        },
-    }),
-    columnHelper.display({
-        id: "actions",
-        cell: () => (
-            <DropdownMenu>
-                <DropdownMenuTrigger
-                    render={
-                        <Button
-                            variant="ghost"
-                            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-                            size="icon"
+function buildColumns(
+    favorites: Set<number>,
+    onEdit: (item: TableItem) => void,
+    onCopy: (item: TableItem) => void,
+    onToggleFavorite: (item: TableItem) => void,
+    onRequestDelete: (item: TableItem) => void
+) {
+    return columnHelper.columns([
+        columnHelper.display({
+            id: "drag",
+            header: () => null,
+            cell: ({ row }) => <DragHandle id={row.original.id} />,
+        }),
+        columnHelper.display({
+            id: "select",
+            header: ({ table }) => (
+                <div className="flex items-center justify-center">
+                    <Checkbox
+                        checked={table.getIsAllPageRowsSelected()}
+                        indeterminate={
+                            !table.getIsAllPageRowsSelected() &&
+                            table.getIsSomePageRowsSelected()
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                </div>
+            ),
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center">
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                </div>
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        }),
+        columnHelper.accessor("header", {
+            header: "Header",
+            cell: ({ row }) => (
+                <div className="flex items-center gap-1.5">
+                    <TableCellViewer item={row.original} />
+                    {favorites.has(row.original.id) ? (
+                        <IconStarFilled
+                            className="size-3.5 shrink-0 text-amber-500"
+                            aria-label="Favorited"
                         />
-                    }
+                    ) : null}
+                </div>
+            ),
+            enableHiding: false,
+        }),
+        columnHelper.accessor("type", {
+            header: "Section Type",
+            cell: ({ row }) => (
+                <div className="w-32">
+                    <Badge variant="outline" className="px-1.5 text-muted-foreground">
+                        {row.original.type}
+                    </Badge>
+                </div>
+            ),
+        }),
+        columnHelper.accessor("status", {
+            header: "Status",
+            cell: ({ row }) => (
+                <Badge variant="outline" className="px-1.5 text-muted-foreground">
+                    {row.original.status === "Done" ? (
+                        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+                    ) : (
+                        <IconLoader />
+                    )}
+                    {row.original.status}
+                </Badge>
+            ),
+        }),
+        columnHelper.accessor("target", {
+            header: () => <div className="w-full text-right">Target</div>,
+            cell: ({ row }) => (
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+                            loading: `Saving ${row.original.header}`,
+                            success: "Done",
+                            error: "Error",
+                        })
+                    }}
                 >
-                    <IconDotsVertical />
-                    <span className="sr-only">Open menu</span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-32">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Make a copy</DropdownMenuItem>
-                    <DropdownMenuItem>Favorite</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        ),
-    }),
-])
+                    <Label htmlFor={`${row.original.id}-target`} className="sr-only">
+                        Target
+                    </Label>
+                    <Input
+                        className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+                        defaultValue={row.original.target}
+                        id={`${row.original.id}-target`}
+                    />
+                </form>
+            ),
+        }),
+        columnHelper.accessor("limit", {
+            header: () => <div className="w-full text-right">Limit</div>,
+            cell: ({ row }) => (
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+                            loading: `Saving ${row.original.header}`,
+                            success: "Done",
+                            error: "Error",
+                        })
+                    }}
+                >
+                    <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
+                        Limit
+                    </Label>
+                    <Input
+                        className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+                        defaultValue={row.original.limit}
+                        id={`${row.original.id}-limit`}
+                    />
+                </form>
+            ),
+        }),
+        columnHelper.accessor("reviewer", {
+            header: "Reviewer",
+            cell: ({ row }) => {
+                const isAssigned = row.original.reviewer !== "Assign reviewer"
+                if (isAssigned) return row.original.reviewer
+                return (
+                    <>
+                        <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
+                            Reviewer
+                        </Label>
+                        <Select>
+                            <SelectTrigger
+                                className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
+                                size="sm"
+                                id={`${row.original.id}-reviewer`}
+                            >
+                                <SelectValue placeholder="Assign reviewer" />
+                            </SelectTrigger>
+                            <SelectContent align="end">
+                                <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
+                                <SelectItem value="Jamik Tashpulatov">
+                                    Jamik Tashpulatov
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </>
+                )
+            },
+        }),
+        columnHelper.display({
+            id: "actions",
+            cell: ({ row }) => {
+                const isFavorite = favorites.has(row.original.id)
+                return (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger
+                            render={
+                                <Button
+                                    variant="ghost"
+                                    className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+                                    size="icon"
+                                />
+                            }
+                        >
+                            <IconDotsVertical />
+                            <span className="sr-only">Open menu</span>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40">
+                            <DropdownMenuItem onClick={() => onEdit(row.original)}>
+                                <IconPencil className="mr-2 size-4" aria-hidden="true" />
+                                Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onCopy(row.original)}>
+                                <IconCopy className="mr-2 size-4" aria-hidden="true" />
+                                Make a copy
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => onToggleFavorite(row.original)}
+                            >
+                                {isFavorite ? (
+                                    <IconStarFilled
+                                        className="mr-2 size-4"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    <IconStar className="mr-2 size-4" aria-hidden="true" />
+                                )}
+                                {isFavorite ? "Unfavorite" : "Favorite"}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => onRequestDelete(row.original)}
+                            >
+                                <IconTrash className="mr-2 size-4" aria-hidden="true" />
+                                Delete
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                )
+            },
+        }),
+    ])
+}
 
 // ─── Draggable row ────────────────────────────────────────────────────────────
 function DraggableRow({ row }: { row: Row<typeof features, TableItem> }) {
@@ -354,6 +405,56 @@ export function DashboardDataTable({ data: initialData }: { data: TableItem[] })
     const dataIds = React.useMemo<UniqueIdentifier[]>(
         () => data?.map(({ id }) => id) || [],
         [data]
+    )
+
+    // ── Row actions ───────────────────────────────────────────────────────────
+    const [favorites, setFavorites] = React.useState<Set<number>>(new Set())
+    const [editItem, setEditItem] = React.useState<TableItem | null>(null)
+    const [pendingDelete, setPendingDelete] = React.useState<TableItem | null>(
+        null
+    )
+
+    const handleCopy = React.useCallback((item: TableItem) => {
+        setData((prev) => {
+            const nextId = prev.reduce((max, i) => Math.max(max, i.id), 0) + 1
+            const index = prev.findIndex((i) => i.id === item.id)
+            const copy = { ...item, id: nextId, header: `${item.header} (copy)` }
+            return [...prev.slice(0, index + 1), copy, ...prev.slice(index + 1)]
+        })
+    }, [])
+
+    const handleToggleFavorite = React.useCallback((item: TableItem) => {
+        setFavorites((prev) => {
+            const next = new Set(prev)
+            if (next.has(item.id)) {
+                next.delete(item.id)
+            } else {
+                next.add(item.id)
+            }
+            return next
+        })
+    }, [])
+
+    const handleDelete = React.useCallback((item: TableItem) => {
+        setData((prev) => prev.filter((i) => i.id !== item.id))
+        setFavorites((prev) => {
+            if (!prev.has(item.id)) return prev
+            const next = new Set(prev)
+            next.delete(item.id)
+            return next
+        })
+    }, [])
+
+    const columns = React.useMemo(
+        () =>
+            buildColumns(
+                favorites,
+                setEditItem,
+                handleCopy,
+                handleToggleFavorite,
+                setPendingDelete
+            ),
+        [favorites, handleCopy, handleToggleFavorite]
     )
 
     const table = useTable({
@@ -481,6 +582,40 @@ export function DashboardDataTable({ data: initialData }: { data: TableItem[] })
             <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
                 <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
             </TabsContent>
+
+            {/* Row action surfaces — rendered outside DropdownMenuContent, which
+                unmounts as soon as a menu item is clicked. */}
+            {editItem ? (
+                <TableCellViewer
+                    item={editItem}
+                    open
+                    onOpenChange={(open) => {
+                        if (!open) setEditItem(null)
+                    }}
+                    hideTrigger
+                />
+            ) : null}
+            <ConfirmDialog
+                open={pendingDelete !== null}
+                onOpenChange={(open) => {
+                    if (!open) setPendingDelete(null)
+                }}
+                title="Delete section?"
+                description={
+                    <>
+                        <span className="font-medium text-foreground">
+                            {pendingDelete?.header}
+                        </span>{" "}
+                        will be permanently removed from this document. This action
+                        cannot be undone.
+                    </>
+                }
+                confirmLabel="Delete"
+                onConfirm={() => {
+                    if (pendingDelete) handleDelete(pendingDelete)
+                    setPendingDelete(null)
+                }}
+            />
         </Tabs>
     )
 }
@@ -501,17 +636,35 @@ const chartConfig = {
 } satisfies ChartConfig
 
 // ─── TableCellViewer ──────────────────────────────────────────────────────────
-function TableCellViewer({ item }: { item: TableItem }) {
+interface TableCellViewerProps {
+    item: TableItem
+    /** Controlled mode — used by the row action menu, which has no trigger of its own. */
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    hideTrigger?: boolean
+}
+
+function TableCellViewer({
+    item,
+    open,
+    onOpenChange,
+    hideTrigger = false,
+}: TableCellViewerProps) {
     const isMobile = useIsMobile()
     return (
-        <Drawer>
-            <DrawerTrigger
-                render={
-                    <Button variant="link" className="w-fit px-0 text-left text-foreground" />
-                }
-            >
-                {item.header}
-            </DrawerTrigger>
+        <Drawer open={open} onOpenChange={onOpenChange}>
+            {hideTrigger ? null : (
+                <DrawerTrigger
+                    render={
+                        <Button
+                            variant="link"
+                            className="w-fit px-0 text-left text-foreground"
+                        />
+                    }
+                >
+                    {item.header}
+                </DrawerTrigger>
+            )}
             <DrawerContent>
                 <DrawerHeader className="gap-1">
                     <DrawerTitle>{item.header}</DrawerTitle>

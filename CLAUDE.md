@@ -303,6 +303,8 @@ For semantic colored statuses pass `variant="outline"` and override with `classN
 
 Sheet always: `side="right"` with `sm:max-w-md` (or `sm:max-w-lg` for complex forms).
 
+For destructive confirmations do not hand-roll a Dialog — use `ConfirmDialog` (`@workspace/ui/components/confirm-dialog`), which wraps `Dialog` and takes `title` / `description` / `confirmLabel` / `variant` / `onConfirm`.
+
 #### DataTable
 
 Standard pattern uses TanStack Table v9 with tree-shaken features. Reference: `apps/web/src/components/customer-data-table.tsx`.
@@ -334,7 +336,44 @@ const columns = [
 ]
 ```
 
-Row actions: always `DropdownMenu` with `IconDotsVertical` trigger, `size="icon" variant="ghost"`.
+#### Row actions
+
+Always a `DropdownMenu` with an `IconDotsVertical` trigger, `size="icon" variant="ghost"`. Reference: `apps/web/src/components/team-data-table.tsx`.
+
+Every `DropdownMenuItem` must lead with a Tabler icon:
+
+```tsx
+<DropdownMenuItem onClick={() => onEdit(row.original)}>
+  <IconPencil className="mr-2 size-4" aria-hidden="true" />
+  Edit
+</DropdownMenuItem>
+```
+
+Destructive items also take `variant="destructive"`, and **must** go through `ConfirmDialog` from `@workspace/ui/components/confirm-dialog` — never mutate straight from the menu item. Applies to Delete, Remove, Cancel order, Deactivate, and anything else that is hard to undo. Restorative counterparts (Reactivate, Restore) run immediately, without a dialog.
+
+Render `ConfirmDialog` as a sibling of `<DataTable>`, **never inside `DropdownMenuContent`** — the menu unmounts its content when an item is clicked, which would tear the dialog down with it. The menu item stores a pending action instead:
+
+```tsx
+const [pendingDelete, setPendingDelete] = React.useState<Product | null>(null)
+
+return (
+  <>
+    <DataTable ... />
+    <ConfirmDialog
+      open={pendingDelete !== null}
+      onOpenChange={(open) => { if (!open) setPendingDelete(null) }}
+      title="Delete product?"
+      description={<><span className="font-medium text-foreground">{pendingDelete?.name}</span> will be permanently removed. This action cannot be undone.</>}
+      confirmLabel="Delete"
+      onConfirm={() => { if (pendingDelete) onDelete(pendingDelete); setPendingDelete(null) }}
+    />
+  </>
+)
+```
+
+`buildColumns()` receives the *setter* for actions that need confirmation, and the plain callback for those that don't.
+
+When a `TableRow` has its own `onClick` (row opens a detail sheet), the menu trigger and every menu item must call `event.stopPropagation()` — React propagates events through the portal via the React tree, not the DOM tree, so a click inside the menu otherwise also fires the row handler. Same for the row-select `Checkbox`.
 
 #### Card
 
@@ -402,6 +441,11 @@ Common icon map:
 | Add / Create | `IconPlus` |
 | Edit | `IconPencil` |
 | Delete | `IconTrash` |
+| View details | `IconEye` |
+| Duplicate / Copy | `IconCopy` |
+| Cancel / Block | `IconBan` |
+| Favorite | `IconStar` / `IconStarFilled` (active) |
+| Deactivate / Reactivate user | `IconUserX` / `IconUserCheck` |
 | Close / Remove | `IconX` |
 | Search | `IconSearch` |
 | More actions | `IconDotsVertical` |
