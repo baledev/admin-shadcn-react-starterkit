@@ -63,6 +63,32 @@ Two pathless layout routes gate access via `beforeLoad`, both reading `context.a
 
 When adding a new protected page, create a file under `routes/_auth/`; for public pages, under `routes/_guest/`. The breadcrumb label in `_auth.tsx` is auto-derived from the leaf route segment (`titleCase` of the last path part) — no manual registration needed.
 
+### 404 & error handling
+
+Both pages live in `routes/` but are excluded from the route tree by the `-` prefix (`routeFileIgnorePrefix`), and share the presentational `ErrorState` component (`src/components/error-state.tsx`):
+
+- `routes/-404.tsx` (`NotFoundPage`) — wired as `defaultNotFoundComponent` in `src/router.ts`.
+- `routes/-error.tsx` (`ErrorPage`) — wired as `defaultErrorComponent` in `src/router.ts` (covers *every* route, since errors do not bubble to parent routes in TanStack Router) and as the root `errorComponent` in `__root.tsx`.
+- `src/components/app-error-boundary.tsx` (`AppErrorBoundary`) — React class boundary wrapping `RouterProvider` in `app.tsx`, for crashes outside the router. Its fallback must not use router APIs (`<a href>`, not `<Link>`).
+
+`notFoundMode: "root"` means a `notFound()` thrown anywhere renders the full-screen 404 at the root outlet rather than inside the dashboard shell.
+
+For a detail route, throw `notFound()` when the record is missing — use `throw new Error(...)` only for genuine failures:
+
+```tsx
+import { createFileRoute, notFound } from "@tanstack/react-router"
+import { initialOrders } from "@/lib/orders-data"
+
+export const Route = createFileRoute("/_auth/orders/$orderId")({
+  loader: ({ params }) => {
+    const order = initialOrders.find((o) => o.id === params.orderId)
+    if (!order) throw notFound()
+    return order
+  },
+  component: OrderDetailPage,
+})
+```
+
 ### Auth (mock, replace with real backend)
 
 `apps/web/src/lib/auth.ts` defines `AuthUser`/`AuthContext` and persists the user to `localStorage` (`auth:user`) — there is no network call. `app.tsx` is the composition root:

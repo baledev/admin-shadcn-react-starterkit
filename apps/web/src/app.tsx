@@ -1,6 +1,7 @@
 import * as React from "react"
 import { RouterProvider } from "@tanstack/react-router"
 
+import { AppErrorBoundary } from "@/components/app-error-boundary"
 import { ThemeProvider } from "@/components/theme-provider"
 import type { AuthContext, AuthUser } from "@/lib/auth"
 import { loadStoredUser, persistUser } from "@/lib/auth"
@@ -43,7 +44,9 @@ export function App() {
 
   return (
     <ThemeProvider>
-      <RouterProvider router={router} context={{ auth }} />
+      <AppErrorBoundary>
+        <RouterProvider router={router} context={{ auth }} />
+      </AppErrorBoundary>
     </ThemeProvider>
   )
 }

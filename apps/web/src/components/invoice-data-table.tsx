@@ -92,6 +92,7 @@ function buildColumns(onViewDetail: (invoice: Invoice) => void) {
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
+            onClick={(event) => event.stopPropagation()}
             aria-label="Select row"
           />
         </div>

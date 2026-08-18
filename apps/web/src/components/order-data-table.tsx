@@ -96,6 +96,7 @@ function buildColumns(onViewDetail: (order: Order) => void) {
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
+            onClick={(event) => event.stopPropagation()}
             aria-label="Select row"
           />
         </div>
@@ -169,6 +170,7 @@ function buildColumns(onViewDetail: (order: Order) => void) {
                 variant="ghost"
                 className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
                 size="icon"
+                onClick={(event) => event.stopPropagation()}
               />
             }
           >
@@ -176,11 +178,19 @@ function buildColumns(onViewDetail: (order: Order) => void) {
             <span className="sr-only">Open menu</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={() => onViewDetail(row.original)}>
+            <DropdownMenuItem
+              onClick={(event) => {
+                event.stopPropagation()
+                onViewDetail(row.original)
+              }}
+            >
               View details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={(event) => event.stopPropagation()}
+            >
               Cancel order
             </DropdownMenuItem>
           </DropdownMenuContent>

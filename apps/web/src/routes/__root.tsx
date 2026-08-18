@@ -5,7 +5,7 @@ import type { AuthContext } from "@/lib/auth"
 import { isAnnouncementDismissed } from "@/lib/announcement"
 import AnnouncementBlock from "@/components/announcement"
 
-import { ErrorPage } from "@/routes/error"
+import { ErrorPage } from "@/routes/-error"
 
 const TanStackRouterDevtools =
   import.meta.env.DEV
