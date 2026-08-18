@@ -156,88 +156,92 @@ function ProfilePage() {
           {/* Two-column details grid */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             
-            {/* Left column: Edit Profile Card */}
-            <Card id="edit-profile-card" className="md:col-span-2">
-              <form onSubmit={handleSave}>
-                <CardHeader>
-                  <CardTitle className="text-lg">Edit Profile</CardTitle>
-                  <CardDescription>
-                    Update your display name, bio, and workspace localization options.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Name */}
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="profile-name">Display Name</Label>
-                    <Input
-                      id="profile-name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="profile-email">Email Address</Label>
-                    <Input
-                      id="profile-email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  {/* Bio */}
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="profile-bio">Bio</Label>
-                    <Textarea
-                      id="profile-bio"
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
-                      className="min-h-24 resize-none"
-                    />
-                  </div>
-
-                  {/* Localization row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="profile-tz">Timezone</Label>
-                      <Select value={timezone} onValueChange={(val) => setTimezone(val ?? "utc-8")}>
-                        <SelectTrigger id="profile-tz">
-                          <SelectValue placeholder="Select timezone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="utc-8">Pacific Time (PT)</SelectItem>
-                          <SelectItem value="utc-5">Eastern Time (ET)</SelectItem>
-                          <SelectItem value="utc-0">Greenwich Mean Time (GMT)</SelectItem>
-                          <SelectItem value="utc+8">Singapore Time (SGT)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="profile-lang">Language</Label>
-                      <Select value={language} onValueChange={(val) => setLanguage(val ?? "en")}>
-                        <SelectTrigger id="profile-lang">
-                          <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English (US)</SelectItem>
-                          <SelectItem value="es">Español</SelectItem>
-                          <SelectItem value="fr">Français</SelectItem>
-                          <SelectItem value="id">Bahasa Indonesia</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="justify-end gap-2 border-t border-border pt-4">
-                  <Button type="submit">Save Changes</Button>
-                </CardFooter>
-              </form>
-            </Card>
+             {/* Left column: Edit Profile Card */}
+             <form
+               id="edit-profile-card"
+               onSubmit={handleSave}
+               className="md:col-span-2"
+             >
+               <Card>
+                 <CardHeader>
+                   <CardTitle className="text-lg">Edit Profile</CardTitle>
+                   <CardDescription>
+                     Update your display name, bio, and workspace localization options.
+                   </CardDescription>
+                 </CardHeader>
+                 <CardContent className="space-y-4">
+                   {/* Name */}
+                   <div className="flex flex-col gap-1.5">
+                     <Label htmlFor="profile-name">Display Name</Label>
+                     <Input
+                       id="profile-name"
+                       value={name}
+                       onChange={(e) => setName(e.target.value)}
+                       required
+                     />
+                   </div>
+ 
+                   {/* Email */}
+                   <div className="flex flex-col gap-1.5">
+                     <Label htmlFor="profile-email">Email Address</Label>
+                     <Input
+                       id="profile-email"
+                       type="email"
+                       value={email}
+                       onChange={(e) => setEmail(e.target.value)}
+                       required
+                     />
+                   </div>
+ 
+                   {/* Bio */}
+                   <div className="flex flex-col gap-1.5">
+                     <Label htmlFor="profile-bio">Bio</Label>
+                     <Textarea
+                       id="profile-bio"
+                       value={bio}
+                       onChange={(e) => setBio(e.target.value)}
+                       className="min-h-24 resize-none"
+                     />
+                   </div>
+ 
+                   {/* Localization row */}
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                     <div className="flex flex-col gap-1.5">
+                       <Label htmlFor="profile-tz">Timezone</Label>
+                       <Select value={timezone} onValueChange={(val) => setTimezone(val ?? "utc-8")}>
+                         <SelectTrigger id="profile-tz">
+                           <SelectValue placeholder="Select timezone" />
+                         </SelectTrigger>
+                         <SelectContent>
+                           <SelectItem value="utc-8">Pacific Time (PT)</SelectItem>
+                           <SelectItem value="utc-5">Eastern Time (ET)</SelectItem>
+                           <SelectItem value="utc-0">Greenwich Mean Time (GMT)</SelectItem>
+                           <SelectItem value="utc+8">Singapore Time (SGT)</SelectItem>
+                         </SelectContent>
+                       </Select>
+                     </div>
+ 
+                     <div className="flex flex-col gap-1.5">
+                       <Label htmlFor="profile-lang">Language</Label>
+                       <Select value={language} onValueChange={(val) => setLanguage(val ?? "en")}>
+                         <SelectTrigger id="profile-lang">
+                           <SelectValue placeholder="Select language" />
+                         </SelectTrigger>
+                         <SelectContent>
+                           <SelectItem value="en">English (US)</SelectItem>
+                           <SelectItem value="es">Español</SelectItem>
+                           <SelectItem value="fr">Français</SelectItem>
+                           <SelectItem value="id">Bahasa Indonesia</SelectItem>
+                         </SelectContent>
+                       </Select>
+                     </div>
+                   </div>
+                 </CardContent>
+                 <CardFooter className="justify-end gap-2 border-t border-border">
+                   <Button type="submit">Save Changes</Button>
+                 </CardFooter>
+               </Card>
+             </form>
 
             {/* Right column: Info & Activity feed */}
             <div className="flex flex-col gap-6">
