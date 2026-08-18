@@ -5,9 +5,12 @@ import {
   addMonths,
   addWeeks,
   endOfWeek,
-  format,
+  formatFullDate,
+  formatMonthDay,
+  formatMonthDayYear,
+  formatMonthYear,
   startOfWeek,
-} from "date-fns"
+} from "@/lib/date-utils"
 import { IconChevronLeft, IconChevronRight, IconPlus } from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import {
@@ -115,13 +118,13 @@ function CalendarPage() {
 
   let rangeLabel: string
   if (activeView === "month") {
-    rangeLabel = format(anchorDate, "MMMM yyyy")
+    rangeLabel = formatMonthYear(anchorDate)
   } else if (activeView === "week") {
-    const start = startOfWeek(anchorDate, { weekStartsOn: 1 })
-    const end = endOfWeek(anchorDate, { weekStartsOn: 1 })
-    rangeLabel = `${format(start, "MMM d")} – ${format(end, "MMM d, yyyy")}`
+    const start = startOfWeek(anchorDate)
+    const end = endOfWeek(anchorDate)
+    rangeLabel = `${formatMonthDay(start)} – ${formatMonthDayYear(end)}`
   } else {
-    rangeLabel = format(anchorDate, "EEEE, MMM d, yyyy")
+    rangeLabel = formatFullDate(anchorDate)
   }
 
   return (

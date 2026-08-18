@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns"
+import { formatFullDate, parseIso } from "@/lib/date-utils"
 import { IconCalendar, IconClock } from "@tabler/icons-react"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
@@ -47,7 +47,7 @@ export function ActivityDetailsSheet({
                 <div className="flex items-center gap-2 text-sm">
                   <IconCalendar className="size-4 shrink-0 text-muted-foreground" />
                   <span>
-                    {format(parseISO(activity.date), "EEEE, MMM d, yyyy")}
+                    {formatFullDate(parseIso(activity.date))}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">

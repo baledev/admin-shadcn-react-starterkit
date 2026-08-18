@@ -1,27 +1,69 @@
 import { useMemo } from "react"
-import {
-  addDays,
-  addMonths,
-  addYears,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameDay,
-  isSameMonth,
-  isToday,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns"
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { Button } from "@workspace/ui/components/button"
+import { Calendar } from "@workspace/ui/components/calendar"
 
 type View = "month" | "week" | "day"
 
-const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+// --- Date helpers (no date-fns) ---
+
+function addMonths(date: Date, amount: number): Date {
+  const d = new Date(date)
+  d.setMonth(d.getMonth() + amount)
+  return d
+}
+
+function addYears(date: Date, amount: number): Date {
+  const d = new Date(date)
+  d.setFullYear(d.getFullYear() + amount)
+  return d
+}
+
+/** Monday-based startOfWeek */
+function startOfWeek(date: Date): Date {
+  const d = new Date(date)
+  const day = d.getDay() // 0 = Sun … 6 = Sat
+  const diff = (day === 0 ? -6 : 1 - day) // offset to Monday
+  d.setDate(d.getDate() + diff)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+/** Monday-based endOfWeek */
+function endOfWeek(date: Date): Date {
+  const start = startOfWeek(date)
+  const d = new Date(start)
+  d.setDate(d.getDate() + 6)
+  d.setHours(23, 59, 59, 999)
+  return d
+}
+
+function isSameDay(a: Date, b: Date): boolean {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+function isSameMonth(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
+}
+
+function formatYear(date: Date): string {
+  return String(date.getFullYear())
+}
+
+function formatMonthYear(date: Date): string {
+  return date.toLocaleString(undefined, { month: "long", year: "numeric" })
+}
+
 const MONTH_LABELS = Array.from({ length: 12 }, (_, i) =>
-  format(new Date(2000, i, 1), "MMM")
+  new Date(2000, i, 1).toLocaleString(undefined, { month: "short" })
 )
+
+// ----------------------------------
 
 type MiniCalendarProps = {
   view: View
@@ -53,23 +95,31 @@ export function MiniCalendar({
     onCursorChange(isMonthView ? addYears(cursor, 1) : addMonths(cursor, 1))
   }
 
-  const label = isMonthView
-    ? format(cursor, "yyyy")
-    : format(cursor, "MMMM yyyy")
+  const label = isMonthView ? formatYear(cursor) : formatMonthYear(cursor)
 
-  const weeks = useMemo(() => {
-    const gridStart = startOfWeek(startOfMonth(cursor), { weekStartsOn: 1 })
-    const gridEnd = endOfWeek(endOfMonth(cursor), { weekStartsOn: 1 })
-    const result: Date[][] = []
-    let current = gridStart
-    while (current <= gridEnd) {
-      result.push(
-        Array.from({ length: 7 }, (_, i) => addDays(current, i))
-      )
-      current = addDays(current, 7)
+  const anchorWeekStart = useMemo(() => startOfWeek(anchorDate), [anchorDate])
+  const anchorWeekEnd = useMemo(() => endOfWeek(anchorDate), [anchorDate])
+
+  const modifiers = useMemo(() => {
+    if (isWeekView) {
+      return { selected_week: { from: anchorWeekStart, to: anchorWeekEnd } }
     }
-    return result
-  }, [cursor])
+    return {}
+  }, [isWeekView, anchorWeekStart, anchorWeekEnd])
+
+  const modifiersClassNames = {
+    selected_week: "bg-muted rounded-none first:rounded-l-md last:rounded-r-md",
+  }
+
+  function handleDayClick(day: Date) {
+    if (isWeekView) {
+      onSelectWeek(startOfWeek(day))
+    } else {
+      onSelectDate(day)
+    }
+  }
+
+  const selectedDay = !isWeekView && !isMonthView ? anchorDate : undefined
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border bg-background p-3">
@@ -95,12 +145,12 @@ export function MiniCalendar({
 
       {isMonthView ? (
         <div className="grid grid-cols-3 gap-1.5">
-          {MONTH_LABELS.map((label, i) => {
+          {MONTH_LABELS.map((monthLabel, i) => {
             const month = new Date(cursor.getFullYear(), i, 1)
             const selected = isSameMonth(month, anchorDate)
             return (
               <button
-                key={label}
+                key={monthLabel}
                 type="button"
                 onClick={() => onSelectMonth(month)}
                 className={cn(
@@ -110,74 +160,55 @@ export function MiniCalendar({
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
-                {label}
+                {monthLabel}
               </button>
             )
           })}
         </div>
       ) : (
-        <div className="flex flex-col gap-0.5">
-          <div className="grid grid-cols-7 text-center">
-            {WEEKDAY_LABELS.map((label) => (
-              <span
-                key={label}
-                className="py-1 text-[10px] font-medium text-muted-foreground"
-              >
-                {label}
-              </span>
-            ))}
-          </div>
-          {weeks.map((week) => {
-            const weekStart = week[0]
-            const isAnchorWeek = isWeekView
-              ? isSameDay(startOfWeek(anchorDate, { weekStartsOn: 1 }), weekStart)
-              : false
-            return (
-              <div
-                key={format(weekStart, "yyyy-MM-dd")}
-                className={cn(
-                  "grid grid-cols-7 rounded-md text-center",
-                  isWeekView && "cursor-pointer",
-                  isWeekView && isAnchorWeek && "bg-muted",
-                  isWeekView && !isAnchorWeek && "hover:bg-muted/60"
-                )}
-                onClick={
-                  isWeekView ? () => onSelectWeek(weekStart) : undefined
-                }
-              >
-                {week.map((day) => {
-                  const inMonth = isSameMonth(day, cursor)
-                  const isAnchorDay =
-                    !isWeekView && isSameDay(day, anchorDate)
-                  return (
-                    <button
-                      key={format(day, "yyyy-MM-dd")}
-                      type="button"
-                      disabled={!isWeekView}
-                      onClick={
-                        isWeekView
-                          ? undefined
-                          : () => onSelectDate(day)
-                      }
-                      className={cn(
-                        "size-7 rounded-md text-xs tabular-nums transition-colors",
-                        !inMonth && "text-muted-foreground/40",
-                        isToday(day) && "font-semibold text-foreground",
-                        isAnchorDay &&
-                          "bg-foreground font-semibold text-background",
-                        !isAnchorDay &&
-                          !isWeekView &&
-                          "hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {format(day, "d")}
-                    </button>
-                  )
-                })}
-              </div>
-            )
-          })}
-        </div>
+        <Calendar
+          mode="single"
+          month={cursor}
+          onMonthChange={onCursorChange}
+          selected={selectedDay}
+          onDayClick={handleDayClick}
+          weekStartsOn={1}
+          showOutsideDays
+          captionLayout="label"
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          modifiers={modifiers as any}
+          modifiersClassNames={modifiersClassNames}
+          classNames={{
+            month_caption: "hidden",
+            nav: "hidden",
+            root: "w-full p-0",
+            month: "w-full gap-0",
+            month_grid: "w-full",
+            day: cn(
+              "group/day relative aspect-square h-full w-full rounded-md p-0 text-center select-none",
+              isWeekView && "cursor-pointer"
+            ),
+          }}
+          components={{
+            DayButton: ({ day, modifiers: dayModifiers, className, ...props }) => {
+              const isAnchorDay = !isWeekView && isSameDay(day.date, anchorDate)
+              return (
+                <button
+                  type="button"
+                  className={cn(
+                    "size-7 rounded-md text-xs tabular-nums transition-colors",
+                    dayModifiers.outside && "text-muted-foreground/40",
+                    dayModifiers.today && "font-semibold text-foreground",
+                    isAnchorDay && "bg-foreground font-semibold text-background",
+                    !isAnchorDay && !isWeekView && "hover:bg-muted hover:text-foreground",
+                    className
+                  )}
+                  {...props}
+                />
+              )
+            },
+          }}
+        />
       )}
     </div>
   )

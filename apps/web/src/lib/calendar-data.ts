@@ -1,13 +1,13 @@
 import {
   addDays,
   addMonths,
-  format,
   isSameMonth,
   isSameWeek,
-  parseISO,
+  parseIso,
   startOfMonth,
-  startOfWeek,
-} from "date-fns"
+  toHHmm,
+  toIsoDate,
+} from "@/lib/date-utils"
 
 export type ActivityCategory = "meeting" | "task" | "reminder" | "personal"
 
@@ -55,15 +55,15 @@ export const CATEGORY_OPTIONS: { value: ActivityCategory; label: string }[] = [
 ]
 
 export function toDate(a: CalendarActivity) {
-  return parseISO(a.date)
+  return parseIso(a.date)
 }
 
 export function toIso(d: Date) {
-  return format(d, "yyyy-MM-dd")
+  return toIsoDate(d)
 }
 
 function at(hour: number, minute = 0) {
-  return format(new Date(2000, 0, 1, hour, minute), "HH:mm")
+  return toHHmm(new Date(2000, 0, 1, hour, minute))
 }
 
 const today = new Date()
@@ -256,15 +256,12 @@ export function activitiesInMonth(
   month: Date
 ): CalendarActivity[] {
   const anchor = startOfMonth(month)
-  return activities.filter((a) => isSameMonth(parseISO(a.date), anchor))
+  return activities.filter((a) => isSameMonth(parseIso(a.date), anchor))
 }
 
 export function activitiesInWeek(
   activities: CalendarActivity[],
   weekStart: Date
 ): CalendarActivity[] {
-  const anchor = startOfWeek(weekStart, { weekStartsOn: 1 })
-  return activities.filter((a) =>
-    isSameWeek(parseISO(a.date), anchor, { weekStartsOn: 1 })
-  )
+  return activities.filter((a) => isSameWeek(parseIso(a.date), weekStart))
 }

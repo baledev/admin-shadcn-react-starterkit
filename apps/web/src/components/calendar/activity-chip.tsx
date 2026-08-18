@@ -48,7 +48,10 @@ export function DraggableActivityChip({
     <button
       type="button"
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform) }}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        visibility: isDragging ? "hidden" : undefined,
+      }}
       {...attributes}
       {...listeners}
       onClick={(e) => {
@@ -58,7 +61,6 @@ export function DraggableActivityChip({
       className={cn(
         "flex w-full cursor-grab items-center gap-1.5 rounded px-1.5 py-1 text-left text-[11px] font-medium ring-1 transition-opacity active:cursor-grabbing",
         CATEGORY_META[activity.category].chip,
-        isDragging && "opacity-40",
         className
       )}
     >

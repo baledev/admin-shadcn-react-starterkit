@@ -8,12 +8,12 @@ import {
 } from "@dnd-kit/core"
 import {
   addDays,
-  format,
+  formatDay,
   isSameMonth,
   isToday,
   startOfMonth,
   startOfWeek,
-} from "date-fns"
+} from "@/lib/date-utils"
 import { cn } from "@workspace/ui/lib/utils"
 import {
   CATEGORY_META,
@@ -47,7 +47,7 @@ export function CalendarMonthView({
     React.useState<CalendarActivity | null>(null)
 
   const monthStart = startOfMonth(anchorDate)
-  const gridStart = startOfWeek(monthStart, { weekStartsOn: 1 })
+  const gridStart = startOfWeek(monthStart)
   const cells = Array.from({ length: 42 }, (_, i) => addDays(gridStart, i))
 
   const byDate = new Map<string, CalendarActivity[]>()
@@ -167,7 +167,7 @@ function MonthDayCell({
               : "text-muted-foreground/50"
         )}
       >
-        {format(day, "d")}
+        {formatDay(day)}
       </span>
       <div className="flex flex-col gap-1">
         {activities.map((activity) => (

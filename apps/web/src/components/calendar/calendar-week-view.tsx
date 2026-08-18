@@ -1,12 +1,20 @@
-import { DndContext, useDroppable, type DragEndEvent } from "@dnd-kit/core"
-import { addDays, format, isToday, startOfWeek } from "date-fns"
+import * as React from "react"
+import {
+  DndContext,
+  DragOverlay,
+  useDroppable,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core"
+import { addDays, formatDay, isToday, startOfWeek } from "@/lib/date-utils"
 import { cn } from "@workspace/ui/lib/utils"
 import {
   activitiesOnDate,
+  CATEGORY_META,
   toIso,
   type CalendarActivity,
 } from "@/lib/calendar-data"
-import { DraggableActivityChip } from "./activity-chip"
+import { ActivityChipContent, DraggableActivityChip } from "./activity-chip"
 
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -25,10 +33,21 @@ export function CalendarWeekView({
   onMoveActivity,
   onAddAt,
 }: WeekViewProps) {
-  const weekStart = startOfWeek(anchorDate, { weekStartsOn: 1 })
+  const weekStart = startOfWeek(anchorDate)
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
 
+  const [activeActivity, setActiveActivity] =
+    React.useState<CalendarActivity | null>(null)
+
+  function handleDragStart(event: DragStartEvent) {
+    const activity = event.active.data.current?.activity as
+      | CalendarActivity
+      | undefined
+    setActiveActivity(activity ?? null)
+  }
+
   function handleDragEnd(event: DragEndEvent) {
+    setActiveActivity(null)
     const activity = event.active.data.current?.activity as
       | CalendarActivity
       | undefined
@@ -39,7 +58,11 @@ export function CalendarWeekView({
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => setActiveActivity(null)}
+    >
       <div className="grid grid-cols-7 gap-px overflow-hidden rounded-lg border border-border bg-border">
         {days.map((day, index) => (
           <WeekDayColumn
@@ -52,6 +75,20 @@ export function CalendarWeekView({
           />
         ))}
       </div>
+      <DragOverlay>
+        {activeActivity ? (
+          <div className="w-40 shadow-md">
+            <div
+              className={cn(
+                "flex items-center gap-1.5 rounded px-1.5 py-1 text-[11px] font-medium ring-1",
+                CATEGORY_META[activeActivity.category].chip
+              )}
+            >
+              <ActivityChipContent activity={activeActivity} showTime />
+            </div>
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   )
 }
@@ -93,7 +130,7 @@ function WeekDayColumn({
           {label}
         </span>
         <span className="text-sm font-semibold tabular-nums">
-          {format(day, "d")}
+          {formatDay(day)}
         </span>
       </div>
       <div className="flex flex-col gap-1">
