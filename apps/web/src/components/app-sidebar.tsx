@@ -29,7 +29,7 @@ import {
   TerminalSquareIcon,
   UsersIcon,
 } from "lucide-react"
-import { IconBell, IconCalendar, IconLayoutKanban, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
+import { IconBell, IconCalendar, IconLayoutKanban, IconMessage, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
 
 const data = {
   user: {
@@ -89,6 +89,11 @@ const data = {
       title: "Notifications",
       url: "/notifications",
       icon: <IconBell />,
+    },
+    {
+      title: "Messages",
+      url: "/messages",
+      icon: <IconMessage />,
     },
     {
       title: "Kanban",
