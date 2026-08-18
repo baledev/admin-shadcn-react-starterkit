@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as GuestRouteImport } from './routes/_guest'
+import { Route as AuthAnalyticsRouteImport } from './routes/_auth/analytics'
 import { Route as AuthCalendarRouteImport } from './routes/_auth/calendar'
 import { Route as AuthCustomersRouteImport } from './routes/_auth/customers'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
+import { Route as AuthFilesRouteImport } from './routes/_auth/files'
 import { Route as AuthInvoicesRouteImport } from './routes/_auth/invoices'
 import { Route as AuthKanbanRouteImport } from './routes/_auth/kanban'
 import { Route as AuthMessagesRouteImport } from './routes/_auth/messages'
@@ -41,6 +43,11 @@ const GuestRoute = GuestRouteImport.update({
   id: '/_guest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthAnalyticsRoute = AuthAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthCalendarRoute = AuthCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -54,6 +61,11 @@ const AuthCustomersRoute = AuthCustomersRouteImport.update({
 const AuthDashboardRoute = AuthDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthFilesRoute = AuthFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthInvoicesRoute = AuthInvoicesRouteImport.update({
@@ -119,9 +131,11 @@ const GuestSignUpRoute = GuestSignUpRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AuthAnalyticsRoute
   '/calendar': typeof AuthCalendarRoute
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/files': typeof AuthFilesRoute
   '/invoices': typeof AuthInvoicesRoute
   '/kanban': typeof AuthKanbanRoute
   '/messages': typeof AuthMessagesRoute
@@ -137,9 +151,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AuthAnalyticsRoute
   '/calendar': typeof AuthCalendarRoute
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/files': typeof AuthFilesRoute
   '/invoices': typeof AuthInvoicesRoute
   '/kanban': typeof AuthKanbanRoute
   '/messages': typeof AuthMessagesRoute
@@ -158,9 +174,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_guest': typeof GuestRouteWithChildren
+  '/_auth/analytics': typeof AuthAnalyticsRoute
   '/_auth/calendar': typeof AuthCalendarRoute
   '/_auth/customers': typeof AuthCustomersRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/files': typeof AuthFilesRoute
   '/_auth/invoices': typeof AuthInvoicesRoute
   '/_auth/kanban': typeof AuthKanbanRoute
   '/_auth/messages': typeof AuthMessagesRoute
@@ -178,9 +196,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/analytics'
     | '/calendar'
     | '/customers'
     | '/dashboard'
+    | '/files'
     | '/invoices'
     | '/kanban'
     | '/messages'
@@ -196,9 +216,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/analytics'
     | '/calendar'
     | '/customers'
     | '/dashboard'
+    | '/files'
     | '/invoices'
     | '/kanban'
     | '/messages'
@@ -216,9 +238,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/_guest'
+    | '/_auth/analytics'
     | '/_auth/calendar'
     | '/_auth/customers'
     | '/_auth/dashboard'
+    | '/_auth/files'
     | '/_auth/invoices'
     | '/_auth/kanban'
     | '/_auth/messages'
@@ -262,6 +286,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/analytics': {
+      id: '/_auth/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AuthAnalyticsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/calendar': {
       id: '/_auth/calendar'
       path: '/calendar'
@@ -281,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthDashboardRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/files': {
+      id: '/_auth/files'
+      path: '/files'
+      fullPath: '/files'
+      preLoaderRoute: typeof AuthFilesRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/invoices': {
@@ -371,9 +409,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
+  AuthAnalyticsRoute: typeof AuthAnalyticsRoute
   AuthCalendarRoute: typeof AuthCalendarRoute
   AuthCustomersRoute: typeof AuthCustomersRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthFilesRoute: typeof AuthFilesRoute
   AuthInvoicesRoute: typeof AuthInvoicesRoute
   AuthKanbanRoute: typeof AuthKanbanRoute
   AuthMessagesRoute: typeof AuthMessagesRoute
@@ -385,9 +425,11 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAnalyticsRoute: AuthAnalyticsRoute,
   AuthCalendarRoute: AuthCalendarRoute,
   AuthCustomersRoute: AuthCustomersRoute,
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthFilesRoute: AuthFilesRoute,
   AuthInvoicesRoute: AuthInvoicesRoute,
   AuthKanbanRoute: AuthKanbanRoute,
   AuthMessagesRoute: AuthMessagesRoute,
