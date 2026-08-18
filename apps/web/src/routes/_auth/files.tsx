@@ -46,6 +46,13 @@ import {
 } from "@workspace/ui/components/dropdown-menu"
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
 
 export const Route = createFileRoute("/_auth/files")({
   component: FilesPage,
@@ -123,6 +130,152 @@ function RenameDialog({ open, onOpenChange, item, onRename }: RenameDialogProps)
   )
 }
 
+// ─── Create Folder Dialog ─────────────────────────────────────────────────────
+
+interface CreateFolderDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onCreate: (name: string) => void
+}
+
+function CreateFolderDialog({ open, onOpenChange, onCreate }: CreateFolderDialogProps) {
+  const [name, setName] = React.useState("")
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (name.trim()) {
+      onCreate(name.trim())
+      setName("")
+      onOpenChange(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <DialogHeader>
+            <DialogTitle>New Folder</DialogTitle>
+            <DialogDescription>
+              Create a new folder in the current directory.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="folder-name-input">Folder Name</Label>
+            <Input
+              id="folder-name-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Invoices"
+              required
+            />
+          </div>
+
+          <DialogFooter className="mt-2">
+            <Button type="submit">Create Folder</Button>
+            <DialogClose render={<Button variant="outline" type="button" />}>
+              Cancel
+            </DialogClose>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+// ─── Upload Dialog ────────────────────────────────────────────────────────────
+
+interface UploadDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onUpload: (name: string, type: FileType, size: number) => void
+}
+
+function UploadDialog({ open, onOpenChange, onUpload }: UploadDialogProps) {
+  const [name, setName] = React.useState("")
+  const [type, setType] = React.useState<FileType>("pdf")
+  const [sizeInput, setSizeInput] = React.useState("1.5") // MB
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (name.trim()) {
+      const sizeBytes = (parseFloat(sizeInput) || 1) * 1024 * 1024
+      onUpload(name.trim(), type, sizeBytes)
+      setName("")
+      setType("pdf")
+      setSizeInput("1.5")
+      onOpenChange(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <DialogHeader>
+            <DialogTitle>Simulate Upload</DialogTitle>
+            <DialogDescription>
+              Simulate uploading a new file to the current directory.
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* Name */}
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="file-name-input">File Name</Label>
+            <Input
+              id="file-name-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. annual-report.pdf"
+              required
+            />
+          </div>
+
+          {/* Type + Size */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="file-type-select">File Type</Label>
+              <Select value={type} onValueChange={(val) => setType(val as FileType)}>
+                <SelectTrigger id="file-type-select">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pdf">PDF Document</SelectItem>
+                  <SelectItem value="image">Image File</SelectItem>
+                  <SelectItem value="doc">Word Document</SelectItem>
+                  <SelectItem value="spreadsheet">Spreadsheet</SelectItem>
+                  <SelectItem value="other">Other file</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="file-size-input">File Size (MB)</Label>
+              <Input
+                id="file-size-input"
+                type="number"
+                step="0.1"
+                min="0.1"
+                value={sizeInput}
+                onChange={(e) => setSizeInput(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="mt-2">
+            <Button type="submit">Upload File</Button>
+            <DialogClose render={<Button variant="outline" type="button" />}>
+              Cancel
+            </DialogClose>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function FilesPage() {
@@ -133,6 +286,8 @@ function FilesPage() {
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid")
   const [renameItem, setRenameItem] = React.useState<FileItem | null>(null)
   const [renameOpen, setRenameOpen] = React.useState(false)
+  const [folderOpen, setFolderOpen] = React.useState(false)
+  const [uploadOpen, setUploadOpen] = React.useState(false)
 
   // Trace ancestors to build breadcrumbs
   const breadcrumbs = React.useMemo(() => {
@@ -180,13 +335,10 @@ function FilesPage() {
     })
   }
 
-  function handleCreateFolder() {
-    const name = prompt("Enter folder name:")
-    if (!name?.trim()) return
-
+  function handleCreateFolder(name: string) {
     const newFolder: FileItem = {
       id: `dir-${Date.now()}`,
-      name: name.trim(),
+      name,
       type: "folder",
       modifiedAt: new Date().toISOString().slice(0, 10),
       parentId: currentFolderId,
@@ -195,13 +347,12 @@ function FilesPage() {
     setFiles((prev) => [...prev, newFolder])
   }
 
-  function handleUpload() {
-    alert("File upload simulation: uploading mockup.pdf")
+  function handleUpload(name: string, type: FileType, size: number) {
     const newFile: FileItem = {
       id: `file-${Date.now()}`,
-      name: "mockup.pdf",
-      type: "pdf",
-      size: 1540000,
+      name,
+      type,
+      size,
       modifiedAt: new Date().toISOString().slice(0, 10),
       parentId: currentFolderId,
     }
@@ -239,12 +390,12 @@ function FilesPage() {
                 </Button>
               </div>
 
-              <Button variant="outline" size="sm" onClick={handleCreateFolder}>
+              <Button variant="outline" size="sm" onClick={() => setFolderOpen(true)}>
                 <IconPlus className="size-4" />
                 New Folder
               </Button>
-
-              <Button size="sm" onClick={handleUpload}>
+ 
+              <Button size="sm" onClick={() => setUploadOpen(true)}>
                 <IconUpload className="size-4" />
                 Upload
               </Button>
@@ -455,6 +606,18 @@ function FilesPage() {
         onOpenChange={setRenameOpen}
         item={renameItem}
         onRename={handleRename}
+      />
+
+      <CreateFolderDialog
+        open={folderOpen}
+        onOpenChange={setFolderOpen}
+        onCreate={handleCreateFolder}
+      />
+
+      <UploadDialog
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        onUpload={handleUpload}
       />
     </div>
   )
