@@ -1,6 +1,7 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { CustomerCardGrid } from "@/components/customer-card-grid"
 import { CustomerDataTable } from "@/components/customer-data-table"
 import { PageHeader } from "@/components/page-header"
 import { toIsoDate } from "@/lib/date-utils"
@@ -29,10 +30,15 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@workspace/ui/components/sheet"
-import { IconPlus } from "@tabler/icons-react"
+import { IconLayoutGrid, IconList, IconPlus } from "@tabler/icons-react"
+
+type CustomersView = "grid" | "table"
 
 export const Route = createFileRoute("/_auth/customers")({
     component: CustomersPage,
+    validateSearch: (search: Record<string, unknown>): { view: CustomersView } => ({
+        view: search.view === "table" ? "table" : "grid",
+    }),
 })
 
 // ─── Form state ───────────────────────────────────────────────────────────────
@@ -70,6 +76,8 @@ function customerToForm(customer: Customer): CustomerFormState {
 }
 
 function CustomersPage() {
+    const { view } = Route.useSearch()
+    const navigate = Route.useNavigate()
     const [customers, setCustomers] = React.useState<Customer[]>(customersData)
     const [sheetOpen, setSheetOpen] = React.useState(false)
     const [editingCustomer, setEditingCustomer] = React.useState<Customer | null>(
@@ -92,6 +100,10 @@ function CustomersPage() {
     const handleDelete = React.useCallback((customer: Customer) => {
         setCustomers((prev) => prev.filter((c) => c.id !== customer.id))
     }, [])
+
+    function setView(next: CustomersView) {
+        navigate({ search: { view: next }, replace: true })
+    }
 
     function handleField<K extends keyof CustomerFormState>(
         key: K,
@@ -141,16 +153,47 @@ function CustomersPage() {
                         title="Customers"
                         description="Manage your customer accounts and subscriptions."
                     >
-                        <Button size="sm" onClick={handleAdd}>
-                            <IconPlus className="size-4" aria-hidden="true" />
-                            Add Customer
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            {/* View mode toggle */}
+                            <div className="flex items-center border border-border rounded-md p-0.5 bg-muted/40">
+                                <Button
+                                    variant={view === "grid" ? "secondary" : "ghost"}
+                                    size="icon"
+                                    className="size-7"
+                                    onClick={() => setView("grid")}
+                                    aria-label="Grid view"
+                                >
+                                    <IconLayoutGrid className="size-4" />
+                                </Button>
+                                <Button
+                                    variant={view === "table" ? "secondary" : "ghost"}
+                                    size="icon"
+                                    className="size-7"
+                                    onClick={() => setView("table")}
+                                    aria-label="Table view"
+                                >
+                                    <IconList className="size-4" />
+                                </Button>
+                            </div>
+                            <Button size="sm" onClick={handleAdd}>
+                                <IconPlus className="size-4" aria-hidden="true" />
+                                Add Customer
+                            </Button>
+                        </div>
                     </PageHeader>
-                    <CustomerDataTable
-                        data={customers}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                    />
+                    {view === "grid" ? (
+                        <CustomerCardGrid
+                            data={customers}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    ) : (
+                        <CustomerDataTable
+                            data={customers}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    )}
                 </div>
             </div>
 

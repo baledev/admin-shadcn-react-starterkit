@@ -244,3 +244,79 @@ export const PLAN_OPTIONS = [
     { label: "Pro", value: "pro" },
     { label: "Enterprise", value: "enterprise" },
 ]
+
+// ─── Cursor pagination (mock) ─────────────────────────────────────────────────
+// Pure & synchronous simulation of a cursor-based endpoint. When wiring a real
+// backend, replace the bodies with a fetch to
+// `/customers?cursor=<cursor>&limit=<limit>&...filters` — the shapes below are
+// deliberately what such an endpoint would return.
+
+export type CustomerFilters = {
+    search?: string
+    status?: string[]
+    plan?: string[]
+}
+
+export type CustomerPage = {
+    items: Customer[]
+    nextCursor: string | null
+    hasMore: boolean
+}
+
+export function filterCustomers(
+    source: Customer[],
+    filters: CustomerFilters = {}
+): Customer[] {
+    const q = filters.search?.trim().toLowerCase() ?? ""
+    return source.filter((customer) => {
+        if (
+            q &&
+            !customer.name.toLowerCase().includes(q) &&
+            !customer.email.toLowerCase().includes(q) &&
+            !customer.country.toLowerCase().includes(q)
+        ) {
+            return false
+        }
+        if (filters.status?.length && !filters.status.includes(customer.status)) {
+            return false
+        }
+        if (filters.plan?.length && !filters.plan.includes(customer.plan)) {
+            return false
+        }
+        return true
+    })
+}
+
+export const CUSTOMERS_PAGE_SIZE = 9
+
+/**
+ * Returns the page that follows `cursor` (the id of the last item of the
+ * previous page). A missing or unknown cursor starts from the beginning.
+ */
+export function getCustomersPage(
+    source: Customer[],
+    opts: {
+        cursor?: string | null
+        limit?: number
+        filters?: CustomerFilters
+    } = {}
+): CustomerPage {
+    const { cursor = null, limit = CUSTOMERS_PAGE_SIZE, filters } = opts
+    const rows = filters ? filterCustomers(source, filters) : source
+
+    const cursorIndex =
+        cursor === null
+            ? -1
+            : rows.findIndex((customer) => String(customer.id) === cursor)
+    const start = cursorIndex + 1
+    const items = rows.slice(start, start + limit)
+    const hasMore = start + items.length < rows.length
+
+    return {
+        items,
+        nextCursor: hasMore && items.length > 0
+            ? String(items[items.length - 1]!.id)
+            : null,
+        hasMore,
+    }
+}
