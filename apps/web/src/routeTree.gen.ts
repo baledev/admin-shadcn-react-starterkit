@@ -17,6 +17,7 @@ import { Route as AuthCustomersRouteImport } from './routes/_auth/customers'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthInvoicesRouteImport } from './routes/_auth/invoices'
 import { Route as AuthKanbanRouteImport } from './routes/_auth/kanban'
+import { Route as AuthNotificationsRouteImport } from './routes/_auth/notifications'
 import { Route as AuthOrdersRouteImport } from './routes/_auth/orders'
 import { Route as AuthProductsRouteImport } from './routes/_auth/products'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
@@ -62,6 +63,11 @@ const AuthInvoicesRoute = AuthInvoicesRouteImport.update({
 const AuthKanbanRoute = AuthKanbanRouteImport.update({
   id: '/kanban',
   path: '/kanban',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthNotificationsRoute = AuthNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthOrdersRoute = AuthOrdersRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthDashboardRoute
   '/invoices': typeof AuthInvoicesRoute
   '/kanban': typeof AuthKanbanRoute
+  '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
   '/settings': typeof AuthSettingsRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthDashboardRoute
   '/invoices': typeof AuthInvoicesRoute
   '/kanban': typeof AuthKanbanRoute
+  '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
   '/settings': typeof AuthSettingsRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/invoices': typeof AuthInvoicesRoute
   '/_auth/kanban': typeof AuthKanbanRoute
+  '/_auth/notifications': typeof AuthNotificationsRoute
   '/_auth/orders': typeof AuthOrdersRoute
   '/_auth/products': typeof AuthProductsRoute
   '/_auth/settings': typeof AuthSettingsRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/invoices'
     | '/kanban'
+    | '/notifications'
     | '/orders'
     | '/products'
     | '/settings'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/invoices'
     | '/kanban'
+    | '/notifications'
     | '/orders'
     | '/products'
     | '/settings'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/invoices'
     | '/_auth/kanban'
+    | '/_auth/notifications'
     | '/_auth/orders'
     | '/_auth/products'
     | '/_auth/settings'
@@ -273,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthKanbanRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/notifications': {
+      id: '/_auth/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthNotificationsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/orders': {
       id: '/_auth/orders'
       path: '/orders'
@@ -338,6 +357,7 @@ interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthInvoicesRoute: typeof AuthInvoicesRoute
   AuthKanbanRoute: typeof AuthKanbanRoute
+  AuthNotificationsRoute: typeof AuthNotificationsRoute
   AuthOrdersRoute: typeof AuthOrdersRoute
   AuthProductsRoute: typeof AuthProductsRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
@@ -350,6 +370,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
   AuthInvoicesRoute: AuthInvoicesRoute,
   AuthKanbanRoute: AuthKanbanRoute,
+  AuthNotificationsRoute: AuthNotificationsRoute,
   AuthOrdersRoute: AuthOrdersRoute,
   AuthProductsRoute: AuthProductsRoute,
   AuthSettingsRoute: AuthSettingsRoute,
