@@ -23,6 +23,7 @@ import { Route as AuthMessagesRouteImport } from './routes/_auth/messages'
 import { Route as AuthNotificationsRouteImport } from './routes/_auth/notifications'
 import { Route as AuthOrdersRouteImport } from './routes/_auth/orders'
 import { Route as AuthProductsRouteImport } from './routes/_auth/products'
+import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthTeamRouteImport } from './routes/_auth/team'
 import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
@@ -98,6 +99,11 @@ const AuthProductsRoute = AuthProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthProfileRoute = AuthProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
+  '/profile': typeof AuthProfileRoute
   '/settings': typeof AuthSettingsRoute
   '/team': typeof AuthTeamRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
+  '/profile': typeof AuthProfileRoute
   '/settings': typeof AuthSettingsRoute
   '/team': typeof AuthTeamRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/_auth/notifications': typeof AuthNotificationsRoute
   '/_auth/orders': typeof AuthOrdersRoute
   '/_auth/products': typeof AuthProductsRoute
+  '/_auth/profile': typeof AuthProfileRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/team': typeof AuthTeamRoute
   '/_guest/forgot-password': typeof GuestForgotPasswordRoute
@@ -207,6 +216,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/orders'
     | '/products'
+    | '/profile'
     | '/settings'
     | '/team'
     | '/forgot-password'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/orders'
     | '/products'
+    | '/profile'
     | '/settings'
     | '/team'
     | '/forgot-password'
@@ -249,6 +260,7 @@ export interface FileRouteTypes {
     | '/_auth/notifications'
     | '/_auth/orders'
     | '/_auth/products'
+    | '/_auth/profile'
     | '/_auth/settings'
     | '/_auth/team'
     | '/_guest/forgot-password'
@@ -363,6 +375,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -420,6 +439,7 @@ interface AuthRouteChildren {
   AuthNotificationsRoute: typeof AuthNotificationsRoute
   AuthOrdersRoute: typeof AuthOrdersRoute
   AuthProductsRoute: typeof AuthProductsRoute
+  AuthProfileRoute: typeof AuthProfileRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthTeamRoute: typeof AuthTeamRoute
 }
@@ -436,6 +456,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthNotificationsRoute: AuthNotificationsRoute,
   AuthOrdersRoute: AuthOrdersRoute,
   AuthProductsRoute: AuthProductsRoute,
+  AuthProfileRoute: AuthProfileRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthTeamRoute: AuthTeamRoute,
 }

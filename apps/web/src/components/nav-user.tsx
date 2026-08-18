@@ -1,4 +1,4 @@
-import { useRouter } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 import {
   Avatar,
   AvatarFallback,
@@ -86,10 +86,16 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                render={
+                  <Link
+                    to="/profile"
+                  />
+                }
+              >
                 <BadgeCheckIcon
                 />
-                Account
+                View Profile
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCardIcon

@@ -2,6 +2,7 @@ import { createRouter } from "@tanstack/react-router"
 
 import type { AuthContext } from "@/lib/auth"
 import { routeTree } from "@/routeTree.gen"
+import { NotFoundPage } from "@/routes/404"
 
 export function createAppRouter(auth: AuthContext) {
   return createRouter({
@@ -9,6 +10,7 @@ export function createAppRouter(auth: AuthContext) {
     context: { auth },
     defaultPreload: "intent",
     scrollRestoration: true,
+    defaultNotFoundComponent: NotFoundPage,
   })
 }
 
