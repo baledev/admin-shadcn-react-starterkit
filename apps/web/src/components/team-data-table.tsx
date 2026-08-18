@@ -45,6 +45,23 @@ import {
 } from "@workspace/ui/components/data-table"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@workspace/ui/components/dialog"
+import { Label } from "@workspace/ui/components/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
+import {
   type TeamMember,
   type TeamRole,
   ROLE_META,
@@ -103,7 +120,6 @@ function formatRelativeTime(dateStr: string) {
 // ─── Pending confirmation ─────────────────────────────────────────────────────
 
 type PendingAction =
-  | { type: "role"; member: TeamMember; nextRole: TeamRole }
   | { type: "deactivate"; member: TeamMember }
   | { type: "remove"; member: TeamMember }
 
@@ -111,6 +127,7 @@ type PendingAction =
 
 function buildColumns(
   onToggleStatus: (member: TeamMember) => void,
+  onRequestRoleChange: (member: TeamMember) => void,
   onRequestAction: (action: PendingAction) => void
 ) {
   return columnHelper.columns([
@@ -235,16 +252,7 @@ function buildColumns(
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem
                 disabled={isOwner}
-                onClick={() => {
-                  const roles: TeamRole[] = ["admin", "member", "viewer"]
-                  const currIdx = roles.indexOf(row.original.role as TeamRole)
-                  const nextRole = roles[(currIdx + 1) % roles.length]
-                  onRequestAction({
-                    type: "role",
-                    member: row.original,
-                    nextRole,
-                  })
-                }}
+                onClick={() => onRequestRoleChange(row.original)}
               >
                 <IconShield className="mr-2 size-4" aria-hidden="true" />
                 Change Role
@@ -295,6 +303,79 @@ const COLUMN_LABELS: Record<string, string> = {
   lastActiveAt: "Last Active",
 }
 
+// ─── Change role dialog ───────────────────────────────────────────────────────
+
+interface ChangeRoleDialogProps {
+  member: TeamMember
+  onOpenChange: (open: boolean) => void
+  onChangeRole: (member: TeamMember, newRole: TeamRole) => void
+}
+
+/**
+ * Mounted only while a member is selected, so the select seeds itself from that
+ * member's current role without an effect.
+ */
+function ChangeRoleDialog({
+  member,
+  onOpenChange,
+  onChangeRole,
+}: ChangeRoleDialogProps) {
+  const [role, setRole] = React.useState<TeamRole>(member.role)
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (role !== member.role) onChangeRole(member, role)
+    onOpenChange(false)
+  }
+
+  return (
+    <Dialog open onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <DialogHeader>
+            <DialogTitle>Change Role</DialogTitle>
+            <DialogDescription>
+              Update the workspace role for{" "}
+              <span className="font-medium text-foreground">
+                {member.name}
+              </span>
+              . This changes what they can access.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="change-role">Workspace Role</Label>
+            <Select
+              value={role}
+              onValueChange={(v) => setRole(v as TeamRole)}
+            >
+              <SelectTrigger id="change-role">
+                <SelectValue placeholder="Select role" />
+              </SelectTrigger>
+              <SelectContent>
+                {ROLE_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <DialogFooter className="mt-2">
+            <DialogClose render={<Button variant="outline" type="button" />}>
+              Cancel
+            </DialogClose>
+            <Button type="submit" disabled={role === member.role}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 interface TeamDataTableProps {
@@ -323,9 +404,10 @@ export function TeamDataTable({
   })
   const [search, setSearch] = React.useState("")
   const [pending, setPending] = React.useState<PendingAction | null>(null)
+  const [roleTarget, setRoleTarget] = React.useState<TeamMember | null>(null)
 
   const columns = React.useMemo(
-    () => buildColumns(onToggleStatus, setPending),
+    () => buildColumns(onToggleStatus, setRoleTarget, setPending),
     [onToggleStatus]
   )
 
@@ -470,6 +552,15 @@ export function TeamDataTable({
             setPagination({ pageIndex: 0, pageSize: size }),
         }}
       />
+      {roleTarget ? (
+        <ChangeRoleDialog
+          member={roleTarget}
+          onOpenChange={(open) => {
+            if (!open) setRoleTarget(null)
+          }}
+          onChangeRole={onChangeRole}
+        />
+      ) : null}
       {pending ? (
         <ConfirmDialog
           open
@@ -477,36 +568,25 @@ export function TeamDataTable({
             if (!open) setPending(null)
           }}
           title={
-            pending.type === "role"
-              ? `Change role to ${ROLE_META[pending.nextRole].label}?`
-              : pending.type === "deactivate"
-                ? "Deactivate member?"
-                : "Remove member?"
+            pending.type === "deactivate"
+              ? "Deactivate member?"
+              : "Remove member?"
           }
           description={
             <>
               <span className="font-medium text-foreground">
                 {pending.member.name}
               </span>{" "}
-              {pending.type === "role"
-                ? `will be moved from ${ROLE_META[pending.member.role].label} to ${ROLE_META[pending.nextRole].label}, changing what they can access.`
-                : pending.type === "deactivate"
-                  ? "will lose access to this workspace until reactivated."
-                  : "will be permanently removed from this workspace. This action cannot be undone."}
+              {pending.type === "deactivate"
+                ? "will lose access to this workspace until reactivated."
+                : "will be permanently removed from this workspace. This action cannot be undone."}
             </>
           }
           confirmLabel={
-            pending.type === "role"
-              ? "Change Role"
-              : pending.type === "deactivate"
-                ? "Deactivate"
-                : "Remove"
+            pending.type === "deactivate" ? "Deactivate" : "Remove"
           }
-          variant={pending.type === "role" ? "default" : "destructive"}
           onConfirm={() => {
-            if (pending.type === "role") {
-              onChangeRole(pending.member, pending.nextRole)
-            } else if (pending.type === "deactivate") {
+            if (pending.type === "deactivate") {
               onToggleStatus(pending.member)
             } else {
               onRemove(pending.member)
