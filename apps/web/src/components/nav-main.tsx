@@ -48,11 +48,11 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          if (item.url.startsWith("/")) {
+          const hasChildren = item.items && item.items.length > 0
+
+          if (!hasChildren) {
             const isExact = pathname === item.url
-            const isChild =
-              pathname.startsWith(item.url + "/") ||
-              (item.items?.some((sub) => sub.url === pathname) ?? false)
+            const isChild = pathname.startsWith(item.url + "/")
 
             return (
               <SidebarMenuItem key={item.title}>

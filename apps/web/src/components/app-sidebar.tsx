@@ -18,7 +18,6 @@ import {
 import {
   AudioLinesIcon,
   BookOpenIcon,
-  BotIcon,
   FolderIcon,
   GalleryVerticalEndIcon,
   LayoutDashboardIcon,
@@ -126,24 +125,9 @@ const data = {
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: <BotIcon />,
-      items: [
-        { title: "Genesis", url: "#" },
-        { title: "Explorer", url: "#" },
-        { title: "Quantum", url: "#" },
-      ],
-    },
-    {
       title: "Documentation",
       url: "#",
       icon: <BookOpenIcon />,
-      items: [
-        { title: "Introduction", url: "#" },
-        { title: "Get Started", url: "#" },
-        { title: "Tutorials", url: "#" },
-      ],
     },
     {
       title: "Settings",
