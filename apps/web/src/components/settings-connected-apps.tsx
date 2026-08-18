@@ -11,6 +11,7 @@ import { Button } from "@workspace/ui/components/button"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import { Separator } from "@workspace/ui/components/separator"
 import { CONNECTED_APPS, type ConnectedApp } from "@/lib/connected-apps-data"
+import { PageHeader } from "@/components/page-header"
 
 export function SettingsConnectedApps() {
   const [apps, setApps] = React.useState<ConnectedApp[]>(CONNECTED_APPS)
@@ -30,23 +31,18 @@ export function SettingsConnectedApps() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-lg font-medium">Connected Apps</h2>
-        <p className="text-sm text-muted-foreground">
-          Manage and connect different applications.
-        </p>
-      </div>
-      <Separator />
-
-      <div className="text-sm font-medium tracking-tight text-muted-foreground">
-        <p>
-          To get the best experience, we recommend setting up at least one
-          integration.
-        </p>
-        <p>
-          This is necessary for us to have a source to generate reports for you.
-        </p>
-      </div>
+      <PageHeader
+        title="Connected Apps"
+        description={
+          <>
+            To get the best experience, we recommend setting up at least one
+            integration.
+            <br />
+            This is necessary for us to have a source to generate reports for
+            you.
+          </>
+        }
+      />
 
       <Accordion className="flex flex-col gap-4">
         {apps.map((app) => {

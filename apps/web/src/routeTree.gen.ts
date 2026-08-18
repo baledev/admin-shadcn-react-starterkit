@@ -30,6 +30,13 @@ import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-
 import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as GuestSignInRouteImport } from './routes/_guest/sign-in'
 import { Route as GuestSignUpRouteImport } from './routes/_guest/sign-up'
+import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
+import { Route as AuthSettingsAccountRouteImport } from './routes/_auth/settings/account'
+import { Route as AuthSettingsBillingRouteImport } from './routes/_auth/settings/billing'
+import { Route as AuthSettingsConnectedAppsRouteImport } from './routes/_auth/settings/connected-apps'
+import { Route as AuthSettingsNotificationsRouteImport } from './routes/_auth/settings/notifications'
+import { Route as AuthSettingsPlansRouteImport } from './routes/_auth/settings/plans'
+import { Route as AuthSettingsProfileRouteImport } from './routes/_auth/settings/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -134,6 +141,43 @@ const GuestSignUpRoute = GuestSignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => GuestRoute,
 } as any)
+const AuthSettingsIndexRoute = AuthSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthSettingsRoute,
+} as any)
+const AuthSettingsAccountRoute = AuthSettingsAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthSettingsRoute,
+} as any)
+const AuthSettingsBillingRoute = AuthSettingsBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthSettingsRoute,
+} as any)
+const AuthSettingsConnectedAppsRoute =
+  AuthSettingsConnectedAppsRouteImport.update({
+    id: '/connected-apps',
+    path: '/connected-apps',
+    getParentRoute: () => AuthSettingsRoute,
+  } as any)
+const AuthSettingsNotificationsRoute =
+  AuthSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthSettingsRoute,
+  } as any)
+const AuthSettingsPlansRoute = AuthSettingsPlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => AuthSettingsRoute,
+} as any)
+const AuthSettingsProfileRoute = AuthSettingsProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthSettingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -149,12 +193,19 @@ export interface FileRoutesByFullPath {
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
-  '/settings': typeof AuthSettingsRoute
+  '/settings': typeof AuthSettingsRouteWithChildren
   '/team': typeof AuthTeamRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/settings/account': typeof AuthSettingsAccountRoute
+  '/settings/billing': typeof AuthSettingsBillingRoute
+  '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
+  '/settings/notifications': typeof AuthSettingsNotificationsRoute
+  '/settings/plans': typeof AuthSettingsPlansRoute
+  '/settings/profile': typeof AuthSettingsProfileRoute
+  '/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -170,12 +221,18 @@ export interface FileRoutesByTo {
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
-  '/settings': typeof AuthSettingsRoute
   '/team': typeof AuthTeamRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/settings/account': typeof AuthSettingsAccountRoute
+  '/settings/billing': typeof AuthSettingsBillingRoute
+  '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
+  '/settings/notifications': typeof AuthSettingsNotificationsRoute
+  '/settings/plans': typeof AuthSettingsPlansRoute
+  '/settings/profile': typeof AuthSettingsProfileRoute
+  '/settings': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -194,12 +251,19 @@ export interface FileRoutesById {
   '/_auth/orders': typeof AuthOrdersRoute
   '/_auth/products': typeof AuthProductsRoute
   '/_auth/profile': typeof AuthProfileRoute
-  '/_auth/settings': typeof AuthSettingsRoute
+  '/_auth/settings': typeof AuthSettingsRouteWithChildren
   '/_auth/team': typeof AuthTeamRoute
   '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_guest/sign-in': typeof GuestSignInRoute
   '/_guest/sign-up': typeof GuestSignUpRoute
+  '/_auth/settings/account': typeof AuthSettingsAccountRoute
+  '/_auth/settings/billing': typeof AuthSettingsBillingRoute
+  '/_auth/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
+  '/_auth/settings/notifications': typeof AuthSettingsNotificationsRoute
+  '/_auth/settings/plans': typeof AuthSettingsPlansRoute
+  '/_auth/settings/profile': typeof AuthSettingsProfileRoute
+  '/_auth/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -223,6 +287,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/settings/account'
+    | '/settings/billing'
+    | '/settings/connected-apps'
+    | '/settings/notifications'
+    | '/settings/plans'
+    | '/settings/profile'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -238,12 +309,18 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/profile'
-    | '/settings'
     | '/team'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/settings/account'
+    | '/settings/billing'
+    | '/settings/connected-apps'
+    | '/settings/notifications'
+    | '/settings/plans'
+    | '/settings/profile'
+    | '/settings'
   id:
     | '__root__'
     | '/'
@@ -267,6 +344,13 @@ export interface FileRouteTypes {
     | '/_guest/reset-password'
     | '/_guest/sign-in'
     | '/_guest/sign-up'
+    | '/_auth/settings/account'
+    | '/_auth/settings/billing'
+    | '/_auth/settings/connected-apps'
+    | '/_auth/settings/notifications'
+    | '/_auth/settings/plans'
+    | '/_auth/settings/profile'
+    | '/_auth/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -424,8 +508,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestSignUpRouteImport
       parentRoute: typeof GuestRoute
     }
+    '/_auth/settings/': {
+      id: '/_auth/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthSettingsIndexRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/account': {
+      id: '/_auth/settings/account'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof AuthSettingsAccountRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/billing': {
+      id: '/_auth/settings/billing'
+      path: '/billing'
+      fullPath: '/settings/billing'
+      preLoaderRoute: typeof AuthSettingsBillingRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/connected-apps': {
+      id: '/_auth/settings/connected-apps'
+      path: '/connected-apps'
+      fullPath: '/settings/connected-apps'
+      preLoaderRoute: typeof AuthSettingsConnectedAppsRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/notifications': {
+      id: '/_auth/settings/notifications'
+      path: '/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof AuthSettingsNotificationsRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/plans': {
+      id: '/_auth/settings/plans'
+      path: '/plans'
+      fullPath: '/settings/plans'
+      preLoaderRoute: typeof AuthSettingsPlansRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
+    '/_auth/settings/profile': {
+      id: '/_auth/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AuthSettingsProfileRouteImport
+      parentRoute: typeof AuthSettingsRoute
+    }
   }
 }
+
+interface AuthSettingsRouteChildren {
+  AuthSettingsAccountRoute: typeof AuthSettingsAccountRoute
+  AuthSettingsBillingRoute: typeof AuthSettingsBillingRoute
+  AuthSettingsConnectedAppsRoute: typeof AuthSettingsConnectedAppsRoute
+  AuthSettingsNotificationsRoute: typeof AuthSettingsNotificationsRoute
+  AuthSettingsPlansRoute: typeof AuthSettingsPlansRoute
+  AuthSettingsProfileRoute: typeof AuthSettingsProfileRoute
+  AuthSettingsIndexRoute: typeof AuthSettingsIndexRoute
+}
+
+const AuthSettingsRouteChildren: AuthSettingsRouteChildren = {
+  AuthSettingsAccountRoute: AuthSettingsAccountRoute,
+  AuthSettingsBillingRoute: AuthSettingsBillingRoute,
+  AuthSettingsConnectedAppsRoute: AuthSettingsConnectedAppsRoute,
+  AuthSettingsNotificationsRoute: AuthSettingsNotificationsRoute,
+  AuthSettingsPlansRoute: AuthSettingsPlansRoute,
+  AuthSettingsProfileRoute: AuthSettingsProfileRoute,
+  AuthSettingsIndexRoute: AuthSettingsIndexRoute,
+}
+
+const AuthSettingsRouteWithChildren = AuthSettingsRoute._addFileChildren(
+  AuthSettingsRouteChildren,
+)
 
 interface AuthRouteChildren {
   AuthAnalyticsRoute: typeof AuthAnalyticsRoute
@@ -440,7 +597,7 @@ interface AuthRouteChildren {
   AuthOrdersRoute: typeof AuthOrdersRoute
   AuthProductsRoute: typeof AuthProductsRoute
   AuthProfileRoute: typeof AuthProfileRoute
-  AuthSettingsRoute: typeof AuthSettingsRoute
+  AuthSettingsRoute: typeof AuthSettingsRouteWithChildren
   AuthTeamRoute: typeof AuthTeamRoute
 }
 
@@ -457,7 +614,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthOrdersRoute: AuthOrdersRoute,
   AuthProductsRoute: AuthProductsRoute,
   AuthProfileRoute: AuthProfileRoute,
-  AuthSettingsRoute: AuthSettingsRoute,
+  AuthSettingsRoute: AuthSettingsRouteWithChildren,
   AuthTeamRoute: AuthTeamRoute,
 }
 

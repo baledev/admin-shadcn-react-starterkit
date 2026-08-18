@@ -5,13 +5,13 @@ import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { Label } from "@workspace/ui/components/label"
 import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group"
-import { Separator } from "@workspace/ui/components/separator"
 import { Switch } from "@workspace/ui/components/switch"
 import {
   EMAIL_NOTIFICATIONS,
   NOTIFY_OPTIONS,
   type NotifyScope,
 } from "@/lib/notifications-settings-data"
+import { PageHeader } from "@/components/page-header"
 
 export function SettingsNotifications() {
   const [notifyScope, setNotifyScope] = React.useState<NotifyScope>("none")
@@ -26,13 +26,10 @@ export function SettingsNotifications() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-lg font-medium">Notifications</h2>
-        <p className="text-sm text-muted-foreground">
-          Configure how you receive notifications.
-        </p>
-      </div>
-      <Separator />
+      <PageHeader
+        title="Notifications"
+        description="Configure how you receive notifications."
+      />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <div className="flex flex-col gap-3">

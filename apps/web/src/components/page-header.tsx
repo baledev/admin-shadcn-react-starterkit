@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 interface PageHeaderProps {
   title: string
   subtitle?: string
-  description?: string
+  description?: ReactNode
   children?: ReactNode
 }
 

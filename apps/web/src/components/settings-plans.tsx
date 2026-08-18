@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group
 import { Separator } from "@workspace/ui/components/separator"
 import { cn } from "@workspace/ui/lib/utils"
 import { SUBSCRIPTION_PLANS, type PlanId } from "@/lib/plans-data"
+import { PageHeader } from "@/components/page-header"
 
 export function SettingsPlans() {
   const [selected, setSelected] = React.useState<PlanId>("monthly")
@@ -18,12 +19,10 @@ export function SettingsPlans() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-lg font-medium">Plans</h2>
-        <p className="text-sm text-muted-foreground">
-          Your subscription will begin today with a free 14-day trial.
-        </p>
-      </div>
+      <PageHeader
+        title="Plans"
+        description="Your subscription will begin today with a free 14-day trial."
+      />
       <Separator />
 
       {/* Plan picker */}

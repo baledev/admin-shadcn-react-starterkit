@@ -46,14 +46,26 @@ function titleCase(value: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
+function buildBreadcrumbs(routeId: string): { label: string; to: string }[] {
+  const segments = routeId.split("/").filter(Boolean)
+  const urlSegments = segments.filter(
+    (seg) => !seg.startsWith("_") && !seg.startsWith("$")
+  )
+  return urlSegments.map((seg, index) => ({
+    label: titleCase(seg),
+    to: "/" + urlSegments.slice(0, index + 1).join("/"),
+  }))
+}
+
 function AuthLayout() {
   const [commandOpen, setCommandOpen] = React.useState(false)
   const announcementVisible = React.useContext(AnnouncementContext)
   const matches = useRouterState({ select: (state) => state.matches })
   const leaf = matches[matches.length - 1]
-  const crumbLabel = leaf
-    ? titleCase(leaf.routeId.split("/").filter(Boolean).pop() ?? "Home")
-    : "Home"
+  const crumbs = buildBreadcrumbs(leaf?.routeId ?? "")
+  const routeCrumbs = crumbs.length
+    ? crumbs
+    : [{ label: "Home", to: "/dashboard" }]
 
   return (
     <SidebarProvider
@@ -81,10 +93,23 @@ function AuthLayout() {
                     Admin
                   </BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{crumbLabel}</BreadcrumbPage>
-                </BreadcrumbItem>
+                {routeCrumbs.map((crumb, index) => {
+                  const isLast = index === routeCrumbs.length - 1
+                  return (
+                    <React.Fragment key={crumb.to}>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbItem className={isLast ? "" : "hidden md:block"}>
+                        {isLast ? (
+                          <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink render={<Link to={crumb.to as never} />}>
+                            {crumb.label}
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                    </React.Fragment>
+                  )
+                })}
               </BreadcrumbList>
             </Breadcrumb>
             <div className="ms-auto flex items-center gap-2">
