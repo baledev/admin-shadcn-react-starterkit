@@ -18,7 +18,6 @@ import { Switch } from "@workspace/ui/components/switch"
 import { cn } from "@workspace/ui/lib/utils"
 import { PageHeader } from "@/components/page-header"
 import { SettingsConnectedApps } from "@/components/settings-connected-apps"
-import { SettingsNotifications } from "@/components/settings-notifications"
 import { SettingsPlans } from "@/components/settings-plans"
 
 const sections = [
@@ -27,6 +26,7 @@ const sections = [
   { id: "notifications", label: "Notifications", icon: IconNotification },
   { id: "billing", label: "Billing", icon: IconCreditCard },
   { id: "plans", label: "Plans", icon: IconSparkles },
+  { id: "connected-apps", label: "Connected Apps", icon: IconApps },
 ]
 
 export const Route = createFileRoute("/_auth/settings")({
@@ -101,7 +101,24 @@ function SettingsPage() {
                 </div>
               )}
 
-              {active === "notifications" && <SettingsNotifications />}
+              {active === "notifications" && (
+                <div className="flex flex-col gap-4">
+                  {["Product updates", "Weekly digest", "Security alerts"].map(
+                    (label, index) => (
+                      <div key={label} className="flex flex-col gap-4">
+                        {index > 0 && <Separator />}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{label}</span>
+                          <Switch
+                            defaultChecked={index !== 1}
+                            aria-label={label}
+                          />
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
 
               {active === "account" && (
                 <div className="flex flex-col gap-6">
@@ -171,7 +188,9 @@ function SettingsPage() {
 
               {active === "plans" && <SettingsPlans />}
 
-              {active !== "plans" && active !== "notifications" && (
+              {active === "connected-apps" && <SettingsConnectedApps />}
+
+              {active !== "plans" && active !== "connected-apps" && (
                 <div className="mt-8">
                   <Button>Save changes</Button>
                 </div>
