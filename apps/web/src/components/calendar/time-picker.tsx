@@ -1,4 +1,3 @@
-import * as React from "react"
 import { IconClock } from "@tabler/icons-react"
 import { Input } from "@workspace/ui/components/input"
 import { cn } from "@workspace/ui/lib/utils"
