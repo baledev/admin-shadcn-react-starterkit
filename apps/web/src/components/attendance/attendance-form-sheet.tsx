@@ -1,6 +1,5 @@
 import * as React from "react"
 import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
 import { Textarea } from "@workspace/ui/components/textarea"
 import {
@@ -24,6 +23,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
+import { DatePickerSimple } from "@workspace/ui/components/date-picker"
+import { TimePicker } from "@/components/calendar/time-picker"
+import { parseIso, toIsoDate } from "@/lib/date-utils"
 import { initialTeamMembers } from "@/lib/team-data"
 import { STATUS_OPTIONS, type AttendanceStatus } from "@/lib/attendance-data"
 
@@ -124,12 +126,14 @@ export function AttendanceFormSheet({
             {/* Tanggal Picker */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="attendance-date">Tanggal</Label>
-              <Input
+              <DatePickerSimple
                 id="attendance-date"
-                type="date"
-                value={form.date}
-                onChange={(e) => onField("date", e.target.value)}
-                required
+                date={form.date ? parseIso(form.date) : undefined}
+                onSelect={(date) => {
+                  if (date) {
+                    onField("date", toIsoDate(date))
+                  }
+                }}
                 disabled={isEditing}
               />
             </div>
@@ -161,22 +165,18 @@ export function AttendanceFormSheet({
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="attendance-checkin">Jam Masuk</Label>
-                  <Input
+                  <TimePicker
                     id="attendance-checkin"
-                    type="time"
-                    value={form.checkIn}
-                    onChange={(e) => onField("checkIn", e.target.value)}
-                    required={isTimeFieldsVisible}
+                    value={form.checkIn || "09:00"}
+                    onChange={(val) => onField("checkIn", val)}
                   />
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="attendance-checkout">Jam Keluar</Label>
-                  <Input
+                  <TimePicker
                     id="attendance-checkout"
-                    type="time"
-                    value={form.checkOut}
-                    onChange={(e) => onField("checkOut", e.target.value)}
-                    required={isTimeFieldsVisible}
+                    value={form.checkOut || "17:00"}
+                    onChange={(val) => onField("checkOut", val)}
                   />
                 </div>
               </div>
