@@ -56,7 +56,7 @@ export function ExpensesFinanceFormSheet({
 }: ExpensesFinanceFormSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
+      <SheetContent side="right" className="sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Pengajuan Klaim Expense (Reimburse)</SheetTitle>
           <SheetDescription>
@@ -66,10 +66,9 @@ export function ExpensesFinanceFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* Karyawan Select */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="exp-employee">Karyawan</FieldLabel>
               <Select
@@ -89,7 +88,6 @@ export function ExpensesFinanceFormSheet({
               </Select>
             </Field>
 
-            {/* Kategori */}
             <Field>
               <FieldLabel htmlFor="exp-category">Kategori Pengeluaran</FieldLabel>
               <Select
@@ -109,7 +107,6 @@ export function ExpensesFinanceFormSheet({
               </Select>
             </Field>
 
-            {/* Date */}
             <Field>
               <FieldLabel>Tanggal Nota / Kwitansi</FieldLabel>
               <DatePicker
@@ -120,7 +117,6 @@ export function ExpensesFinanceFormSheet({
               />
             </Field>
 
-            {/* Amount */}
             <Field>
               <FieldLabel htmlFor="exp-amount">Jumlah Nominal (Rp)</FieldLabel>
               <Input
@@ -134,7 +130,6 @@ export function ExpensesFinanceFormSheet({
               />
             </Field>
 
-            {/* Description */}
             <Field>
               <FieldLabel htmlFor="exp-desc">Deskripsi Pengeluaran</FieldLabel>
               <Textarea
@@ -147,7 +142,6 @@ export function ExpensesFinanceFormSheet({
               />
             </Field>
 
-            {/* Receipt URL / Placeholder file input */}
             <Field>
               <FieldLabel htmlFor="exp-receipt">Nota Fisik / Bukti Pembayaran (URL/Nama File)</FieldLabel>
               <Input
@@ -159,13 +153,13 @@ export function ExpensesFinanceFormSheet({
             </Field>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!form.employeeId || !form.amount || !form.description}>
               Ajukan Klaim
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

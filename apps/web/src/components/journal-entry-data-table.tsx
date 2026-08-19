@@ -1,197 +1,358 @@
 import * as React from "react"
-import { IconSearch, IconEye, IconBan, IconPlus } from "@tabler/icons-react"
-import { Input } from "@workspace/ui/components/input"
+import {
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  createColumnHelper,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  FlexRender,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  tableFeatures,
+  useTable,
+  type ColumnFiltersState,
+  type ColumnVisibilityState,
+  type SortingState,
+} from "@tanstack/react-table"
+import {
+  IconSearch,
+  IconEye,
+  IconBan,
+  IconX,
+} from "@tabler/icons-react"
+
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
+import { Input } from "@workspace/ui/components/input"
+import { TableCell, TableRow } from "@workspace/ui/components/table"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@workspace/ui/components/table"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select"
+  DataTable,
+  DataTableFacetedFilter,
+} from "@workspace/ui/components/data-table"
+import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type JournalEntry,
   JOURNAL_TYPE_META,
   ENTRY_STATUS_META,
+  JOURNAL_TYPE_OPTIONS,
+  ENTRY_STATUS_OPTIONS,
 } from "@/lib/journal-entries-data"
 import { formatRupiah } from "@/lib/accounts-data"
 
+const features = tableFeatures({
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortedRowModel: createSortedRowModel(),
+})
+
+const columnHelper = createColumnHelper<typeof features, JournalEntry>()
+
+function buildColumns(
+  onViewDetail: (entry: JournalEntry) => void,
+  onRequestCancel: (entry: JournalEntry) => void
+) {
+  return columnHelper.columns([
+    columnHelper.accessor("id", {
+      header: "ID Jurnal",
+      cell: ({ row }) => (
+        <button
+          type="button"
+          className="text-primary hover:underline font-semibold font-mono text-sm"
+          onClick={() => onViewDetail(row.original)}
+        >
+          {row.original.id}
+        </button>
+      ),
+      enableHiding: false,
+    }),
+    columnHelper.accessor("date", {
+      header: "Tanggal",
+      cell: ({ row }) => (
+        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+      ),
+    }),
+    columnHelper.accessor("reference", {
+      header: "Referensi",
+      cell: ({ row }) => (
+        <span className="font-medium max-w-[150px] truncate block">
+          {row.original.reference || <span className="text-muted-foreground/50 italic">-</span>}
+        </span>
+      ),
+    }),
+    columnHelper.accessor("note", {
+      header: "Keterangan / Catatan",
+      cell: ({ row }) => (
+        <span className="max-w-[250px] truncate block" title={row.original.note}>
+          {row.original.note}
+        </span>
+      ),
+    }),
+    columnHelper.accessor("type", {
+      header: "Jurnal",
+      cell: ({ row }) => {
+        const typeMeta = JOURNAL_TYPE_META[row.original.type]
+        return (
+          <Badge variant="secondary" className={`${typeMeta.color} font-medium`}>
+            {typeMeta.label}
+          </Badge>
+        )
+      },
+      filterFn: (row, _columnId, filterValue: string[]) => {
+        if (!filterValue?.length) return true
+        return filterValue.includes(row.original.type)
+      },
+    }),
+    columnHelper.accessor("totalDebit", {
+      header: () => <div className="text-right">Total Debit/Kredit</div>,
+      cell: ({ row }) => (
+        <div className="text-right font-mono text-sm tabular-nums font-semibold">
+          {formatRupiah(row.original.totalDebit)}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ row }) => {
+        const statusMeta = ENTRY_STATUS_META[row.original.status]
+        return (
+          <Badge variant="outline" className={`ring-1 ${statusMeta.chip}`}>
+            {statusMeta.label}
+          </Badge>
+        )
+      },
+      filterFn: (row, _columnId, filterValue: string[]) => {
+        if (!filterValue?.length) return true
+        return filterValue.includes(row.original.status)
+      },
+    }),
+    columnHelper.display({
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const entry = row.original
+        return (
+          <div className="flex justify-end gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8"
+              onClick={() => onViewDetail(entry)}
+              aria-label="Lihat detail"
+            >
+              <IconEye className="size-4" />
+            </Button>
+            {entry.status === "posted" && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 text-destructive hover:bg-destructive/15"
+                onClick={() => onRequestCancel(entry)}
+                aria-label="Batalkan jurnal"
+              >
+                <IconBan className="size-4" />
+              </Button>
+            )}
+          </div>
+        )
+      },
+    }),
+  ])
+}
+
+const COLUMN_LABELS: Record<string, string> = {
+  id: "ID Jurnal",
+  date: "Tanggal",
+  reference: "Referensi",
+  note: "Catatan",
+  type: "Tipe",
+  totalDebit: "Total",
+  status: "Status",
+}
+
 interface JournalEntryDataTableProps {
   data: JournalEntry[]
-  onAddEntry: () => void
   onViewDetail: (entry: JournalEntry) => void
   onCancelEntry: (entry: JournalEntry) => void
 }
 
 export function JournalEntryDataTable({
   data,
-  onAddEntry,
   onViewDetail,
   onCancelEntry,
 }: JournalEntryDataTableProps) {
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<ColumnVisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  })
   const [search, setSearch] = React.useState("")
-  const [typeFilter, setTypeFilter] = React.useState<string>("all")
-  const [statusFilter, setStatusFilter] = React.useState<string>("all")
+  const [pendingCancel, setPendingCancel] = React.useState<JournalEntry | null>(null)
 
-  const filteredEntries = React.useMemo(() => {
-    return data.filter((entry) => {
-      const matchesSearch =
-        entry.id.toLowerCase().includes(search.toLowerCase()) ||
-        (entry.reference && entry.reference.toLowerCase().includes(search.toLowerCase())) ||
-        (entry.note && entry.note.toLowerCase().includes(search.toLowerCase()))
+  const columns = React.useMemo(
+    () => buildColumns(onViewDetail, setPendingCancel),
+    [onViewDetail]
+  )
 
-      const matchesType = typeFilter === "all" || entry.type === typeFilter
-      const matchesStatus = statusFilter === "all" || entry.status === statusFilter
+  const table = useTable({
+    features,
+    data,
+    columns,
+    state: {
+      sorting,
+      columnVisibility,
+      columnFilters,
+      pagination,
+    },
+    getRowId: (row) => row.id,
+    enableRowSelection: false,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+  })
 
-      return matchesSearch && matchesType && matchesStatus
+  const columnFilteredRows = table.getFilteredRowModel().rows
+
+  const filteredRows = React.useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return columnFilteredRows
+    return columnFilteredRows.filter(
+      (row) =>
+        row.original.id.toLowerCase().includes(q) ||
+        (row.original.reference && row.original.reference.toLowerCase().includes(q)) ||
+        (row.original.note && row.original.note.toLowerCase().includes(q))
+    )
+  }, [search, columnFilteredRows])
+
+  const { pageIndex, pageSize } = pagination
+  const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize))
+  const pagedRows = filteredRows.slice(
+    pageIndex * pageSize,
+    (pageIndex + 1) * pageSize
+  )
+
+  const hasActiveFilters = search.trim() !== "" || columnFilters.length > 0
+
+  function resetAllFilters() {
+    setSearch("")
+    setColumnFilters([])
+    setPagination((p) => ({ ...p, pageIndex: 0 }))
+  }
+
+  function getFacetValues(columnId: string): string[] {
+    const filterValue = columnFilters.find((f) => f.id === columnId)?.value
+    return Array.isArray(filterValue) ? (filterValue as string[]) : []
+  }
+
+  function setFacetFilter(columnId: string, values: string[]) {
+    setColumnFilters((prev) => {
+      const without = prev.filter((f) => f.id !== columnId)
+      if (values.length === 0) return without
+      return [...without, { id: columnId, value: values }]
     })
-  }, [data, search, typeFilter, statusFilter])
+    setPagination((p) => ({ ...p, pageIndex: 0 }))
+  }
 
   return (
-    <div className="space-y-4">
-      {/* Filters Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative flex-1 max-w-sm">
-            <IconSearch className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
-            <Input
-              placeholder="Cari ID, referensi, catatan..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-8"
+    <>
+      <DataTable
+        table={table}
+        rows={pagedRows}
+        columnCount={columns.length}
+        columnLabels={COLUMN_LABELS}
+        emptyMessage="Tidak ada transaksi jurnal ditemukan."
+        toolbar={
+          <>
+            <div className="relative">
+              <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Cari ID, referensi, catatan..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setPagination((p) => ({ ...p, pageIndex: 0 }))
+                }}
+                className="h-8 w-64 pl-8"
+              />
+            </div>
+
+            <DataTableFacetedFilter
+              label="Tipe Jurnal"
+              options={JOURNAL_TYPE_OPTIONS}
+              selected={getFacetValues("type")}
+              onSelectionChange={(v) => setFacetFilter("type", v)}
             />
-          </div>
 
-          <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
-            <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Semua Jurnal" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Semua Jurnal</SelectItem>
-              <SelectItem value="general">Jurnal Umum</SelectItem>
-              <SelectItem value="sales">Jurnal Penjualan</SelectItem>
-              <SelectItem value="purchase">Jurnal Pembelian</SelectItem>
-              <SelectItem value="cash">Jurnal Kas/Bank</SelectItem>
-            </SelectContent>
-          </Select>
+            <DataTableFacetedFilter
+              label="Status"
+              options={ENTRY_STATUS_OPTIONS}
+              selected={getFacetValues("status")}
+              onSelectionChange={(v) => setFacetFilter("status", v)}
+            />
 
-          <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "all")}>
-            <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Semua Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Semua Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="posted">Posted</SelectItem>
-              <SelectItem value="cancelled">Batal</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Button size="sm" onClick={onAddEntry}>
-          <IconPlus className="size-4 mr-2" />
-          Input Jurnal Manual
-        </Button>
-      </div>
-
-      {/* Table */}
-      <div className="rounded-md border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[140px]">ID Jurnal</TableHead>
-              <TableHead className="w-[120px]">Tanggal</TableHead>
-              <TableHead className="w-[150px]">Referensi</TableHead>
-              <TableHead>Keterangan / Catatan</TableHead>
-              <TableHead className="w-[130px]">Jurnal</TableHead>
-              <TableHead className="text-right w-[150px]">Total Debit/Kredit</TableHead>
-              <TableHead className="w-[110px]">Status</TableHead>
-              <TableHead className="w-[100px] text-right">Aksi</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredEntries.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
-                  Tidak ada transaksi jurnal ditemukan.
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredEntries.map((entry) => {
-                const typeMeta = JOURNAL_TYPE_META[entry.type]
-                const statusMeta = ENTRY_STATUS_META[entry.status]
-
-                return (
-                  <TableRow key={entry.id}>
-                    <TableCell className="font-mono text-sm font-medium">
-                      <button
-                        type="button"
-                        className="text-primary hover:underline font-semibold"
-                        onClick={() => onViewDetail(entry)}
-                      >
-                        {entry.id}
-                      </button>
-                    </TableCell>
-                    <TableCell className="font-mono text-sm tabular-nums">{entry.date}</TableCell>
-                    <TableCell className="font-medium max-w-[150px] truncate">
-                      {entry.reference || <span className="text-muted-foreground/50 italic">-</span>}
-                    </TableCell>
-                    <TableCell className="max-w-[250px] truncate" title={entry.note}>
-                      {entry.note}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className={`${typeMeta.color} font-medium`}>
-                        {typeMeta.label}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right font-mono text-sm tabular-nums font-semibold">
-                      {formatRupiah(entry.totalDebit)}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={`ring-1 ${statusMeta.chip}`}>
-                        {statusMeta.label}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="size-8"
-                          onClick={() => onViewDetail(entry)}
-                          aria-label="Lihat detail"
-                        >
-                          <IconEye className="size-4" />
-                        </Button>
-                        {entry.status === "posted" && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-8 text-destructive hover:bg-destructive/15"
-                            onClick={() => onCancelEntry(entry)}
-                            aria-label="Batalkan jurnal"
-                          >
-                            <IconBan className="size-4" />
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-muted-foreground"
+                onClick={resetAllFilters}
+              >
+                Reset
+                <IconX className="ml-1 size-3.5" />
+              </Button>
             )}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+          </>
+        }
+        renderRow={(row) => (
+          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                <FlexRender cell={cell} />
+              </TableCell>
+            ))}
+          </TableRow>
+        )}
+        pagination={{
+          pageIndex,
+          pageCount,
+          pageSize,
+          selectedCount: 0,
+          totalCount: filteredRows.length,
+          onPageChange: (index) =>
+            setPagination((p) => ({ ...p, pageIndex: index })),
+          onPageSizeChange: (size) =>
+            setPagination({ pageIndex: 0, pageSize: size }),
+        }}
+      />
+      <ConfirmDialog
+        open={pendingCancel !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingCancel(null)
+        }}
+        title="Batalkan Jurnal Transaksi?"
+        description={
+          <>
+            Jurnal <span className="font-medium text-foreground">{pendingCancel?.id}</span> akan dibatalkan. Tindakan ini akan membuat status jurnal menjadi Batal.
+          </>
+        }
+        confirmLabel="Batalkan"
+        onConfirm={() => {
+          if (pendingCancel) onCancelEntry(pendingCancel)
+          setPendingCancel(null)
+        }}
+      />
+    </>
   )
 }

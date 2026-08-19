@@ -60,14 +60,13 @@ export function PaymentsFormSheet({
   onField,
   onSave,
 }: PaymentsFormSheetProps) {
-  // Cash & Bank accounts list (Level 3 under 1110 subclass)
   const cashBankAccounts = React.useMemo(() => {
     return accounts.filter((acc) => acc.level === 3 && acc.parentCode === "1100" && acc.code.startsWith("111"))
   }, [accounts])
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
+      <SheetContent side="right" className="sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Pencatatan Transaksi Pembayaran</SheetTitle>
           <SheetDescription>
@@ -77,10 +76,9 @@ export function PaymentsFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* Direction */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="pmt-dir">Arah Aliran Dana</FieldLabel>
               <Select
@@ -100,7 +98,6 @@ export function PaymentsFormSheet({
               </Select>
             </Field>
 
-            {/* Partner Name */}
             <Field>
               <FieldLabel htmlFor="pmt-partner">Mitra / Partner (Nama Klien/Vendor)</FieldLabel>
               <Input
@@ -112,7 +109,6 @@ export function PaymentsFormSheet({
               />
             </Field>
 
-            {/* Date */}
             <Field>
               <FieldLabel>Tanggal Pembayaran</FieldLabel>
               <DatePicker
@@ -123,7 +119,6 @@ export function PaymentsFormSheet({
               />
             </Field>
 
-            {/* Cash/Bank Account */}
             <Field>
               <FieldLabel htmlFor="pmt-account">Akun Kas / Bank Pengirim/Penerima</FieldLabel>
               <Select
@@ -143,7 +138,6 @@ export function PaymentsFormSheet({
               </Select>
             </Field>
 
-            {/* Method */}
             <Field>
               <FieldLabel htmlFor="pmt-method">Metode Pembayaran</FieldLabel>
               <Select
@@ -163,7 +157,6 @@ export function PaymentsFormSheet({
               </Select>
             </Field>
 
-            {/* Amount */}
             <Field>
               <FieldLabel htmlFor="pmt-amount">Nominal Jumlah Pembayaran (Rp)</FieldLabel>
               <Input
@@ -177,7 +170,6 @@ export function PaymentsFormSheet({
               />
             </Field>
 
-            {/* Reference */}
             <Field>
               <FieldLabel htmlFor="pmt-ref">Referensi Dokumen (E.g. No. Invoice / Memo)</FieldLabel>
               <Input
@@ -188,7 +180,6 @@ export function PaymentsFormSheet({
               />
             </Field>
 
-            {/* Note */}
             <Field>
               <FieldLabel htmlFor="pmt-note">Catatan / Deskripsi Tambahan</FieldLabel>
               <Textarea
@@ -201,13 +192,13 @@ export function PaymentsFormSheet({
             </Field>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!form.partnerName || !form.amount || !form.accountCode}>
               Simpan Pembayaran
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

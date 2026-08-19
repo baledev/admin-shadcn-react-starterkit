@@ -21,7 +21,7 @@ import {
   PAYMENT_METHOD_META,
 } from "@/lib/payments-data"
 import { initialAccounts, formatRupiah } from "@/lib/accounts-data"
-import { IconDownload } from "@tabler/icons-react"
+import { IconDownload, IconPlus } from "@tabler/icons-react"
 
 export const Route = createFileRoute("/_auth/finance/payments")({
   component: PaymentsPage,
@@ -101,15 +101,17 @@ function PaymentsPage() {
           <PageHeader
             title="Penerimaan & Pengeluaran Kas (Payments)"
             description="Daftar mutasi aliran dana masuk/keluar dari kas/bank atas pembayaran tagihan invoice, bill, kasbon, operasional."
-          />
+          >
+            <Button size="sm" onClick={handleAddPayment}>
+              <IconPlus className="size-4 mr-2" />
+              Catat Pembayaran
+            </Button>
+          </PageHeader>
 
-          <div className="rounded-xl border border-border bg-card p-4">
-            <PaymentsDataTable
-              data={payments}
-              onAddPayment={handleAddPayment}
-              onViewDetail={handleViewDetail}
-            />
-          </div>
+          <PaymentsDataTable
+            data={payments}
+            onViewDetail={handleViewDetail}
+          />
         </div>
       </div>
 

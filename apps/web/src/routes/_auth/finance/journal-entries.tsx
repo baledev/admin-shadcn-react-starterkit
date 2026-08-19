@@ -1,5 +1,7 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
+import { IconPlus } from "@tabler/icons-react"
+import { Button } from "@workspace/ui/components/button"
 import { PageHeader } from "@/components/page-header"
 import { JournalEntryDataTable } from "@/components/journal-entry-data-table"
 import { JournalEntryDetailSheet } from "@/components/journal-entry-detail-sheet"
@@ -114,16 +116,18 @@ function JournalEntriesPage() {
           <PageHeader
             title="Journal Entries (Buku Besar)"
             description="Daftar pos jurnal umum transaksi keuangan perusahaan untuk pembukuan double-entry balanced."
-          />
+          >
+            <Button size="sm" onClick={handleAddEntry}>
+              <IconPlus className="size-4 mr-2" />
+              Input Jurnal Manual
+            </Button>
+          </PageHeader>
 
-          <div className="rounded-xl border border-border bg-card p-4">
-            <JournalEntryDataTable
-              data={entries}
-              onAddEntry={handleAddEntry}
-              onViewDetail={handleViewDetail}
-              onCancelEntry={handleCancelEntry}
-            />
-          </div>
+          <JournalEntryDataTable
+            data={entries}
+            onViewDetail={handleViewDetail}
+            onCancelEntry={handleCancelEntry}
+          />
         </div>
       </div>
 

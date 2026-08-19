@@ -39,6 +39,8 @@ type NavItem = {
     title: string
     url: string
   }[]
+  exact?: boolean
+  activePrefix?: string
 }
 
 type NavGroup = {
@@ -60,12 +62,14 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
 
               if (!hasChildren) {
                 const isExact = pathname === item.url
-                const isChild = pathname.startsWith(item.url + "/")
+                const isChild = item.exact ? false : pathname.startsWith(item.url + "/")
+                const isPrefixActive = item.activePrefix ? pathname.startsWith(item.activePrefix) : false
+                const isActive = isExact || isChild || isPrefixActive
 
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      isActive={isExact || isChild}
+                      isActive={isActive}
                       render={<NavLink url={item.url} />}
                       tooltip={item.title}
                     >

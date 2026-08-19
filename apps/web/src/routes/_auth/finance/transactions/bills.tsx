@@ -16,9 +16,10 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  SheetFooter,
 } from "@workspace/ui/components/sheet"
 import { initialAccounts, formatRupiah } from "@/lib/accounts-data"
-import { IconDownload } from "@tabler/icons-react"
+import { IconDownload, IconPlus } from "@tabler/icons-react"
 
 export const Route = createFileRoute("/_auth/finance/transactions/bills")({
   component: BillsPage,
@@ -30,14 +31,14 @@ function BillsPage() {
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
 
-  const [formState, setFormState] = React.useState<BillFormState>({
+  const [formState, setFormState] = React.useState<BillFormState>(() => ({
     vendorName: "",
     vendorEmail: "",
     issuedAt: new Date().toISOString().split("T")[0],
     dueAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
     notes: "",
     lines: [{ description: "", accountCode: "", qty: 1, unitPrice: 0 }],
-  })
+  }))
 
   const handleField = <K extends keyof BillFormState>(
     key: K,
@@ -98,15 +99,20 @@ function BillsPage() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="mb-4">
-        <h3 className="text-base font-semibold">Daftar Bill Vendor (Accounts Payable)</h3>
-        <p className="text-sm text-muted-foreground">List tagihan masuk dari vendor/supplier atas pembelian barang/jasa operasional.</p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-sm font-medium text-foreground">Daftar Bill Vendor (Accounts Payable)</h2>
+          <p className="text-sm text-muted-foreground">List tagihan masuk dari vendor/supplier atas pembelian barang/jasa operasional.</p>
+        </div>
+        <Button size="sm" onClick={handleAddBill}>
+          <IconPlus className="size-4 mr-2" />
+          Catat Bill Baru
+        </Button>
       </div>
 
       <BillsDataTable
         data={bills}
-        onAddBill={handleAddBill}
         onViewDetail={handleViewDetail}
         onPayBill={handlePayBill}
       />
@@ -123,13 +129,13 @@ function BillsPage() {
       {/* Bill Detail Sheet */}
       {selectedBill && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md">
+          <SheetContent className="sm:max-w-md flex flex-col h-full">
             <SheetHeader>
               <SheetTitle className="font-mono">{selectedBill.id}</SheetTitle>
               <SheetDescription>Dibuat pada {selectedBill.issuedAt}</SheetDescription>
             </SheetHeader>
 
-            <div className="mt-6 flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
                 <Badge variant="outline" className={`ring-1 ${BILL_STATUS_META[selectedBill.status].chip}`}>
@@ -204,14 +210,14 @@ function BillsPage() {
                   <span className="font-mono">{formatRupiah(selectedBill.total)}</span>
                 </div>
               </div>
-
-              <div className="flex gap-3">
-                <Button className="flex-1" variant="outline" size="sm">
-                  <IconDownload className="size-4 mr-2" />
-                  Cetak Bill
-                </Button>
               </div>
-            </div>
+
+            <SheetFooter className="mt-auto border-t border-border pt-4">
+              <Button className="w-full" variant="outline" size="sm">
+                <IconDownload className="size-4 mr-2" />
+                Cetak Bill
+              </Button>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       )}

@@ -59,18 +59,16 @@ export function BillsFormSheet({
   onField,
   onSave,
 }: BillsFormSheetProps) {
-  // We want to list expense accounts for bill lines
   const expenseAccounts = React.useMemo(() => {
-    return accounts.filter((acc) => acc.level === 3 && (acc.type === "expense" || acc.code.startsWith("12"))) // expense or fixed asset
+    return accounts.filter((acc) => acc.level === 3 && (acc.type === "expense" || acc.code.startsWith("12")))
   }, [accounts])
 
-  // Calculate totals
   const { subtotal, tax, total } = React.useMemo(() => {
     const subtotal = form.lines.reduce(
       (sum, line) => sum + (line.qty * line.unitPrice || 0),
       0
     )
-    const tax = Math.round(subtotal * 0.1) // 10% tax
+    const tax = Math.round(subtotal * 0.1)
     const total = subtotal + tax
     return { subtotal, tax, total }
   }, [form.lines])
@@ -78,6 +76,7 @@ export function BillsFormSheet({
   const handleLineChange = (
     index: number,
     field: "description" | "accountCode" | "qty" | "unitPrice",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any
   ) => {
     const newLines = [...form.lines]
@@ -100,7 +99,7 @@ export function BillsFormSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-2xl">
+      <SheetContent side="right" className="sm:max-w-2xl">
         <SheetHeader>
           <SheetTitle>Catat Bill Vendor Baru (AP)</SheetTitle>
           <SheetDescription>
@@ -110,10 +109,9 @@ export function BillsFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* Vendor Info */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel htmlFor="bill-vendor">Nama Vendor</FieldLabel>
@@ -161,7 +159,6 @@ export function BillsFormSheet({
 
             <Separator />
 
-            {/* Line Items */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-semibold">Rincian Pembelian (Expense / Aset)</h4>
@@ -239,7 +236,6 @@ export function BillsFormSheet({
               </div>
             </div>
 
-            {/* Calculations summaries */}
             <div className="bg-muted/40 p-4 rounded-lg border border-border space-y-2 text-sm font-mono">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
@@ -256,7 +252,6 @@ export function BillsFormSheet({
               </div>
             </div>
 
-            {/* Notes */}
             <Field>
               <FieldLabel htmlFor="bill-notes">Catatan Tambahan</FieldLabel>
               <Textarea
@@ -269,13 +264,13 @@ export function BillsFormSheet({
             </Field>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={form.lines.some(l => !l.accountCode || !l.description)}>
               Simpan Bill
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

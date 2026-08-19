@@ -112,6 +112,7 @@ const data = {
           title: "Overview",
           url: "/finance",
           icon: <IconChartBar />,
+          exact: true,
         },
         {
           title: "Chart of Accounts",
@@ -127,6 +128,7 @@ const data = {
           title: "Transactions",
           url: "/finance/transactions/invoices",
           icon: <IconWallet />,
+          activePrefix: "/finance/transactions",
         },
         {
           title: "Payments",

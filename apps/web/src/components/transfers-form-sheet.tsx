@@ -51,32 +51,29 @@ export function TransfersFormSheet({
   onField,
   onSave,
 }: TransfersFormSheetProps) {
-  // Cash & Bank accounts list (Level 3 under 1110 subclass)
   const cashBankAccounts = React.useMemo(() => {
     return accounts.filter((acc) => acc.level === 3 && acc.parentCode === "1100" && acc.code.startsWith("111"))
   }, [accounts])
 
-  // Filter destination accounts to prevent transferring to the same account
   const destinationAccounts = React.useMemo(() => {
     return cashBankAccounts.filter((acc) => acc.code !== form.fromAccountCode)
   }, [cashBankAccounts, form.fromAccountCode])
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
+      <SheetContent side="right" className="sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Mutasi Dana Antar Rekening</SheetTitle>
           <SheetDescription>
-            Pindahkan saldo dana kas/bank internal perusahaan ke rekening/kas kasbon bank lain.
+            Pindahkan saldo dana kas/bank internal perusahaan ke rekening/kas bank lain.
           </SheetDescription>
         </SheetHeader>
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* From Account */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="trf-from">Dari Rekening / Kas</FieldLabel>
               <Select
@@ -96,7 +93,6 @@ export function TransfersFormSheet({
               </Select>
             </Field>
 
-            {/* To Account */}
             <Field>
               <FieldLabel htmlFor="trf-to">Ke Rekening / Kas Tujuan</FieldLabel>
               <Select
@@ -117,7 +113,6 @@ export function TransfersFormSheet({
               </Select>
             </Field>
 
-            {/* Date */}
             <Field>
               <FieldLabel>Tanggal Mutasi</FieldLabel>
               <DatePicker
@@ -128,7 +123,6 @@ export function TransfersFormSheet({
               />
             </Field>
 
-            {/* Amount */}
             <Field>
               <FieldLabel htmlFor="trf-amount">Nominal Transfer (Rp)</FieldLabel>
               <Input
@@ -142,7 +136,6 @@ export function TransfersFormSheet({
               />
             </Field>
 
-            {/* Note */}
             <Field>
               <FieldLabel htmlFor="trf-note">Keterangan / Catatan</FieldLabel>
               <Textarea
@@ -155,13 +148,13 @@ export function TransfersFormSheet({
             </Field>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!form.fromAccountCode || !form.toAccountCode || !form.amount}>
               Simpan Transfer
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

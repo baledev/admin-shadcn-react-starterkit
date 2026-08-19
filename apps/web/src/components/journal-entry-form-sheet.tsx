@@ -61,12 +61,10 @@ export function JournalEntryFormSheet({
   onField,
   onSave,
 }: JournalEntryFormSheetProps) {
-  // Only Level 3 accounts can be selected for journal entries
   const level3Accounts = React.useMemo(() => {
     return accounts.filter((acc) => acc.level === 3)
   }, [accounts])
 
-  // Calculate total debit and credit dynamically
   const { totalDebit, totalCredit, isBalanced } = React.useMemo(() => {
     const totalDebit = form.lines.reduce((sum, line) => sum + (line.debit || 0), 0)
     const totalCredit = form.lines.reduce((sum, line) => sum + (line.credit || 0), 0)
@@ -74,26 +72,25 @@ export function JournalEntryFormSheet({
     return { totalDebit, totalCredit, isBalanced }
   }, [form.lines])
 
-  // Handle changes to a specific line
   const handleLineChange = (
     index: number,
     field: "accountCode" | "description" | "debit" | "credit",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any
   ) => {
     const newLines = [...form.lines]
     
     if (field === "debit" && value > 0) {
-      newLines[index] = { ...newLines[index], [field]: value, credit: 0 } // if debit entered, clear credit
+      newLines[index] = { ...newLines[index], [field]: value, credit: 0 }
     } else if (field === "credit" && value > 0) {
-      newLines[index] = { ...newLines[index], [field]: value, debit: 0 } // if credit entered, clear debit
+      newLines[index] = { ...newLines[index], [field]: value, debit: 0 }
     } else {
       newLines[index] = { ...newLines[index], [field]: value }
     }
 
     onField("lines", newLines)
-  };
+  }
 
-  // Add a new line
   const addLine = () => {
     onField("lines", [
       ...form.lines,
@@ -101,16 +98,15 @@ export function JournalEntryFormSheet({
     ])
   }
 
-  // Remove a line
   const removeLine = (index: number) => {
-    if (form.lines.length <= 2) return // Keep at least 2 lines for double entry
+    if (form.lines.length <= 2) return
     const newLines = form.lines.filter((_, idx) => idx !== index)
     onField("lines", newLines)
   }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-2xl">
+      <SheetContent side="right" className="sm:max-w-2xl">
         <SheetHeader>
           <SheetTitle>Input Jurnal Manual (Double-Entry)</SheetTitle>
           <SheetDescription>
@@ -120,10 +116,9 @@ export function JournalEntryFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-6 overflow-y-auto px-1">
-            {/* Header info */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel>Tanggal</FieldLabel>
@@ -177,7 +172,6 @@ export function JournalEntryFormSheet({
               </Field>
             </div>
 
-            {/* Lines Table */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-semibold">Daftar Akun Ledger (Baris Jurnal)</h4>
@@ -191,7 +185,6 @@ export function JournalEntryFormSheet({
                 {form.lines.map((line, idx) => (
                   <div key={idx} className="flex gap-2 items-start border-b border-border pb-3 last:border-b-0 last:pb-0">
                     <div className="flex-1 space-y-2">
-                      {/* Account Selector */}
                       <Select
                         value={line.accountCode}
                         onValueChange={(val) => handleLineChange(idx, "accountCode", val)}
@@ -216,7 +209,6 @@ export function JournalEntryFormSheet({
                       />
                     </div>
 
-                    {/* Debit */}
                     <div className="w-[120px]">
                       <Input
                         type="number"
@@ -227,7 +219,6 @@ export function JournalEntryFormSheet({
                       />
                     </div>
 
-                    {/* Credit */}
                     <div className="w-[120px]">
                       <Input
                         type="number"
@@ -253,7 +244,6 @@ export function JournalEntryFormSheet({
                 ))}
               </div>
 
-              {/* Running Totals and Balance indicator */}
               <div className="flex items-center justify-between bg-muted/40 p-3 rounded-lg border border-border text-sm">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 font-medium">
@@ -280,13 +270,13 @@ export function JournalEntryFormSheet({
             </div>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!isBalanced || form.lines.some(l => !l.accountCode)}>
               Post Jurnal
             </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

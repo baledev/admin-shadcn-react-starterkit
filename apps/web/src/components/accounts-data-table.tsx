@@ -1,5 +1,5 @@
 import * as React from "react"
-import { IconSearch, IconPencil, IconTrash, IconPlus } from "@tabler/icons-react"
+import { IconSearch, IconPencil, IconTrash } from "@tabler/icons-react"
 import { Input } from "@workspace/ui/components/input"
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -26,21 +26,18 @@ import {
 
 interface AccountsDataTableProps {
   data: Account[]
-  onAddAccount: () => void
   onEditAccount: (account: Account) => void
   onDeleteAccount: (account: Account) => void
 }
 
 export function AccountsDataTable({
   data,
-  onAddAccount,
   onEditAccount,
   onDeleteAccount,
 }: AccountsDataTableProps) {
   const [search, setSearch] = React.useState("")
   const [typeFilter, setTypeFilter] = React.useState<string>("all")
 
-  // Filter accounts based on search and type filter
   const filteredAccounts = React.useMemo(() => {
     return data.filter((acc) => {
       const matchesSearch =
@@ -56,43 +53,36 @@ export function AccountsDataTable({
   return (
     <div className="space-y-4">
       {/* Filters Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative flex-1 max-w-sm">
-            <IconSearch className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
-            <Input
-              placeholder="Cari kode atau nama akun..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-8"
-            />
-          </div>
-          
-          <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Tipe Akun" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Semua Tipe</SelectItem>
-              <SelectItem value="asset">Aset</SelectItem>
-              <SelectItem value="liability">Kewajiban</SelectItem>
-              <SelectItem value="equity">Ekuitas</SelectItem>
-              <SelectItem value="revenue">Pendapatan</SelectItem>
-              <SelectItem value="expense">Beban</SelectItem>
-            </SelectContent>
-          </Select>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1 max-w-sm">
+          <IconSearch className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
+          <Input
+            placeholder="Cari kode atau nama akun..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-8"
+          />
         </div>
-
-        <Button size="sm" onClick={onAddAccount}>
-          <IconPlus className="size-4 mr-2" />
-          Tambah Akun
-        </Button>
+        
+        <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Tipe Akun" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua Tipe</SelectItem>
+            <SelectItem value="asset">Aset</SelectItem>
+            <SelectItem value="liability">Kewajiban</SelectItem>
+            <SelectItem value="equity">Ekuitas</SelectItem>
+            <SelectItem value="revenue">Pendapatan</SelectItem>
+            <SelectItem value="expense">Beban</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Hierarchical Table */}
-      <div className="rounded-md border border-border">
+      <div className="rounded-md border border-border overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead className="w-[120px]">Kode</TableHead>
               <TableHead>Nama Akun</TableHead>
@@ -112,23 +102,20 @@ export function AccountsDataTable({
               filteredAccounts.map((acc) => {
                 const typeMeta = ACCOUNT_TYPE_META[acc.type]
 
-                // Indentation styling based on level
-                let indentClass = ""
+                const indentClass =
+                  acc.level === 1 ? "pl-2" : acc.level === 2 ? "pl-6" : "pl-12"
                 let rowBgClass = ""
-                let nameClass = "font-medium"
-
                 if (acc.level === 1) {
-                  indentClass = "pl-2"
                   rowBgClass = "bg-muted/30 font-bold"
-                  nameClass = "font-bold text-foreground text-base"
                 } else if (acc.level === 2) {
-                  indentClass = "pl-6"
                   rowBgClass = "font-semibold"
-                  nameClass = "font-semibold text-foreground/90"
-                } else {
-                  indentClass = "pl-12"
-                  nameClass = "font-normal text-muted-foreground"
                 }
+                const nameClass =
+                  acc.level === 1
+                    ? "font-bold text-foreground text-base"
+                    : acc.level === 2
+                      ? "font-semibold text-foreground/90"
+                      : "font-normal text-muted-foreground"
 
                 return (
                   <TableRow key={acc.code} className={rowBgClass}>

@@ -55,7 +55,7 @@ export function EquityFormSheet({
 }: EquityFormSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
+      <SheetContent side="right" className="sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Input Transaksi Modal / Ekuitas</SheetTitle>
           <SheetDescription>
@@ -65,10 +65,9 @@ export function EquityFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* Type */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="eq-type">Jenis Transaksi</FieldLabel>
               <Select
@@ -88,7 +87,6 @@ export function EquityFormSheet({
               </Select>
             </Field>
 
-            {/* Investor Name */}
             <Field>
               <FieldLabel htmlFor="eq-investor">Pihak / Nama Pemilik</FieldLabel>
               <Input
@@ -100,7 +98,6 @@ export function EquityFormSheet({
               />
             </Field>
 
-            {/* Date */}
             <Field>
               <FieldLabel>Tanggal Transaksi</FieldLabel>
               <DatePicker
@@ -111,7 +108,6 @@ export function EquityFormSheet({
               />
             </Field>
 
-            {/* Amount */}
             <Field>
               <FieldLabel htmlFor="eq-amount">Nominal Transaksi (Rp)</FieldLabel>
               <Input
@@ -125,7 +121,6 @@ export function EquityFormSheet({
               />
             </Field>
 
-            {/* Note */}
             <Field>
               <FieldLabel htmlFor="eq-note">Keterangan / Catatan</FieldLabel>
               <Textarea
@@ -137,7 +132,6 @@ export function EquityFormSheet({
               />
             </Field>
 
-            {/* Journal entry preview indicator */}
             <div className="bg-muted/40 rounded-lg p-3 border border-border text-xs text-muted-foreground leading-normal space-y-1">
               <span className="font-semibold block text-foreground mb-1">Preview Double-Entry (Auto):</span>
               <div className="flex justify-between font-mono">
@@ -148,13 +142,13 @@ export function EquityFormSheet({
             </div>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!form.investorName || !form.amount}>
               Simpan Transaksi
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>

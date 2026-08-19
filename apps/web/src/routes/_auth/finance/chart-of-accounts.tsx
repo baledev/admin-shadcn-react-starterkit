@@ -1,5 +1,7 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
+import { IconPlus } from "@tabler/icons-react"
+import { Button } from "@workspace/ui/components/button"
 import { PageHeader } from "@/components/page-header"
 import { AccountsDataTable } from "@/components/accounts-data-table"
 import { AccountsFormSheet, type AccountFormState } from "@/components/accounts-form-sheet"
@@ -119,16 +121,18 @@ function ChartOfAccountsPage() {
           <PageHeader
             title="Chart of Accounts (CoA)"
             description="Bagan Akun standar keuangan akuntansi perusahaan 3 level (Kelompok Utama, Sub-Grup, Buku Besar)."
-          />
+          >
+            <Button size="sm" onClick={handleAddAccount}>
+              <IconPlus className="size-4 mr-2" />
+              Tambah Akun
+            </Button>
+          </PageHeader>
 
-          <div className="rounded-xl border border-border bg-card p-4">
-            <AccountsDataTable
-              data={accounts}
-              onAddAccount={handleAddAccount}
-              onEditAccount={handleEditAccount}
-              onDeleteAccount={handleDeleteAccount}
-            />
-          </div>
+          <AccountsDataTable
+            data={accounts}
+            onEditAccount={handleEditAccount}
+            onDeleteAccount={handleDeleteAccount}
+          />
         </div>
       </div>
 

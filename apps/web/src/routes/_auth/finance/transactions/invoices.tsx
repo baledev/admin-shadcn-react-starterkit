@@ -15,6 +15,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  SheetFooter,
 } from "@workspace/ui/components/sheet"
 import { IconDownload } from "@tabler/icons-react"
 
@@ -39,9 +40,9 @@ function FinanceInvoicesPage() {
     }).format(n)
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="mb-4">
-        <h3 className="text-base font-semibold">Daftar Invoice Customer (Accounts Receivable)</h3>
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-sm font-medium text-foreground">Daftar Invoice Customer (Accounts Receivable)</h2>
         <p className="text-sm text-muted-foreground">List piutang dari customer hasil dari transaksi penjualan jasa/produk.</p>
       </div>
 
@@ -53,13 +54,13 @@ function FinanceInvoicesPage() {
       {/* Invoice Detail Sheet */}
       {selectedInvoice && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md">
+          <SheetContent className="sm:max-w-md flex flex-col h-full">
             <SheetHeader>
               <SheetTitle className="font-mono">{selectedInvoice.id}</SheetTitle>
               <SheetDescription>Dibuat pada {selectedInvoice.issuedAt}</SheetDescription>
             </SheetHeader>
 
-            <div className="mt-6 flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
                 <Badge variant="outline" className={`ring-1 ${STATUS_META[selectedInvoice.status].chip}`}>
@@ -133,13 +134,14 @@ function FinanceInvoicesPage() {
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <Button className="flex-1" variant="outline" size="sm">
-                  <IconDownload className="size-4 mr-2" />
-                  Cetak Invoice
-                </Button>
               </div>
-            </div>
+
+            <SheetFooter className="mt-auto border-t border-border pt-4">
+              <Button className="w-full" variant="outline" size="sm">
+                <IconDownload className="size-4 mr-2" />
+                Cetak Invoice
+              </Button>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       )}

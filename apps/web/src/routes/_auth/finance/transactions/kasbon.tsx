@@ -20,6 +20,8 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  SheetFooter,
+  SheetClose,
 } from "@workspace/ui/components/sheet"
 import {
   Select,
@@ -29,6 +31,7 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select"
 import { formatRupiah } from "@/lib/accounts-data"
+import { IconPlus } from "@tabler/icons-react"
 import { initialTeamMembers } from "@/lib/team-data"
 import { DatePicker } from "@workspace/ui/components/date-picker"
 import { parseIso, toIsoDate } from "@/lib/date-utils"
@@ -142,15 +145,20 @@ function KasbonPage() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="mb-4">
-        <h3 className="text-base font-semibold">Kasbon & Pinjaman Karyawan (Receivables)</h3>
-        <p className="text-sm text-muted-foreground">Kelola pengajuan kasbon, history cicilan pelunasan tunai, maupun potongan payroll bulanan.</p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-sm font-medium text-foreground">Kasbon & Pinjaman Karyawan (Receivables)</h2>
+          <p className="text-sm text-muted-foreground">Kelola pengajuan kasbon, history cicilan pelunasan tunai, maupun potongan payroll bulanan.</p>
+        </div>
+        <Button size="sm" onClick={handleAddKasbon}>
+          <IconPlus className="size-4 mr-2" />
+          Pengajuan Kasbon
+        </Button>
       </div>
 
       <KasbonDataTable
         data={kasbons}
-        onAddKasbon={handleAddKasbon}
         onViewDetail={handleViewDetail}
         onRecordRepayment={handleRecordRepayment}
       />
@@ -166,14 +174,15 @@ function KasbonPage() {
       {/* Repayment Form Sheet */}
       {selectedKasbon && (
         <Sheet open={isRepayOpen} onOpenChange={setIsRepayOpen}>
-          <SheetContent className="sm:max-w-md">
+          <SheetContent className="sm:max-w-md flex flex-col h-full">
             <SheetHeader>
               <SheetTitle>Catat Pembayaran Cicilan</SheetTitle>
               <SheetDescription>Record cicilan pelunasan kasbon untuk {selectedKasbon.employeeName}.</SheetDescription>
             </SheetHeader>
 
-            <form onSubmit={handleSaveRepayment} className="space-y-4 mt-6">
-              <div className="bg-muted/50 rounded-lg p-3 text-sm space-y-1">
+            <form onSubmit={handleSaveRepayment} className="flex flex-1 flex-col overflow-hidden">
+              <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-4">
+                <div className="bg-muted/50 rounded-lg p-3 text-sm space-y-1">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">ID Kasbon:</span>
                   <span className="font-semibold font-mono">{selectedKasbon.id}</span>
@@ -216,7 +225,7 @@ function KasbonPage() {
                 <Label htmlFor="repay-type">Metode Pembayaran</Label>
                 <Select
                   value={repayType}
-                  onValueChange={(val) => { if (val) setRepayType(val as any) }}
+                  onValueChange={(val) => { if (val) setRepayType(val as "payroll_deduction" | "cash") }}
                 >
                   <SelectTrigger id="repay-type">
                     <SelectValue />
@@ -253,13 +262,14 @@ function KasbonPage() {
                   <span>{formatRupiah(repayAmount)}</span>
                 </div>
               </div>
-
-              <div className="flex gap-3 justify-end pt-4 border-t border-border mt-6">
-                <Button type="button" variant="outline" onClick={() => setIsRepayOpen(false)}>
-                  Batal
-                </Button>
-                <Button type="submit">Catat Pelunasan</Button>
               </div>
+
+              <SheetFooter className="mt-auto border-t border-border pt-4">
+                <Button type="submit">Catat Pelunasan</Button>
+                <SheetClose render={<Button variant="outline" type="button" />}>
+                  Batal
+                </SheetClose>
+              </SheetFooter>
             </form>
           </SheetContent>
         </Sheet>
@@ -268,13 +278,13 @@ function KasbonPage() {
       {/* Kasbon Detail Sheet */}
       {selectedKasbon && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md">
+          <SheetContent className="sm:max-w-md flex flex-col h-full">
             <SheetHeader>
               <SheetTitle className="font-mono">{selectedKasbon.id}</SheetTitle>
               <SheetDescription>Diajukan pada {selectedKasbon.date}</SheetDescription>
             </SheetHeader>
 
-            <div className="mt-6 flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
                 <Badge variant="outline" className={`ring-1 ${KASBON_STATUS_META[selectedKasbon.status].chip}`}>

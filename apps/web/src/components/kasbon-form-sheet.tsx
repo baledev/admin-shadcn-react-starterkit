@@ -49,14 +49,13 @@ export function KasbonFormSheet({
   onField,
   onSave,
 }: KasbonFormSheetProps) {
-  // Find selected employee details to set name/email automatically on save
   const handleEmployeeChange = (id: string) => {
     onField("employeeId", id)
   }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
+      <SheetContent side="right" className="sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Pengajuan Kasbon Karyawan</SheetTitle>
           <SheetDescription>
@@ -66,10 +65,9 @@ export function KasbonFormSheet({
 
         <form
           onSubmit={onSave}
-          className="flex flex-1 flex-col justify-between overflow-hidden mt-6"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="flex-1 space-y-5 overflow-y-auto px-1">
-            {/* Employee Select */}
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="kasbon-employee">Karyawan</FieldLabel>
               <Select value={form.employeeId} onValueChange={(val) => handleEmployeeChange(val || "")}>
@@ -86,7 +84,6 @@ export function KasbonFormSheet({
               </Select>
             </Field>
 
-            {/* Date */}
             <Field>
               <FieldLabel>Tanggal Pengajuan</FieldLabel>
               <DatePicker
@@ -97,7 +94,6 @@ export function KasbonFormSheet({
               />
             </Field>
 
-            {/* Amount */}
             <Field>
               <FieldLabel htmlFor="kasbon-amount">Jumlah Kasbon (Rp)</FieldLabel>
               <Input
@@ -111,7 +107,6 @@ export function KasbonFormSheet({
               />
             </Field>
 
-            {/* Purpose */}
             <Field>
               <FieldLabel htmlFor="kasbon-purpose">Keperluan / Tujuan</FieldLabel>
               <Input
@@ -123,7 +118,6 @@ export function KasbonFormSheet({
               />
             </Field>
 
-            {/* Notes */}
             <Field>
               <FieldLabel htmlFor="kasbon-notes">Catatan Persetujuan / Tenor</FieldLabel>
               <Textarea
@@ -136,13 +130,13 @@ export function KasbonFormSheet({
             </Field>
           </div>
 
-          <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose render={<Button type="button" variant="outline" />}>
-              Batal
-            </SheetClose>
+          <SheetFooter>
             <Button type="submit" disabled={!form.employeeId || !form.amount || !form.purpose}>
               Simpan Pengajuan
             </Button>
+            <SheetClose render={<Button variant="outline" type="button" />}>
+              Batal
+            </SheetClose>
           </SheetFooter>
         </form>
       </SheetContent>
