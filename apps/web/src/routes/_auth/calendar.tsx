@@ -11,7 +11,11 @@ import {
   formatMonthYear,
   startOfWeek,
 } from "@/lib/date-utils"
-import { IconChevronLeft, IconChevronRight, IconPlus } from "@tabler/icons-react"
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconPlus,
+} from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import {
   Tabs,

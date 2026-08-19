@@ -210,7 +210,7 @@ function BoardColumn({
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id })
   return (
-    <div className="flex w-[80%] shrink-0 flex-col gap-3 sm:w-auto sm:shrink sm:flex-1">
+    <div className="flex w-[80%] shrink-0 flex-col gap-3 sm:w-auto sm:flex-1 sm:shrink">
       <div className="flex items-center gap-2">
         <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
           {column.title}
@@ -330,10 +330,7 @@ function KanbanPage() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <PageHeader
-            title="Project Board"
-            subtitle="Acme Workspace"
-          />
+          <PageHeader title="Project Board" subtitle="Acme Workspace" />
 
           <DndContext
             id="kanban-3-board"

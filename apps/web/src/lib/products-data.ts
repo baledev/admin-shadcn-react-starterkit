@@ -2,11 +2,7 @@
 
 export type StockStatus = "in_stock" | "low_stock" | "out_of_stock"
 export type ProductCategory =
-  | "electronics"
-  | "clothing"
-  | "food"
-  | "books"
-  | "other"
+  "electronics" | "clothing" | "food" | "books" | "other"
 
 export type Product = {
   id: string // "PRD-001"
@@ -132,7 +128,8 @@ export const initialProducts: Product[] = [
     stockStatus: "in_stock",
     imageUrl:
       "https://images.unsplash.com/photo-1596007751476-5aa7cce5e7e7?w=64&h=64&fit=crop&auto=format",
-    description: "Full HD webcam with built-in stereo microphone and auto-focus.",
+    description:
+      "Full HD webcam with built-in stereo microphone and auto-focus.",
     createdAt: "2025-12-05",
   },
   {
@@ -283,7 +280,8 @@ export const initialProducts: Product[] = [
     stockStatus: "in_stock",
     imageUrl:
       "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=64&h=64&fit=crop&auto=format",
-    description: "A handbook of agile software craftsmanship by Robert C. Martin.",
+    description:
+      "A handbook of agile software craftsmanship by Robert C. Martin.",
     createdAt: "2026-03-05",
   },
   {

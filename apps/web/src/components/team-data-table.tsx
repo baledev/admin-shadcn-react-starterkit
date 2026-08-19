@@ -26,7 +26,11 @@ import {
   IconX,
 } from "@tabler/icons-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
@@ -221,7 +225,9 @@ function buildColumns(
       header: "Last Active",
       cell: ({ row }) => {
         if (row.original.status === "deactivated") {
-          return <span className="text-xs text-muted-foreground/50">Offline</span>
+          return (
+            <span className="text-xs text-muted-foreground/50">Offline</span>
+          )
         }
         return (
           <span className="text-sm text-muted-foreground">
@@ -336,19 +342,14 @@ function ChangeRoleDialog({
             <DialogTitle>Change Role</DialogTitle>
             <DialogDescription>
               Update the workspace role for{" "}
-              <span className="font-medium text-foreground">
-                {member.name}
-              </span>
+              <span className="font-medium text-foreground">{member.name}</span>
               . This changes what they can access.
             </DialogDescription>
           </DialogHeader>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="change-role">Workspace Role</Label>
-            <Select
-              value={role}
-              onValueChange={(v) => setRole(v as TeamRole)}
-            >
+            <Select value={role} onValueChange={(v) => setRole(v as TeamRole)}>
               <SelectTrigger id="change-role">
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
@@ -488,7 +489,7 @@ export function TeamDataTable({
           <>
             {/* Global search */}
             <div className="relative">
-              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search team members..."
                 value={search}
@@ -529,10 +530,7 @@ export function TeamDataTable({
           </>
         }
         renderRow={(row) => (
-          <TableRow
-            key={row.id}
-            data-state={row.getIsSelected() && "selected"}
-          >
+          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id}>
                 <FlexRender cell={cell} />
@@ -582,9 +580,7 @@ export function TeamDataTable({
                 : "will be permanently removed from this workspace. This action cannot be undone."}
             </>
           }
-          confirmLabel={
-            pending.type === "deactivate" ? "Deactivate" : "Remove"
-          }
+          confirmLabel={pending.type === "deactivate" ? "Deactivate" : "Remove"}
           onConfirm={() => {
             if (pending.type === "deactivate") {
               onToggleStatus(pending.member)

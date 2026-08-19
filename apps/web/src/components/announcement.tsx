@@ -13,7 +13,10 @@ interface AnnouncementBlockProps {
 }
 
 const SALE_DURATION_MS =
-  2 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000 + 34 * 60 * 60 * 1000 + 12 * 1000
+  2 * 24 * 60 * 60 * 1000 +
+  11 * 60 * 60 * 1000 +
+  34 * 60 * 60 * 1000 +
+  12 * 1000
 
 type TimeLeft = {
   days: number

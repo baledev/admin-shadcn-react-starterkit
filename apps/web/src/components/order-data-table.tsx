@@ -41,11 +41,7 @@ import {
   DataTableFacetedFilter,
 } from "@workspace/ui/components/data-table"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
-import {
-  type Order,
-  STATUS_META,
-  STATUS_OPTIONS,
-} from "@/lib/orders-data"
+import { type Order, STATUS_META, STATUS_OPTIONS } from "@/lib/orders-data"
 
 // ─── Table features (tree-shaken) ────────────────────────────────────────────
 
@@ -337,7 +333,7 @@ export function OrderDataTable({
           <>
             {/* Global search */}
             <div className="relative">
-              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search orders..."
                 value={search}

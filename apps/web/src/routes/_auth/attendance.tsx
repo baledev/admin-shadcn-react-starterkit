@@ -7,11 +7,7 @@ import {
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from "@workspace/ui/components/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
 import { PageHeader } from "@/components/page-header"
 import {
   addDays,
@@ -67,15 +63,22 @@ function recordToForm(record: AttendanceRecord): AttendanceFormState {
 function AttendancePage() {
   const router = useRouter()
   const auth = router.options.context.auth
-  const user = auth.user || { name: "Sarah Connor", email: "sarah@acme.com", avatar: "" }
+  const user = auth.user || {
+    name: "Sarah Connor",
+    email: "sarah@acme.com",
+    avatar: "",
+  }
 
   const [view, setView] = React.useState<ViewMode>("monthly")
   const [anchorDate, setAnchorDate] = React.useState(() => new Date())
-  const [records, setRecords] = React.useState<AttendanceRecord[]>(initialAttendanceRecords)
+  const [records, setRecords] = React.useState<AttendanceRecord[]>(
+    initialAttendanceRecords
+  )
 
   // Form sheet states
   const [formOpen, setFormOpen] = React.useState(false)
-  const [editingRecord, setEditingRecord] = React.useState<AttendanceRecord | null>(null)
+  const [editingRecord, setEditingRecord] =
+    React.useState<AttendanceRecord | null>(null)
   const [form, setForm] = React.useState<AttendanceFormState>(EMPTY_FORM)
 
   const handlePrev = () => {
@@ -105,7 +108,7 @@ function AttendancePage() {
       initialTeamMembers[0]
 
     const todayStr = toIsoDate(new Date())
-    
+
     setRecords((prev) => {
       const existingIdx = prev.findIndex(
         (r) => r.employeeId === employee.id && r.date === todayStr
@@ -117,14 +120,17 @@ function AttendancePage() {
         const [hour] = time.split(":").map(Number)
         // Late if past 09:00
         const status: AttendanceStatus = hour >= 9 ? "late" : "present"
-        
+
         const newRecord: AttendanceRecord = {
           id: `ATT-${Date.now()}`,
           employeeId: employee.id,
           date: todayStr,
           status,
           checkIn: time,
-          note: status === "late" ? "Terlambat (Absensi Mandiri)" : "Absensi Mandiri",
+          note:
+            status === "late"
+              ? "Terlambat (Absensi Mandiri)"
+              : "Absensi Mandiri",
         }
 
         if (existingIdx >= 0) {
@@ -132,7 +138,7 @@ function AttendancePage() {
         } else {
           updated.push(newRecord)
         }
-        
+
         toast.success(`Berhasil Check-In pada pukul ${time}`)
       } else {
         // Clock out
@@ -172,7 +178,7 @@ function AttendancePage() {
     e.preventDefault()
 
     const isPresentOrLate = form.status === "present" || form.status === "late"
-    
+
     const recordData = {
       employeeId: form.employeeId,
       date: form.date,
@@ -249,16 +255,12 @@ function AttendancePage() {
   }
 
   // Compute Range Label
-  let rangeLabel = ""
-  if (view === "monthly") {
-    rangeLabel = formatMonthYear(anchorDate)
-  } else if (view === "weekly") {
-    const start = startOfWeek(anchorDate)
-    const end = endOfWeek(anchorDate)
-    rangeLabel = `${formatMonthDay(start)} – ${formatMonthDayYear(end)}`
-  } else {
-    rangeLabel = formatFullDate(anchorDate)
-  }
+  const rangeLabel =
+    view === "monthly"
+      ? formatMonthYear(anchorDate)
+      : view === "weekly"
+        ? `${formatMonthDay(startOfWeek(anchorDate))} – ${formatMonthDayYear(endOfWeek(anchorDate))}`
+        : formatFullDate(anchorDate)
 
   return (
     <div className="flex flex-1 flex-col">
@@ -282,7 +284,7 @@ function AttendancePage() {
           />
 
           {/* Navigation and views tab */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mt-2">
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
               <Button
                 variant="outline"

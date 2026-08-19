@@ -17,7 +17,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@workspace/ui/components/sidebar"
-import { MoreHorizontalIcon, FolderIcon, ArrowRightIcon, Trash2Icon } from "lucide-react"
+import {
+  MoreHorizontalIcon,
+  FolderIcon,
+  ArrowRightIcon,
+  Trash2Icon,
+} from "lucide-react"
 
 function NavLink({ url }: { url: string }) {
   if (url.startsWith("/")) {
@@ -55,8 +60,7 @@ export function NavProjects({
                   />
                 }
               >
-                <MoreHorizontalIcon
-                />
+                <MoreHorizontalIcon />
                 <span className="sr-only">More</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -65,19 +69,16 @@ export function NavProjects({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <FolderIcon
-                  />
+                  <FolderIcon />
                   <span>View Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <ArrowRightIcon
-                  />
+                  <ArrowRightIcon />
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive">
-                  <Trash2Icon
-                  />
+                  <Trash2Icon />
                   <span>Delete Project</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -43,7 +43,7 @@ export class AppErrorBoundary extends React.Component<
         code="500"
         title="Something went wrong"
         description={
-          <p className="text-sm text-muted-foreground max-w-lg font-mono bg-muted/40 p-2 rounded border border-border text-left overflow-x-auto text-[11px]">
+          <p className="max-w-lg overflow-x-auto rounded border border-border bg-muted/40 p-2 text-left font-mono text-sm text-[11px] text-muted-foreground">
             {error.message || "An unexpected error occurred."}
           </p>
         }

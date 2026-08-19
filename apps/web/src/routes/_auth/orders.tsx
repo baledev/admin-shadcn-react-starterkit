@@ -10,7 +10,12 @@ import {
 
 import { PageHeader } from "@/components/page-header"
 import { OrderDataTable } from "@/components/order-data-table"
-import { type Order, computeStats, initialOrders, STATUS_META } from "@/lib/orders-data"
+import {
+  type Order,
+  computeStats,
+  initialOrders,
+  STATUS_META,
+} from "@/lib/orders-data"
 import { toIsoDate } from "@/lib/date-utils"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
@@ -91,7 +96,8 @@ function OrderStatCards({ orders }: { orders: Order[] }) {
             Orders awaiting action
           </div>
           <div className="text-muted-foreground">
-            {orders.filter((o) => o.status === "processing").length} currently processing
+            {orders.filter((o) => o.status === "processing").length} currently
+            processing
           </div>
         </CardFooter>
       </Card>
@@ -137,7 +143,8 @@ function OrderStatCards({ orders }: { orders: Order[] }) {
             Non-cancelled orders
           </div>
           <div className="text-muted-foreground">
-            {orders.filter((o) => o.status !== "cancelled").length} orders counted
+            {orders.filter((o) => o.status !== "cancelled").length} orders
+            counted
           </div>
         </CardFooter>
       </Card>
@@ -173,7 +180,10 @@ function OrderDetailSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-lg flex flex-col gap-0 p-0">
+      <SheetContent
+        side="right"
+        className="flex flex-col gap-0 p-0 sm:max-w-lg"
+      >
         <SheetHeader className="px-6 pt-6 pb-4">
           <div className="flex items-center gap-3">
             <SheetTitle className="font-mono text-lg">{order.id}</SheetTitle>
@@ -236,7 +246,7 @@ function OrderDetailSheet({
                       <td className="px-4 py-3 text-right tabular-nums">
                         {fmt(item.unitPrice)}
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums font-medium">
+                      <td className="px-4 py-3 text-right font-medium tabular-nums">
                         {fmt(item.qty * item.unitPrice)}
                       </td>
                     </tr>

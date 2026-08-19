@@ -1,10 +1,6 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
-import {
-  IconChevronLeft,
-  IconMessage,
-  IconSend,
-} from "@tabler/icons-react"
+import { IconChevronLeft, IconMessage, IconSend } from "@tabler/icons-react"
 
 import { PageHeader } from "@/components/page-header"
 import {
@@ -12,7 +8,11 @@ import {
   type Message,
   initialConversations,
 } from "@/lib/messages-data"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { Textarea } from "@workspace/ui/components/textarea"
@@ -74,9 +74,7 @@ function MessagesPage() {
     setActiveId(id)
     setConversations((prev) =>
       prev.map((c) =>
-        c.id === id && c.unreadCount > 0
-          ? { ...c, unreadCount: 0 }
-          : c
+        c.id === id && c.unreadCount > 0 ? { ...c, unreadCount: 0 } : c
       )
     )
   }
@@ -121,7 +119,7 @@ function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col h-full">
+    <div className="flex h-full flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
           <PageHeader
@@ -130,18 +128,17 @@ function MessagesPage() {
           />
 
           {/* Inbox wrapper */}
-          <div className="flex flex-1 overflow-hidden rounded-lg border border-border bg-card min-h-[500px] h-[calc(100vh-12rem)]">
-            
+          <div className="flex h-[calc(100vh-12rem)] min-h-[500px] flex-1 overflow-hidden rounded-lg border border-border bg-card">
             {/* Conversations list panel */}
             <div
-              className={`w-full md:w-80 shrink-0 border-r border-border flex flex-col ${
+              className={`flex w-full shrink-0 flex-col border-r border-border md:w-80 ${
                 activeId && "hidden md:flex"
               }`}
             >
-              <div className="p-4 border-b border-border font-semibold text-sm">
+              <div className="border-b border-border p-4 text-sm font-semibold">
                 Conversations
               </div>
-              <div className="flex-1 overflow-y-auto divide-y divide-border/60">
+              <div className="flex-1 divide-y divide-border/60 overflow-y-auto">
                 {conversations.map((conv) => {
                   const initials = getInitials(conv.participantName)
                   const isActive = conv.id === activeId
@@ -150,7 +147,7 @@ function MessagesPage() {
                       key={conv.id}
                       type="button"
                       onClick={() => handleSelectConversation(conv.id)}
-                      className={`w-full text-left p-4 flex gap-3 items-start transition-colors hover:bg-muted/40 ${
+                      className={`flex w-full items-start gap-3 p-4 text-left transition-colors hover:bg-muted/40 ${
                         isActive ? "bg-muted" : ""
                       }`}
                     >
@@ -158,21 +155,21 @@ function MessagesPage() {
                         <AvatarImage src={conv.participantAvatar} />
                         <AvatarFallback>{initials}</AvatarFallback>
                       </Avatar>
-                      <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                         <div className="flex items-center justify-between gap-1.5">
-                          <span className="font-semibold text-sm text-foreground truncate">
+                          <span className="truncate text-sm font-semibold text-foreground">
                             {conv.participantName}
                           </span>
-                          <span className="text-[10px] text-muted-foreground tabular-nums whitespace-nowrap">
+                          <span className="text-[10px] whitespace-nowrap text-muted-foreground tabular-nums">
                             {formatChatTime(conv.lastMessageAt)}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                           {conv.lastMessage}
                         </p>
                       </div>
                       {conv.unreadCount > 0 && (
-                        <Badge className="size-5 shrink-0 p-0 flex items-center justify-center rounded-full text-[10px] font-bold">
+                        <Badge className="flex size-5 shrink-0 items-center justify-center rounded-full p-0 text-[10px] font-bold">
                           {conv.unreadCount}
                         </Badge>
                       )}
@@ -184,19 +181,19 @@ function MessagesPage() {
 
             {/* Conversation thread panel */}
             <div
-              className={`flex-1 flex flex-col bg-muted/10 dark:bg-muted/5 ${
+              className={`flex flex-1 flex-col bg-muted/10 dark:bg-muted/5 ${
                 !activeId && "hidden md:flex"
               }`}
             >
               {activeConversation ? (
                 <>
                   {/* Thread Header */}
-                  <div className="px-4 h-14 shrink-0 flex items-center gap-3 border-b border-border bg-card">
+                  <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4">
                     {/* Back button on mobile */}
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="md:hidden size-8 text-muted-foreground"
+                      className="size-8 text-muted-foreground md:hidden"
                       onClick={() => setActiveId(null)}
                       aria-label="Back to conversations"
                     >
@@ -209,26 +206,26 @@ function MessagesPage() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                      <span className="font-semibold text-sm">
+                      <span className="text-sm font-semibold">
                         {activeConversation.participantName}
                       </span>
-                      <span className="text-[10px] text-emerald-500 font-medium">
+                      <span className="text-[10px] font-medium text-emerald-500">
                         Online
                       </span>
                     </div>
                   </div>
 
                   {/* Message Bubble list */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  <div className="flex-1 space-y-4 overflow-y-auto p-4">
                     {activeConversation.messages.map((msg) => (
                       <div
                         key={msg.id}
-                        className={`flex gap-3 max-w-[85%] ${
+                        className={`flex max-w-[85%] gap-3 ${
                           msg.isOwn ? "ml-auto flex-row-reverse" : "mr-auto"
                         }`}
                       >
                         {!msg.isOwn && (
-                          <Avatar className="size-7 mt-0.5 shrink-0">
+                          <Avatar className="mt-0.5 size-7 shrink-0">
                             <AvatarImage src={msg.senderAvatar} />
                             <AvatarFallback>
                               {getInitials(msg.senderName)}
@@ -240,7 +237,7 @@ function MessagesPage() {
                             className={`rounded-lg px-3 py-2 text-sm leading-relaxed ${
                               msg.isOwn
                                 ? "bg-primary text-primary-foreground"
-                                : "bg-card border border-border"
+                                : "border border-border bg-card"
                             }`}
                           >
                             {msg.body}
@@ -259,13 +256,13 @@ function MessagesPage() {
                   </div>
 
                   {/* Bottom Composer */}
-                  <div className="p-3 border-t border-border bg-card flex items-end gap-2">
+                  <div className="flex items-end gap-2 border-t border-border bg-card p-3">
                     <Textarea
                       placeholder="Type a message..."
                       value={composerText}
                       onChange={(e) => setComposerText(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      className="min-h-9 max-h-24 h-9 resize-none flex-1 py-1.5 px-3"
+                      className="h-9 max-h-24 min-h-9 flex-1 resize-none px-3 py-1.5"
                     />
                     <Button
                       size="icon"
@@ -280,10 +277,12 @@ function MessagesPage() {
                 </>
               ) : (
                 /* Empty state */
-                <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center bg-card">
+                <div className="flex flex-1 flex-col items-center justify-center gap-3 bg-card p-8 text-center">
                   <IconMessage className="size-12 text-muted-foreground/35" />
                   <div>
-                    <p className="text-sm font-medium">No conversation selected</p>
+                    <p className="text-sm font-medium">
+                      No conversation selected
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       Choose a contact from the left list to start messaging.
                     </p>
@@ -291,7 +290,6 @@ function MessagesPage() {
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </div>

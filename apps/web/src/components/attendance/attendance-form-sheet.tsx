@@ -19,7 +19,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@workspace/ui/components/sheet"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar"
 import { initialTeamMembers } from "@/lib/team-data"
 import { STATUS_OPTIONS, type AttendanceStatus } from "@/lib/attendance-data"
 
@@ -53,8 +57,11 @@ export function AttendanceFormSheet({
   onSave,
 }: AttendanceFormSheetProps) {
   const isNoteRequired =
-    form.status === "sick" || form.status === "permission" || form.status === "leave"
-  const isTimeFieldsVisible = form.status === "present" || form.status === "late"
+    form.status === "sick" ||
+    form.status === "permission" ||
+    form.status === "leave"
+  const isTimeFieldsVisible =
+    form.status === "present" || form.status === "late"
 
   // Get initials for Avatar Fallback
   const getInitials = (name: string) => {
@@ -68,7 +75,7 @@ export function AttendanceFormSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-md flex flex-col h-full">
+      <SheetContent side="right" className="flex h-full flex-col sm:max-w-md">
         <SheetHeader>
           <SheetTitle>
             {isEditing ? "Ubah Kehadiran" : "Catat Kehadiran Manual"}
@@ -84,7 +91,7 @@ export function AttendanceFormSheet({
           onSubmit={onSave}
           className="flex flex-1 flex-col justify-between overflow-hidden"
         >
-          <div className="flex-1 overflow-y-auto px-4 py-2 space-y-4">
+          <div className="flex-1 space-y-4 overflow-y-auto px-4 py-2">
             {/* Karyawan Selection */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="attendance-employee">Karyawan</Label>
@@ -178,7 +185,8 @@ export function AttendanceFormSheet({
             {/* Note / Keterangan */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="attendance-note">
-                Keterangan {isNoteRequired && <span className="text-destructive">*</span>}
+                Keterangan{" "}
+                {isNoteRequired && <span className="text-destructive">*</span>}
               </Label>
               <Textarea
                 id="attendance-note"

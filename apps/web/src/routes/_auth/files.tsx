@@ -86,7 +86,12 @@ interface RenameDialogProps {
   onRename: (id: string, newName: string) => void
 }
 
-function RenameDialog({ open, onOpenChange, item, onRename }: RenameDialogProps) {
+function RenameDialog({
+  open,
+  onOpenChange,
+  item,
+  onRename,
+}: RenameDialogProps) {
   const [name, setName] = React.useState(item?.name ?? "")
 
   function handleSubmit(e: React.FormEvent) {
@@ -138,7 +143,11 @@ interface CreateFolderDialogProps {
   onCreate: (name: string) => void
 }
 
-function CreateFolderDialog({ open, onOpenChange, onCreate }: CreateFolderDialogProps) {
+function CreateFolderDialog({
+  open,
+  onOpenChange,
+  onCreate,
+}: CreateFolderDialogProps) {
   const [name, setName] = React.useState("")
 
   function handleSubmit(e: React.FormEvent) {
@@ -236,7 +245,10 @@ function UploadDialog({ open, onOpenChange, onUpload }: UploadDialogProps) {
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="file-type-select">File Type</Label>
-              <Select value={type} onValueChange={(val) => setType(val as FileType)}>
+              <Select
+                value={type}
+                onValueChange={(val) => setType(val as FileType)}
+              >
                 <SelectTrigger id="file-type-select">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
@@ -291,14 +303,18 @@ function FilesPage() {
 
   // Trace ancestors to build breadcrumbs
   const breadcrumbs = React.useMemo(() => {
-    const list: { id: string | null; name: string }[] = [{ id: null, name: "Root" }]
+    const list: { id: string | null; name: string }[] = [
+      { id: null, name: "Root" },
+    ]
     if (!currentFolderId) return list
 
     const path: { id: string; name: string }[] = []
     let curr = files.find((f) => f.id === currentFolderId)
     while (curr) {
       path.unshift({ id: curr.id, name: curr.name })
-      curr = curr.parentId ? files.find((f) => f.id === curr?.parentId) : undefined
+      curr = curr.parentId
+        ? files.find((f) => f.id === curr?.parentId)
+        : undefined
     }
 
     return [...list, ...path]
@@ -320,7 +336,7 @@ function FilesPage() {
     setFiles((prev) => {
       const idsToDelete = new Set<string>([id])
       let sizeBefore = 0
-      
+
       // BFS/DFS to find all child items
       while (idsToDelete.size !== sizeBefore) {
         sizeBefore = idsToDelete.size
@@ -369,7 +385,7 @@ function FilesPage() {
           >
             <div className="flex items-center gap-2">
               {/* View mode toggle */}
-              <div className="flex items-center border border-border rounded-md p-0.5 bg-muted/40">
+              <div className="flex items-center rounded-md border border-border bg-muted/40 p-0.5">
                 <Button
                   variant={viewMode === "grid" ? "secondary" : "ghost"}
                   size="icon"
@@ -390,11 +406,15 @@ function FilesPage() {
                 </Button>
               </div>
 
-              <Button variant="outline" size="sm" onClick={() => setFolderOpen(true)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setFolderOpen(true)}
+              >
                 <IconPlus className="size-4" />
                 New Folder
               </Button>
- 
+
               <Button size="sm" onClick={() => setUploadOpen(true)}>
                 <IconUpload className="size-4" />
                 Upload
@@ -432,7 +452,7 @@ function FilesPage() {
 
           {/* File grid / list */}
           {currentItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-3 py-20 text-center border border-dashed border-border rounded-lg bg-card">
+            <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card py-20 text-center">
               <IconFolder className="size-16 text-muted-foreground/30" />
               <div>
                 <p className="text-sm font-medium">Folder is empty</p>
@@ -447,7 +467,7 @@ function FilesPage() {
               {currentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="group relative flex flex-col items-center justify-between p-4 rounded-lg border border-border bg-card text-center hover:shadow-xs transition-shadow"
+                  className="group relative flex flex-col items-center justify-between rounded-lg border border-border bg-card p-4 text-center transition-shadow hover:shadow-xs"
                 >
                   {/* Actions Dropdown */}
                   <div className="absolute top-2 right-2">
@@ -487,7 +507,7 @@ function FilesPage() {
 
                   {/* Icon + Doubleclick navigation for folders */}
                   <div
-                    className="flex flex-col items-center justify-center cursor-pointer flex-1 pt-4 pb-2"
+                    className="flex flex-1 cursor-pointer flex-col items-center justify-center pt-4 pb-2"
                     onClick={() => {
                       if (item.type === "folder") {
                         setCurrentFolderId(item.id)
@@ -495,7 +515,7 @@ function FilesPage() {
                     }}
                   >
                     {getFileIcon(item.type)}
-                    <span className="mt-3 text-sm font-medium text-foreground line-clamp-1 w-full px-2">
+                    <span className="mt-3 line-clamp-1 w-full px-2 text-sm font-medium text-foreground">
                       {item.name}
                     </span>
                   </div>
@@ -509,9 +529,9 @@ function FilesPage() {
             </div>
           ) : (
             /* List View */
-            <div className="rounded-lg border border-border bg-card overflow-hidden">
+            <div className="overflow-hidden rounded-lg border border-border bg-card">
               <table className="w-full text-sm">
-                <thead className="bg-muted/50 border-b border-border">
+                <thead className="border-b border-border bg-muted/50">
                   <tr>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                       Name
@@ -532,7 +552,7 @@ function FilesPage() {
                   {currentItems.map((item) => (
                     <tr
                       key={item.id}
-                      className="hover:bg-muted/40 transition-colors"
+                      className="transition-colors hover:bg-muted/40"
                     >
                       <td className="px-4 py-3 font-medium">
                         <button
@@ -551,7 +571,7 @@ function FilesPage() {
                       <td className="px-4 py-3 text-muted-foreground">
                         {item.type.toUpperCase()}
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
+                      <td className="px-4 py-3 text-right text-muted-foreground tabular-nums">
                         {item.type === "folder" ? "—" : formatBytes(item.size)}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground tabular-nums">

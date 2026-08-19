@@ -20,7 +20,10 @@ import { ChevronRightIcon } from "lucide-react"
 function NavLink({
   url,
   ...props
-}: { url: string } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">) {
+}: { url: string } & Omit<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  "href"
+>) {
   if (url.startsWith("/")) {
     return <Link to={url} {...props} />
   }

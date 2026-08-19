@@ -14,18 +14,18 @@ export function ErrorState({
   children,
 }: ErrorStateProps) {
   return (
-    <div className="min-h-svh flex flex-col items-center justify-center p-4 bg-background text-center select-none">
+    <div className="flex min-h-svh flex-col items-center justify-center bg-background p-4 text-center select-none">
       <div
         aria-hidden="true"
-        className="absolute font-sans text-[10rem] sm:text-[14rem] font-bold text-muted-foreground/[0.08] select-none pointer-events-none tabular-nums"
+        className="pointer-events-none absolute font-sans text-[10rem] font-bold text-muted-foreground/[0.08] tabular-nums select-none sm:text-[14rem]"
       >
         {code}
       </div>
-      <div className="relative flex flex-col items-center gap-4 z-10">
+      <div className="relative z-10 flex flex-col items-center gap-4">
         <h1 className="text-2xl font-bold text-foreground">{title}</h1>
         {description}
         {children ? (
-          <div className="flex items-center gap-3 mt-4">{children}</div>
+          <div className="mt-4 flex items-center gap-3">{children}</div>
         ) : null}
       </div>
     </div>

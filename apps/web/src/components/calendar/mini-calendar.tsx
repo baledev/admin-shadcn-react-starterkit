@@ -24,7 +24,7 @@ function addYears(date: Date, amount: number): Date {
 function startOfWeek(date: Date): Date {
   const d = new Date(date)
   const day = d.getDay() // 0 = Sun … 6 = Sat
-  const diff = (day === 0 ? -6 : 1 - day) // offset to Monday
+  const diff = day === 0 ? -6 : 1 - day // offset to Monday
   d.setDate(d.getDate() + diff)
   d.setHours(0, 0, 0, 0)
   return d
@@ -190,7 +190,12 @@ export function MiniCalendar({
             ),
           }}
           components={{
-            DayButton: ({ day, modifiers: dayModifiers, className, ...props }) => {
+            DayButton: ({
+              day,
+              modifiers: dayModifiers,
+              className,
+              ...props
+            }) => {
               const isAnchorDay = !isWeekView && isSameDay(day.date, anchorDate)
               return (
                 <button
@@ -199,8 +204,11 @@ export function MiniCalendar({
                     "size-7 rounded-md text-xs tabular-nums transition-colors",
                     dayModifiers.outside && "text-muted-foreground/40",
                     dayModifiers.today && "font-semibold text-foreground",
-                    isAnchorDay && "bg-foreground font-semibold text-background",
-                    !isAnchorDay && !isWeekView && "hover:bg-muted hover:text-foreground",
+                    isAnchorDay &&
+                      "bg-foreground font-semibold text-background",
+                    !isAnchorDay &&
+                      !isWeekView &&
+                      "hover:bg-muted hover:text-foreground",
                     className
                   )}
                   {...props}

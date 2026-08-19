@@ -19,7 +19,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@workspace/ui/components/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import {
+  ChevronsUpDownIcon,
+  SparklesIcon,
+  BadgeCheckIcon,
+  CreditCardIcon,
+  BellIcon,
+  LogOutIcon,
+} from "lucide-react"
 
 export function NavUser({
   user,
@@ -79,39 +86,28 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <SparklesIcon
-                />
+                <SparklesIcon />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                render={
-                  <Link
-                    to="/profile"
-                  />
-                }
-              >
-                <BadgeCheckIcon
-                />
+              <DropdownMenuItem render={<Link to="/profile" />}>
+                <BadgeCheckIcon />
                 View Profile
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCardIcon
-                />
+                <CreditCardIcon />
                 Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <BellIcon
-                />
+                <BellIcon />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
-              <LogOutIcon
-              />
+              <LogOutIcon />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

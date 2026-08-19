@@ -4,7 +4,10 @@ import { Link } from "@tanstack/react-router"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { Label } from "@workspace/ui/components/label"
-import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group"
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@workspace/ui/components/radio-group"
 import { Switch } from "@workspace/ui/components/switch"
 import {
   EMAIL_NOTIFICATIONS,
@@ -16,7 +19,9 @@ import { PageHeader } from "@/components/page-header"
 export function SettingsNotifications() {
   const [notifyScope, setNotifyScope] = React.useState<NotifyScope>("none")
   const [emails, setEmails] = React.useState<Record<string, boolean>>(() =>
-    Object.fromEntries(EMAIL_NOTIFICATIONS.map((item) => [item.id, item.defaultOn]))
+    Object.fromEntries(
+      EMAIL_NOTIFICATIONS.map((item) => [item.id, item.defaultOn])
+    )
   )
   const [mobileOverride, setMobileOverride] = React.useState(false)
 

@@ -49,8 +49,7 @@ function titleCase(value: string) {
 function buildBreadcrumbs(routeId: string): { label: string; to: string }[] {
   const segments = routeId.split("/").filter(Boolean)
   const urlSegments = segments.filter(
-    (seg) =>
-      !seg.startsWith("_") && !seg.startsWith("$") && seg !== "index"
+    (seg) => !seg.startsWith("_") && !seg.startsWith("$") && seg !== "index"
   )
   return urlSegments.map((seg, index) => ({
     label: titleCase(seg),
@@ -99,11 +98,15 @@ function AuthLayout() {
                   return (
                     <React.Fragment key={crumb.to}>
                       <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem className={isLast ? "" : "hidden md:block"}>
+                      <BreadcrumbItem
+                        className={isLast ? "" : "hidden md:block"}
+                      >
                         {isLast ? (
                           <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                         ) : (
-                          <BreadcrumbLink render={<Link to={crumb.to as never} />}>
+                          <BreadcrumbLink
+                            render={<Link to={crumb.to as never} />}
+                          >
                             {crumb.label}
                           </BreadcrumbLink>
                         )}
@@ -125,6 +128,6 @@ function AuthLayout() {
         </div>
       </SidebarInset>
       <CommandSearchDialog open={commandOpen} onOpenChange={setCommandOpen} />
-      </SidebarProvider>
+    </SidebarProvider>
   )
 }

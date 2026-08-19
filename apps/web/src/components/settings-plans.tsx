@@ -4,7 +4,10 @@ import { IconArrowUpRight, IconCheck } from "@tabler/icons-react"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
-import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group"
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@workspace/ui/components/radio-group"
 import { Separator } from "@workspace/ui/components/separator"
 import { cn } from "@workspace/ui/lib/utils"
 import { SUBSCRIPTION_PLANS, type PlanId } from "@/lib/plans-data"

@@ -12,17 +12,13 @@ export function NotFoundPage() {
       code="404"
       title="Page Not Found"
       description={
-        <p className="text-sm text-muted-foreground max-w-sm">
+        <p className="max-w-sm text-sm text-muted-foreground">
           The page you are looking for doesn't exist, has been removed, or is
           temporarily unavailable.
         </p>
       }
     >
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => router.history.back()}
-      >
+      <Button variant="outline" size="sm" onClick={() => router.history.back()}>
         Go Back
       </Button>
       <Button size="sm" render={<Link to="/dashboard" />}>

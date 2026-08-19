@@ -1,51 +1,51 @@
-import React from "react";
-import { cn } from "@workspace/ui/lib/utils";
+import React from "react"
+import { cn } from "@workspace/ui/lib/utils"
 
 interface StatusIndicatorProps {
-  state: "active" | "down" | "fixing" | "idle";
-  label?: string;
-  className?: string;
-  size?: "sm" | "md" | "lg";
-  labelClassName?: string;
+  state: "active" | "down" | "fixing" | "idle"
+  label?: string
+  className?: string
+  size?: "sm" | "md" | "lg"
+  labelClassName?: string
 }
 
 const getStateColors = (state: StatusIndicatorProps["state"]) => {
   switch (state) {
     case "active":
-      return { dot: "bg-green-500", ping: "bg-green-300" };
+      return { dot: "bg-green-500", ping: "bg-green-300" }
     case "down":
-      return { dot: "bg-red-500", ping: "bg-red-300" };
+      return { dot: "bg-red-500", ping: "bg-red-300" }
     case "fixing":
-      return { dot: "bg-yellow-500", ping: "bg-yellow-300" };
+      return { dot: "bg-yellow-500", ping: "bg-yellow-300" }
     case "idle":
     default:
-      return { dot: "bg-slate-700", ping: "bg-slate-400" };
+      return { dot: "bg-slate-700", ping: "bg-slate-400" }
   }
-};
+}
 
 const getSizeClasses = (size: StatusIndicatorProps["size"]) => {
   switch (size) {
     case "sm":
-      return { dot: "h-2 w-2", ping: "h-2 w-2" };
+      return { dot: "h-2 w-2", ping: "h-2 w-2" }
     case "lg":
-      return { dot: "h-4 w-4", ping: "h-4 w-4" };
+      return { dot: "h-4 w-4", ping: "h-4 w-4" }
     case "md":
     default:
-      return { dot: "h-3 w-3", ping: "h-3 w-3" };
+      return { dot: "h-3 w-3", ping: "h-3 w-3" }
   }
-};
+}
 
 const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   state = "idle",
   label,
   className,
   size = "md",
-  labelClassName
+  labelClassName,
 }) => {
   const shouldAnimate =
-    state === "active" || state === "fixing" || state === "down";
-  const colors = getStateColors(state);
-  const sizeClasses = getSizeClasses(size);
+    state === "active" || state === "fixing" || state === "down"
+  const colors = getStateColors(state)
+  const sizeClasses = getSizeClasses(size)
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
@@ -53,7 +53,7 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         {shouldAnimate && (
           <span
             className={cn(
-              "absolute inline-flex rounded-full opacity-75 animate-ping",
+              "absolute inline-flex animate-ping rounded-full opacity-75",
               sizeClasses.ping,
               colors.ping
             )}
@@ -78,7 +78,7 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default StatusIndicator;
+export default StatusIndicator

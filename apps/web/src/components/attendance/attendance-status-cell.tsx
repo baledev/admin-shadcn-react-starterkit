@@ -11,7 +11,10 @@ interface AttendanceStatusCellProps {
   date: Date
 }
 
-export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps) {
+export function AttendanceStatusCell({
+  record,
+  date,
+}: AttendanceStatusCellProps) {
   const dayOfWeek = date.getDay()
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
 
@@ -23,7 +26,7 @@ export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps
   today.setHours(0, 0, 0, 0)
   const cellDate = new Date(date)
   cellDate.setHours(0, 0, 0, 0)
-  
+
   const isFuture = cellDate > today
 
   let displayLabel = meta.label
@@ -47,7 +50,9 @@ export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps
   if (record?.checkIn && record?.checkOut) {
     const [inH, inM] = record.checkIn.split(":").map(Number)
     const [outH, outM] = record.checkOut.split(":").map(Number)
-    const diffMs = new Date(2000, 0, 1, outH, outM).getTime() - new Date(2000, 0, 1, inH, inM).getTime()
+    const diffMs =
+      new Date(2000, 0, 1, outH, outM).getTime() -
+      new Date(2000, 0, 1, inH, inM).getTime()
     if (diffMs > 0) {
       const diffHrs = Math.floor(diffMs / (1000 * 60 * 60))
       const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
@@ -63,7 +68,9 @@ export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps
             type="button"
             className={cn(
               "mx-auto flex size-7 items-center justify-center rounded-full transition-colors focus-visible:outline-hidden",
-              status === "off" ? "text-muted-foreground/30 hover:bg-muted" : "hover:bg-muted/80",
+              status === "off"
+                ? "text-muted-foreground/30 hover:bg-muted"
+                : "hover:bg-muted/80",
               record ? "" : "text-muted-foreground/40"
             )}
             aria-label={displayLabel}
@@ -86,7 +93,7 @@ export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps
           <Icon className="size-4 shrink-0" aria-hidden="true" />
         </span>
       </TooltipTrigger>
-      <TooltipContent className="flex flex-col gap-1 text-[11px] p-2.5 max-w-[200px] border border-border bg-popover text-popover-foreground">
+      <TooltipContent className="flex max-w-[200px] flex-col gap-1 border border-border bg-popover p-2.5 text-[11px] text-popover-foreground">
         <div className="flex items-center gap-1.5 font-semibold">
           <span className={cn("size-2 rounded-full", displayDot)} />
           <span>{displayLabel}</span>
@@ -110,7 +117,7 @@ export function AttendanceStatusCell({ record, date }: AttendanceStatusCellProps
           </div>
         )}
         {record?.note && (
-          <div className="mt-1 border-t border-border pt-1 text-muted-foreground text-left italic">
+          <div className="mt-1 border-t border-border pt-1 text-left text-muted-foreground italic">
             "{record.note}"
           </div>
         )}

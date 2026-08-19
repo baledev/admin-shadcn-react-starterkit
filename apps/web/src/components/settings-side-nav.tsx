@@ -12,14 +12,24 @@ import { cn } from "@workspace/ui/lib/utils"
 
 const sections = [
   { id: "profile", label: "Profile", icon: IconUser, to: "/settings/profile" },
-  { id: "account", label: "Account", icon: IconShieldLock, to: "/settings/account" },
+  {
+    id: "account",
+    label: "Account",
+    icon: IconShieldLock,
+    to: "/settings/account",
+  },
   {
     id: "notifications",
     label: "Notifications",
     icon: IconNotification,
     to: "/settings/notifications",
   },
-  { id: "billing", label: "Billing", icon: IconCreditCard, to: "/settings/billing" },
+  {
+    id: "billing",
+    label: "Billing",
+    icon: IconCreditCard,
+    to: "/settings/billing",
+  },
   { id: "plans", label: "Plans", icon: IconSparkles, to: "/settings/plans" },
   {
     id: "connected-apps",
@@ -31,7 +41,10 @@ const sections = [
 
 export function SettingsSideNav() {
   return (
-    <nav className="flex shrink-0 flex-col gap-1" aria-label="Settings sections">
+    <nav
+      className="flex shrink-0 flex-col gap-1"
+      aria-label="Settings sections"
+    >
       {sections.map((section) => {
         const Icon = section.icon
         return (

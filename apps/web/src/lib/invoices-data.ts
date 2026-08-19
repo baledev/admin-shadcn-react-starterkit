@@ -163,7 +163,11 @@ export const initialInvoices: Invoice[] = [
     customerEmail: "grace@example.com",
     status: "overdue",
     lines: [
-      { description: "Content Writing (10 articles)", qty: 10, unitPrice: 150.0 },
+      {
+        description: "Content Writing (10 articles)",
+        qty: 10,
+        unitPrice: 150.0,
+      },
     ],
     subtotal: 1500.0,
     tax: 150.0,
@@ -194,9 +198,7 @@ export const initialInvoices: Invoice[] = [
     customerName: "Isla Roberts",
     customerEmail: "isla@example.com",
     status: "draft",
-    lines: [
-      { description: "Data Analysis Report", qty: 1, unitPrice: 950.0 },
-    ],
+    lines: [{ description: "Data Analysis Report", qty: 1, unitPrice: 950.0 }],
     subtotal: 950.0,
     tax: 95.0,
     total: 1045.0,
@@ -308,7 +310,11 @@ export const initialInvoices: Invoice[] = [
     customerEmail: "peter@example.com",
     status: "sent",
     lines: [
-      { description: "Product Photography (20 shots)", qty: 20, unitPrice: 45.0 },
+      {
+        description: "Product Photography (20 shots)",
+        qty: 20,
+        unitPrice: 45.0,
+      },
     ],
     subtotal: 900.0,
     tax: 90.0,

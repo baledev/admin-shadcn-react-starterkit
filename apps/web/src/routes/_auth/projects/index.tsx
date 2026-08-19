@@ -78,9 +78,7 @@ function ProjectsPage() {
 
   function handleDelete(project: Project) {
     setProjects((prev) =>
-      prev.map((p) =>
-        p.id === project.id ? { ...p, status: "cancelled" } : p
-      )
+      prev.map((p) => (p.id === project.id ? { ...p, status: "cancelled" } : p))
     )
   }
 

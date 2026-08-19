@@ -12,12 +12,12 @@ export function ErrorPage({ error, reset }: ErrorComponentProps) {
       code="500"
       title="Something went wrong"
       description={
-        <div className="max-w-lg w-full">
-          <p className="text-sm text-muted-foreground font-mono bg-muted/40 p-2 rounded border border-border text-left overflow-x-auto text-[11px]">
+        <div className="w-full max-w-lg">
+          <p className="overflow-x-auto rounded border border-border bg-muted/40 p-2 text-left font-mono text-sm text-[11px] text-muted-foreground">
             {message}
           </p>
           {import.meta.env.DEV && error?.stack ? (
-            <pre className="mt-2 max-h-64 text-muted-foreground/80 font-mono bg-muted/40 p-2 rounded border border-border text-left overflow-auto text-[10px] whitespace-pre">
+            <pre className="mt-2 max-h-64 overflow-auto rounded border border-border bg-muted/40 p-2 text-left font-mono text-[10px] whitespace-pre text-muted-foreground/80">
               {error.stack}
             </pre>
           ) : null}

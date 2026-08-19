@@ -7,21 +7,18 @@ import AnnouncementBlock from "@/components/announcement"
 
 import { ErrorPage } from "@/routes/-error"
 
-const TanStackRouterDevtools =
-  import.meta.env.DEV
-    ? React.lazy(() =>
-        import("@tanstack/router-devtools").then((module) => ({
-          default: module.TanStackRouterDevtools,
-        }))
-      )
-    : () => null
+const TanStackRouterDevtools = import.meta.env.DEV
+  ? React.lazy(() =>
+      import("@tanstack/router-devtools").then((module) => ({
+        default: module.TanStackRouterDevtools,
+      }))
+    )
+  : () => null
 
 export const AnnouncementContext = React.createContext<boolean>(false)
 
 function RootComponent() {
-  const [visible, setVisible] = React.useState(
-    () => !isAnnouncementDismissed()
-  )
+  const [visible, setVisible] = React.useState(() => !isAnnouncementDismissed())
 
   return (
     <AnnouncementContext.Provider value={visible}>

@@ -33,11 +33,17 @@ export const Route = createFileRoute("/_auth/notifications")({
 function getNotificationIcon(type: NotificationType) {
   switch (type) {
     case "system":
-      return <IconSettings className="size-5 text-gray-500 dark:text-gray-400" />
+      return (
+        <IconSettings className="size-5 text-gray-500 dark:text-gray-400" />
+      )
     case "activity":
-      return <IconActivity className="size-5 text-blue-500 dark:text-blue-400" />
+      return (
+        <IconActivity className="size-5 text-blue-500 dark:text-blue-400" />
+      )
     case "billing":
-      return <IconCreditCard className="size-5 text-emerald-500 dark:text-emerald-400" />
+      return (
+        <IconCreditCard className="size-5 text-emerald-500 dark:text-emerald-400" />
+      )
     case "security":
       return <IconLock className="size-5 text-destructive" />
   }
@@ -81,9 +87,8 @@ function formatRelativeTime(dateStr: string) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function NotificationsPage() {
-  const [notifications, setNotifications] = React.useState<Notification[]>(
-    initialNotifications
-  )
+  const [notifications, setNotifications] =
+    React.useState<Notification[]>(initialNotifications)
   const [activeTab, setActiveTab] = React.useState("all")
 
   const unreadCount = notifications.filter((n) => !n.read).length
@@ -109,7 +114,12 @@ function NotificationsPage() {
       case "system":
         return notifications.filter((n) => n.type === "system")
       case "activity":
-        return notifications.filter((n) => n.type === "activity" || n.type === "billing" || n.type === "security")
+        return notifications.filter(
+          (n) =>
+            n.type === "activity" ||
+            n.type === "billing" ||
+            n.type === "security"
+        )
       default:
         return notifications
     }
@@ -162,7 +172,7 @@ function NotificationsPage() {
 
             <TabsContent value={activeTab}>
               {filteredNotifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border py-16 text-center bg-card">
+                <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card py-16 text-center">
                   <IconInbox className="size-12 text-muted-foreground/40" />
                   <div>
                     <p className="text-sm font-medium">No notifications</p>
@@ -196,7 +206,7 @@ function NotificationsPage() {
                             <span className="font-medium text-foreground">
                               {notif.title}
                             </span>
-                            <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
+                            <span className="text-xs whitespace-nowrap text-muted-foreground tabular-nums">
                               {formatRelativeTime(notif.createdAt)}
                             </span>
                           </div>
@@ -211,11 +221,7 @@ function NotificationsPage() {
                                 size="sm"
                                 variant="outline"
                                 className="h-7 text-xs"
-                                render={
-                                  <Link
-                                    to={notif.actionUrl}
-                                  />
-                                }
+                                render={<Link to={notif.actionUrl} />}
                               >
                                 View Details
                               </Button>

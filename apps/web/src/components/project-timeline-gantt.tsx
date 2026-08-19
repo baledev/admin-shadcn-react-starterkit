@@ -126,15 +126,16 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
     if (!drag) return
     const issue = issues.find((i) => i.id === drag.issueId)
     if (issue) {
-      commitDrag(drag.issueId, new Date(issue.startDate), new Date(issue.endDate))
+      commitDrag(
+        drag.issueId,
+        new Date(issue.startDate),
+        new Date(issue.endDate)
+      )
     }
     setDrag(null)
   }
 
-  function handleKeyDown(
-    e: React.KeyboardEvent,
-    issue: ProjectIssue
-  ) {
+  function handleKeyDown(e: React.KeyboardEvent, issue: ProjectIssue) {
     const step = e.shiftKey ? 7 : 1
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
     e.preventDefault()
@@ -148,7 +149,10 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
     return (
       <section className="flex h-[400px] items-center justify-center border-y border-border text-center">
         <div className="flex flex-col items-center gap-3">
-          <IconPlus className="size-12 text-muted-foreground/50" aria-hidden="true" />
+          <IconPlus
+            className="size-12 text-muted-foreground/50"
+            aria-hidden="true"
+          />
           <div>
             <p className="text-sm font-medium">No issues on the timeline</p>
             <p className="text-sm text-muted-foreground">
@@ -217,7 +221,11 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
                         </div>
                       </div>
                       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                        {duration > 1 ? `${duration} days` : duration === 1 ? "1 day" : ""}
+                        {duration > 1
+                          ? `${duration} days`
+                          : duration === 1
+                            ? "1 day"
+                            : ""}
                       </span>
                     </button>
                   )
@@ -240,10 +248,10 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
                       style={{ width: WEEK_WIDTH }}
                     >
                       <div className="flex h-7 items-center justify-between border-b border-border/60 px-3">
-                        <div className="whitespace-nowrap text-[13px] font-normal text-muted-foreground">
+                        <div className="text-[13px] font-normal whitespace-nowrap text-muted-foreground">
                           {week.monthLabel}
                         </div>
-                        <div className="whitespace-nowrap text-[10px] font-medium text-muted-foreground/80">
+                        <div className="text-[10px] font-medium whitespace-nowrap text-muted-foreground/80">
                           {week.weekLabel}
                         </div>
                       </div>
@@ -253,11 +261,7 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
                             key={day.iso}
                             className={`flex shrink-0 items-center justify-between border-r border-border/60 px-2 text-[11px] ${
                               day.isWeekend ? "bg-muted/35" : ""
-                            } ${
-                              day.isToday
-                                ? "bg-primary/5"
-                                : ""
-                            }`}
+                            } ${day.isToday ? "bg-primary/5" : ""}`}
                             style={{ width: DAY_WIDTH }}
                           >
                             <span className="font-medium text-muted-foreground">
@@ -320,7 +324,10 @@ export function ProjectTimelineGantt({ project }: { project: Project }) {
 
                 {/* Issue bars */}
                 {issues.map((issue, index) => {
-                  const left = dateToPx(new Date(issue.startDate), viewportStart)
+                  const left = dateToPx(
+                    new Date(issue.startDate),
+                    viewportStart
+                  )
                   const width = Math.max(
                     DAY_WIDTH,
                     getDuration(issue) * DAY_WIDTH
@@ -419,10 +426,7 @@ function DependencyArrows({
       if (!source) return
       const sourceEndX =
         dateToPx(new Date(source.endDate), viewportStart) + DAY_WIDTH
-      const targetStartX = dateToPx(
-        new Date(target.startDate),
-        viewportStart
-      )
+      const targetStartX = dateToPx(new Date(target.startDate), viewportStart)
       const sourceY = issues.indexOf(source) * ROW_HEIGHT + ROW_HEIGHT / 2
       const targetY = targetIndex * ROW_HEIGHT + ROW_HEIGHT / 2
       if (targetStartX <= sourceEndX) return

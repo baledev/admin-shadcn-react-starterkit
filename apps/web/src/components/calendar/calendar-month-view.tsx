@@ -20,10 +20,7 @@ import {
   toIso,
   type CalendarActivity,
 } from "@/lib/calendar-data"
-import {
-  ActivityChipContent,
-  DraggableActivityChip,
-} from "./activity-chip"
+import { ActivityChipContent, DraggableActivityChip } from "./activity-chip"
 
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 const MAX_VISIBLE = 2
@@ -59,16 +56,14 @@ export function CalendarMonthView({
 
   function handleDragStart(event: DragStartEvent) {
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     setActiveActivity(activity ?? null)
   }
 
   function handleDragEnd(event: DragEndEvent) {
     setActiveActivity(null)
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     const date = event.over?.data.current?.date as Date | undefined
     if (activity && date) {
       onMoveActivity(activity.id, { date: toIso(date) })
@@ -98,10 +93,7 @@ export function CalendarMonthView({
               day={day}
               inMonth={isSameMonth(day, monthStart)}
               activities={dayActivities.slice(0, MAX_VISIBLE)}
-              hiddenCount={Math.max(
-                0,
-                dayActivities.length - MAX_VISIBLE
-              )}
+              hiddenCount={Math.max(0, dayActivities.length - MAX_VISIBLE)}
               onSelectActivity={onSelectActivity}
               onAddAt={onAddAt}
             />

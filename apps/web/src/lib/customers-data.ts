@@ -1,248 +1,248 @@
 export type Customer = {
-    id: number
-    name: string
-    email: string
-    phone: string
-    status: "active" | "inactive" | "pending"
-    plan: "free" | "pro" | "enterprise"
-    country: string
-    joinedAt: string
-    totalSpend: number
+  id: number
+  name: string
+  email: string
+  phone: string
+  status: "active" | "inactive" | "pending"
+  plan: "free" | "pro" | "enterprise"
+  country: string
+  joinedAt: string
+  totalSpend: number
 }
 
 export const customersData: Customer[] = [
-    {
-        id: 1,
-        name: "Alice Johnson",
-        email: "alice.johnson@example.com",
-        phone: "+1 555-0101",
-        status: "active",
-        plan: "pro",
-        country: "United States",
-        joinedAt: "2023-01-15",
-        totalSpend: 1250.0,
-    },
-    {
-        id: 2,
-        name: "Bob Smith",
-        email: "bob.smith@example.com",
-        phone: "+1 555-0102",
-        status: "inactive",
-        plan: "free",
-        country: "Canada",
-        joinedAt: "2023-02-20",
-        totalSpend: 0.0,
-    },
-    {
-        id: 3,
-        name: "Carlos Rivera",
-        email: "carlos.rivera@example.com",
-        phone: "+52 555-0103",
-        status: "active",
-        plan: "enterprise",
-        country: "Mexico",
-        joinedAt: "2022-11-05",
-        totalSpend: 8750.0,
-    },
-    {
-        id: 4,
-        name: "Diana Chen",
-        email: "diana.chen@example.com",
-        phone: "+86 555-0104",
-        status: "active",
-        plan: "pro",
-        country: "China",
-        joinedAt: "2023-03-10",
-        totalSpend: 2300.0,
-    },
-    {
-        id: 5,
-        name: "Ethan Williams",
-        email: "ethan.williams@example.com",
-        phone: "+1 555-0105",
-        status: "pending",
-        plan: "free",
-        country: "United States",
-        joinedAt: "2024-01-01",
-        totalSpend: 0.0,
-    },
-    {
-        id: 6,
-        name: "Fatima Al-Hassan",
-        email: "fatima.alhassan@example.com",
-        phone: "+971 555-0106",
-        status: "active",
-        plan: "enterprise",
-        country: "UAE",
-        joinedAt: "2022-08-22",
-        totalSpend: 12400.0,
-    },
-    {
-        id: 7,
-        name: "George Müller",
-        email: "george.muller@example.com",
-        phone: "+49 555-0107",
-        status: "active",
-        plan: "pro",
-        country: "Germany",
-        joinedAt: "2023-06-14",
-        totalSpend: 3100.0,
-    },
-    {
-        id: 8,
-        name: "Hannah Park",
-        email: "hannah.park@example.com",
-        phone: "+82 555-0108",
-        status: "inactive",
-        plan: "pro",
-        country: "South Korea",
-        joinedAt: "2023-07-30",
-        totalSpend: 950.0,
-    },
-    {
-        id: 9,
-        name: "Ivan Petrov",
-        email: "ivan.petrov@example.com",
-        phone: "+7 555-0109",
-        status: "active",
-        plan: "free",
-        country: "Russia",
-        joinedAt: "2023-09-12",
-        totalSpend: 0.0,
-    },
-    {
-        id: 10,
-        name: "Julia Santos",
-        email: "julia.santos@example.com",
-        phone: "+55 555-0110",
-        status: "active",
-        plan: "enterprise",
-        country: "Brazil",
-        joinedAt: "2022-12-01",
-        totalSpend: 9800.0,
-    },
-    {
-        id: 11,
-        name: "Kevin O'Brien",
-        email: "kevin.obrien@example.com",
-        phone: "+353 555-0111",
-        status: "pending",
-        plan: "pro",
-        country: "Ireland",
-        joinedAt: "2024-02-15",
-        totalSpend: 0.0,
-    },
-    {
-        id: 12,
-        name: "Laura Bianchi",
-        email: "laura.bianchi@example.com",
-        phone: "+39 555-0112",
-        status: "active",
-        plan: "pro",
-        country: "Italy",
-        joinedAt: "2023-04-08",
-        totalSpend: 1800.0,
-    },
-    {
-        id: 13,
-        name: "Mohammed Al-Rashid",
-        email: "m.alrashid@example.com",
-        phone: "+966 555-0113",
-        status: "active",
-        plan: "enterprise",
-        country: "Saudi Arabia",
-        joinedAt: "2022-07-19",
-        totalSpend: 15600.0,
-    },
-    {
-        id: 14,
-        name: "Nina Kowalski",
-        email: "nina.kowalski@example.com",
-        phone: "+48 555-0114",
-        status: "inactive",
-        plan: "free",
-        country: "Poland",
-        joinedAt: "2023-10-25",
-        totalSpend: 0.0,
-    },
-    {
-        id: 15,
-        name: "Oscar Fernandez",
-        email: "oscar.fernandez@example.com",
-        phone: "+34 555-0115",
-        status: "active",
-        plan: "pro",
-        country: "Spain",
-        joinedAt: "2023-05-17",
-        totalSpend: 2750.0,
-    },
-    {
-        id: 16,
-        name: "Priya Sharma",
-        email: "priya.sharma@example.com",
-        phone: "+91 555-0116",
-        status: "active",
-        plan: "pro",
-        country: "India",
-        joinedAt: "2023-08-03",
-        totalSpend: 1600.0,
-    },
-    {
-        id: 17,
-        name: "Quinn Taylor",
-        email: "quinn.taylor@example.com",
-        phone: "+1 555-0117",
-        status: "pending",
-        plan: "free",
-        country: "United States",
-        joinedAt: "2024-03-01",
-        totalSpend: 0.0,
-    },
-    {
-        id: 18,
-        name: "Rachel Kim",
-        email: "rachel.kim@example.com",
-        phone: "+82 555-0118",
-        status: "active",
-        plan: "enterprise",
-        country: "South Korea",
-        joinedAt: "2022-10-11",
-        totalSpend: 11200.0,
-    },
-    {
-        id: 19,
-        name: "Samuel Okafor",
-        email: "samuel.okafor@example.com",
-        phone: "+234 555-0119",
-        status: "active",
-        plan: "free",
-        country: "Nigeria",
-        joinedAt: "2023-11-22",
-        totalSpend: 0.0,
-    },
-    {
-        id: 20,
-        name: "Tina Nguyen",
-        email: "tina.nguyen@example.com",
-        phone: "+84 555-0120",
-        status: "inactive",
-        plan: "pro",
-        country: "Vietnam",
-        joinedAt: "2023-12-05",
-        totalSpend: 430.0,
-    },
+  {
+    id: 1,
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    phone: "+1 555-0101",
+    status: "active",
+    plan: "pro",
+    country: "United States",
+    joinedAt: "2023-01-15",
+    totalSpend: 1250.0,
+  },
+  {
+    id: 2,
+    name: "Bob Smith",
+    email: "bob.smith@example.com",
+    phone: "+1 555-0102",
+    status: "inactive",
+    plan: "free",
+    country: "Canada",
+    joinedAt: "2023-02-20",
+    totalSpend: 0.0,
+  },
+  {
+    id: 3,
+    name: "Carlos Rivera",
+    email: "carlos.rivera@example.com",
+    phone: "+52 555-0103",
+    status: "active",
+    plan: "enterprise",
+    country: "Mexico",
+    joinedAt: "2022-11-05",
+    totalSpend: 8750.0,
+  },
+  {
+    id: 4,
+    name: "Diana Chen",
+    email: "diana.chen@example.com",
+    phone: "+86 555-0104",
+    status: "active",
+    plan: "pro",
+    country: "China",
+    joinedAt: "2023-03-10",
+    totalSpend: 2300.0,
+  },
+  {
+    id: 5,
+    name: "Ethan Williams",
+    email: "ethan.williams@example.com",
+    phone: "+1 555-0105",
+    status: "pending",
+    plan: "free",
+    country: "United States",
+    joinedAt: "2024-01-01",
+    totalSpend: 0.0,
+  },
+  {
+    id: 6,
+    name: "Fatima Al-Hassan",
+    email: "fatima.alhassan@example.com",
+    phone: "+971 555-0106",
+    status: "active",
+    plan: "enterprise",
+    country: "UAE",
+    joinedAt: "2022-08-22",
+    totalSpend: 12400.0,
+  },
+  {
+    id: 7,
+    name: "George Müller",
+    email: "george.muller@example.com",
+    phone: "+49 555-0107",
+    status: "active",
+    plan: "pro",
+    country: "Germany",
+    joinedAt: "2023-06-14",
+    totalSpend: 3100.0,
+  },
+  {
+    id: 8,
+    name: "Hannah Park",
+    email: "hannah.park@example.com",
+    phone: "+82 555-0108",
+    status: "inactive",
+    plan: "pro",
+    country: "South Korea",
+    joinedAt: "2023-07-30",
+    totalSpend: 950.0,
+  },
+  {
+    id: 9,
+    name: "Ivan Petrov",
+    email: "ivan.petrov@example.com",
+    phone: "+7 555-0109",
+    status: "active",
+    plan: "free",
+    country: "Russia",
+    joinedAt: "2023-09-12",
+    totalSpend: 0.0,
+  },
+  {
+    id: 10,
+    name: "Julia Santos",
+    email: "julia.santos@example.com",
+    phone: "+55 555-0110",
+    status: "active",
+    plan: "enterprise",
+    country: "Brazil",
+    joinedAt: "2022-12-01",
+    totalSpend: 9800.0,
+  },
+  {
+    id: 11,
+    name: "Kevin O'Brien",
+    email: "kevin.obrien@example.com",
+    phone: "+353 555-0111",
+    status: "pending",
+    plan: "pro",
+    country: "Ireland",
+    joinedAt: "2024-02-15",
+    totalSpend: 0.0,
+  },
+  {
+    id: 12,
+    name: "Laura Bianchi",
+    email: "laura.bianchi@example.com",
+    phone: "+39 555-0112",
+    status: "active",
+    plan: "pro",
+    country: "Italy",
+    joinedAt: "2023-04-08",
+    totalSpend: 1800.0,
+  },
+  {
+    id: 13,
+    name: "Mohammed Al-Rashid",
+    email: "m.alrashid@example.com",
+    phone: "+966 555-0113",
+    status: "active",
+    plan: "enterprise",
+    country: "Saudi Arabia",
+    joinedAt: "2022-07-19",
+    totalSpend: 15600.0,
+  },
+  {
+    id: 14,
+    name: "Nina Kowalski",
+    email: "nina.kowalski@example.com",
+    phone: "+48 555-0114",
+    status: "inactive",
+    plan: "free",
+    country: "Poland",
+    joinedAt: "2023-10-25",
+    totalSpend: 0.0,
+  },
+  {
+    id: 15,
+    name: "Oscar Fernandez",
+    email: "oscar.fernandez@example.com",
+    phone: "+34 555-0115",
+    status: "active",
+    plan: "pro",
+    country: "Spain",
+    joinedAt: "2023-05-17",
+    totalSpend: 2750.0,
+  },
+  {
+    id: 16,
+    name: "Priya Sharma",
+    email: "priya.sharma@example.com",
+    phone: "+91 555-0116",
+    status: "active",
+    plan: "pro",
+    country: "India",
+    joinedAt: "2023-08-03",
+    totalSpend: 1600.0,
+  },
+  {
+    id: 17,
+    name: "Quinn Taylor",
+    email: "quinn.taylor@example.com",
+    phone: "+1 555-0117",
+    status: "pending",
+    plan: "free",
+    country: "United States",
+    joinedAt: "2024-03-01",
+    totalSpend: 0.0,
+  },
+  {
+    id: 18,
+    name: "Rachel Kim",
+    email: "rachel.kim@example.com",
+    phone: "+82 555-0118",
+    status: "active",
+    plan: "enterprise",
+    country: "South Korea",
+    joinedAt: "2022-10-11",
+    totalSpend: 11200.0,
+  },
+  {
+    id: 19,
+    name: "Samuel Okafor",
+    email: "samuel.okafor@example.com",
+    phone: "+234 555-0119",
+    status: "active",
+    plan: "free",
+    country: "Nigeria",
+    joinedAt: "2023-11-22",
+    totalSpend: 0.0,
+  },
+  {
+    id: 20,
+    name: "Tina Nguyen",
+    email: "tina.nguyen@example.com",
+    phone: "+84 555-0120",
+    status: "inactive",
+    plan: "pro",
+    country: "Vietnam",
+    joinedAt: "2023-12-05",
+    totalSpend: 430.0,
+  },
 ]
 
 export const STATUS_OPTIONS = [
-    { label: "Active", value: "active" },
-    { label: "Inactive", value: "inactive" },
-    { label: "Pending", value: "pending" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
+  { label: "Pending", value: "pending" },
 ]
 
 export const PLAN_OPTIONS = [
-    { label: "Free", value: "free" },
-    { label: "Pro", value: "pro" },
-    { label: "Enterprise", value: "enterprise" },
+  { label: "Free", value: "free" },
+  { label: "Pro", value: "pro" },
+  { label: "Enterprise", value: "enterprise" },
 ]
 
 // ─── Cursor pagination (mock) ─────────────────────────────────────────────────
@@ -252,39 +252,39 @@ export const PLAN_OPTIONS = [
 // deliberately what such an endpoint would return.
 
 export type CustomerFilters = {
-    search?: string
-    status?: string[]
-    plan?: string[]
+  search?: string
+  status?: string[]
+  plan?: string[]
 }
 
 export type CustomerPage = {
-    items: Customer[]
-    nextCursor: string | null
-    hasMore: boolean
+  items: Customer[]
+  nextCursor: string | null
+  hasMore: boolean
 }
 
 export function filterCustomers(
-    source: Customer[],
-    filters: CustomerFilters = {}
+  source: Customer[],
+  filters: CustomerFilters = {}
 ): Customer[] {
-    const q = filters.search?.trim().toLowerCase() ?? ""
-    return source.filter((customer) => {
-        if (
-            q &&
-            !customer.name.toLowerCase().includes(q) &&
-            !customer.email.toLowerCase().includes(q) &&
-            !customer.country.toLowerCase().includes(q)
-        ) {
-            return false
-        }
-        if (filters.status?.length && !filters.status.includes(customer.status)) {
-            return false
-        }
-        if (filters.plan?.length && !filters.plan.includes(customer.plan)) {
-            return false
-        }
-        return true
-    })
+  const q = filters.search?.trim().toLowerCase() ?? ""
+  return source.filter((customer) => {
+    if (
+      q &&
+      !customer.name.toLowerCase().includes(q) &&
+      !customer.email.toLowerCase().includes(q) &&
+      !customer.country.toLowerCase().includes(q)
+    ) {
+      return false
+    }
+    if (filters.status?.length && !filters.status.includes(customer.status)) {
+      return false
+    }
+    if (filters.plan?.length && !filters.plan.includes(customer.plan)) {
+      return false
+    }
+    return true
+  })
 }
 
 export const CUSTOMERS_PAGE_SIZE = 9
@@ -294,29 +294,28 @@ export const CUSTOMERS_PAGE_SIZE = 9
  * previous page). A missing or unknown cursor starts from the beginning.
  */
 export function getCustomersPage(
-    source: Customer[],
-    opts: {
-        cursor?: string | null
-        limit?: number
-        filters?: CustomerFilters
-    } = {}
+  source: Customer[],
+  opts: {
+    cursor?: string | null
+    limit?: number
+    filters?: CustomerFilters
+  } = {}
 ): CustomerPage {
-    const { cursor = null, limit = CUSTOMERS_PAGE_SIZE, filters } = opts
-    const rows = filters ? filterCustomers(source, filters) : source
+  const { cursor = null, limit = CUSTOMERS_PAGE_SIZE, filters } = opts
+  const rows = filters ? filterCustomers(source, filters) : source
 
-    const cursorIndex =
-        cursor === null
-            ? -1
-            : rows.findIndex((customer) => String(customer.id) === cursor)
-    const start = cursorIndex + 1
-    const items = rows.slice(start, start + limit)
-    const hasMore = start + items.length < rows.length
+  const cursorIndex =
+    cursor === null
+      ? -1
+      : rows.findIndex((customer) => String(customer.id) === cursor)
+  const start = cursorIndex + 1
+  const items = rows.slice(start, start + limit)
+  const hasMore = start + items.length < rows.length
 
-    return {
-        items,
-        nextCursor: hasMore && items.length > 0
-            ? String(items[items.length - 1]!.id)
-            : null,
-        hasMore,
-    }
+  return {
+    items,
+    nextCursor:
+      hasMore && items.length > 0 ? String(items[items.length - 1]!.id) : null,
+    hasMore,
+  }
 }

@@ -27,11 +27,7 @@ import {
   DataTable,
   DataTableFacetedFilter,
 } from "@workspace/ui/components/data-table"
-import {
-  type Invoice,
-  STATUS_META,
-  STATUS_OPTIONS,
-} from "@/lib/invoices-data"
+import { type Invoice, STATUS_META, STATUS_OPTIONS } from "@/lib/invoices-data"
 
 // ─── Table features (tree-shaken) ────────────────────────────────────────────
 
@@ -127,7 +123,7 @@ function buildColumns(onViewDetail: (invoice: Invoice) => void) {
     columnHelper.accessor("issuedAt", {
       header: "Issue Date",
       cell: ({ row }) => (
-        <span className="text-sm tabular-nums text-muted-foreground">
+        <span className="text-sm text-muted-foreground tabular-nums">
           {row.original.issuedAt}
         </span>
       ),
@@ -135,7 +131,7 @@ function buildColumns(onViewDetail: (invoice: Invoice) => void) {
     columnHelper.accessor("dueAt", {
       header: "Due Date",
       cell: ({ row }) => (
-        <span className="text-sm tabular-nums text-muted-foreground">
+        <span className="text-sm text-muted-foreground tabular-nums">
           {row.original.dueAt}
         </span>
       ),
@@ -175,7 +171,10 @@ interface InvoiceDataTableProps {
   onViewDetail: (invoice: Invoice) => void
 }
 
-export function InvoiceDataTable({ data, onViewDetail }: InvoiceDataTableProps) {
+export function InvoiceDataTable({
+  data,
+  onViewDetail,
+}: InvoiceDataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<ColumnVisibilityState>({})
@@ -271,7 +270,7 @@ export function InvoiceDataTable({ data, onViewDetail }: InvoiceDataTableProps) 
         <>
           {/* Global search */}
           <div className="relative">
-            <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search invoices..."
               value={search}

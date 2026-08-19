@@ -41,16 +41,14 @@ export function CalendarWeekView({
 
   function handleDragStart(event: DragStartEvent) {
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     setActiveActivity(activity ?? null)
   }
 
   function handleDragEnd(event: DragEndEvent) {
     setActiveActivity(null)
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     const date = event.over?.data.current?.date as Date | undefined
     if (activity && date) {
       onMoveActivity(activity.id, { date: toIso(date) })

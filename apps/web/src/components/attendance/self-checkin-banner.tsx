@@ -1,5 +1,9 @@
 import * as React from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar"
 import { Button } from "@workspace/ui/components/button"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
@@ -30,11 +34,10 @@ export function SelfCheckinBanner({
 }: SelfCheckinBannerProps) {
   const [confirmOpen, setConfirmOpen] = React.useState(false)
   const [confirmType, setConfirmType] = React.useState<"in" | "out">("in")
-  const [currentTime, setCurrentTime] = React.useState("")
+  const [currentTime, setCurrentTime] = React.useState(() => toHHmm(new Date()))
 
   // Update current time display
   React.useEffect(() => {
-    setCurrentTime(toHHmm(new Date()))
     const timer = setInterval(() => {
       setCurrentTime(toHHmm(new Date()))
     }, 30000) // check every 30 seconds
@@ -81,7 +84,10 @@ export function SelfCheckinBanner({
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="size-12 border border-border shadow-xs">
-              <AvatarImage src={employee?.avatarUrl || user.avatar} alt={displayName} />
+              <AvatarImage
+                src={employee?.avatarUrl || user.avatar}
+                alt={displayName}
+              />
               <AvatarFallback className="text-sm font-semibold">
                 {initials}
               </AvatarFallback>
@@ -101,15 +107,17 @@ export function SelfCheckinBanner({
                 </span>
                 <span>•</span>
                 {hasCheckedOut ? (
-                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                  <span className="font-medium text-emerald-600 dark:text-emerald-400">
                     Selesai absensi hari ini
                   </span>
                 ) : hasCheckedIn ? (
-                  <span className="text-amber-600 dark:text-amber-400 font-medium">
+                  <span className="font-medium text-amber-600 dark:text-amber-400">
                     Sedang bekerja (Sudah Check-In)
                   </span>
                 ) : (
-                  <span className="text-muted-foreground">Belum Check-In hari ini</span>
+                  <span className="text-muted-foreground">
+                    Belum Check-In hari ini
+                  </span>
                 )}
               </div>
             </div>
@@ -168,17 +176,27 @@ export function SelfCheckinBanner({
       <ConfirmDialog
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
-        title={confirmType === "in" ? "Konfirmasi Clock In" : "Konfirmasi Clock Out"}
+        title={
+          confirmType === "in" ? "Konfirmasi Clock In" : "Konfirmasi Clock Out"
+        }
         description={
           confirmType === "in" ? (
             <span>
-              Apakah Anda yakin ingin melakukan <strong>Clock In (Masuk Kerja)</strong> sekarang pukul{" "}
-              <strong className="font-mono text-foreground">{toHHmm(new Date())}</strong>? Kehadiran Anda akan dicatat dalam sistem absensi.
+              Apakah Anda yakin ingin melakukan{" "}
+              <strong>Clock In (Masuk Kerja)</strong> sekarang pukul{" "}
+              <strong className="font-mono text-foreground">
+                {toHHmm(new Date())}
+              </strong>
+              ? Kehadiran Anda akan dicatat dalam sistem absensi.
             </span>
           ) : (
             <span>
-              Apakah Anda yakin ingin melakukan <strong>Clock Out (Pulang Kerja)</strong> sekarang pukul{" "}
-              <strong className="font-mono text-foreground">{toHHmm(new Date())}</strong>? Sesi kerja Anda hari ini akan diakhiri.
+              Apakah Anda yakin ingin melakukan{" "}
+              <strong>Clock Out (Pulang Kerja)</strong> sekarang pukul{" "}
+              <strong className="font-mono text-foreground">
+                {toHHmm(new Date())}
+              </strong>
+              ? Sesi kerja Anda hari ini akan diakhiri.
             </span>
           )
         }

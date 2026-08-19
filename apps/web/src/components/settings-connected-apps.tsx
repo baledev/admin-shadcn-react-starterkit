@@ -90,7 +90,10 @@ export function SettingsConnectedApps() {
                       key={scope}
                       className="flex items-center gap-2 text-sm text-muted-foreground"
                     >
-                      <IconCheck className="size-4 shrink-0" aria-hidden="true" />
+                      <IconCheck
+                        className="size-4 shrink-0"
+                        aria-hidden="true"
+                      />
                       {scope}
                     </li>
                   ))}

@@ -1,9 +1,5 @@
 import * as React from "react"
-import {
-  createFileRoute,
-  Link,
-  notFound,
-} from "@tanstack/react-router"
+import { createFileRoute, Link, notFound } from "@tanstack/react-router"
 import {
   IconChevronRight,
   IconLayoutAlignRight,
@@ -30,7 +26,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@workspace/ui/components/sheet"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@workspace/ui/components/tabs"
 
 export const Route = createFileRoute("/_auth/projects/$projectId")({
   loader: ({ params }) => {
@@ -56,19 +57,19 @@ function ProjectDetailPage() {
             <div className="min-w-0">
               <nav
                 aria-label="Breadcrumb"
-                className="text-muted-foreground flex items-center gap-2 text-sm"
+                className="flex items-center gap-2 text-sm text-muted-foreground"
               >
                 <Link
                   to="/projects"
-                  className="hover:text-foreground transition-colors"
+                  className="transition-colors hover:text-foreground"
                 >
                   Projects
                 </Link>
                 <IconChevronRight
-                  className="text-muted-foreground size-4"
+                  className="size-4 text-muted-foreground"
                   aria-hidden="true"
                 />
-                <span className="text-foreground truncate">{project.name}</span>
+                <span className="truncate text-foreground">{project.name}</span>
               </nav>
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
@@ -110,9 +111,16 @@ function ProjectDetailPage() {
 
               <ProjectDetailFiles project={project} />
 
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-6">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="gap-6"
+              >
                 <div className="overflow-x-auto border-b">
-                  <TabsList variant="line" className="h-auto min-w-max justify-start gap-7 rounded-none p-0 sm:gap-8">
+                  <TabsList
+                    variant="line"
+                    className="h-auto min-w-max justify-start gap-7 rounded-none p-0 sm:gap-8"
+                  >
                     <TabsTrigger value="timeline">Timeline</TabsTrigger>
                     <TabsTrigger value="tasks">Tasks</TabsTrigger>
                     <TabsTrigger value="issues">Issues</TabsTrigger>
@@ -144,7 +152,7 @@ function ProjectDetailPage() {
 
       {/* Meta sidebar (mobile sheet) */}
       <Sheet open={metaOpen} onOpenChange={setMetaOpen}>
-        <SheetContent side="right" className="sm:max-w-md w-full p-0">
+        <SheetContent side="right" className="w-full p-0 sm:max-w-md">
           <SheetHeader className="px-5 pt-6 pb-4">
             <SheetTitle>Project details</SheetTitle>
           </SheetHeader>

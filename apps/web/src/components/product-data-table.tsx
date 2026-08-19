@@ -77,13 +77,7 @@ function StockBadge({ status }: { status: Product["stockStatus"] }) {
 
 // ─── Product thumbnail ────────────────────────────────────────────────────────
 
-function ProductThumb({
-  imageUrl,
-  name,
-}: {
-  imageUrl?: string
-  name: string
-}) {
+function ProductThumb({ imageUrl, name }: { imageUrl?: string; name: string }) {
   if (imageUrl) {
     return (
       <img
@@ -350,7 +344,7 @@ export function ProductDataTable({
           <>
             {/* Global search */}
             <div className="relative">
-              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search products..."
                 value={search}
@@ -391,10 +385,7 @@ export function ProductDataTable({
           </>
         }
         renderRow={(row) => (
-          <TableRow
-            key={row.id}
-            data-state={row.getIsSelected() && "selected"}
-          >
+          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id}>
                 <FlexRender cell={cell} />

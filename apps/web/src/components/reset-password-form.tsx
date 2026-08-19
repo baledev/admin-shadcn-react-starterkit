@@ -54,9 +54,7 @@ export function ResetPasswordForm({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Set new password</CardTitle>
-          <CardDescription>
-            Enter your new password below
-          </CardDescription>
+          <CardDescription>Enter your new password below</CardDescription>
         </CardHeader>
         <CardContent>
           {!token && (

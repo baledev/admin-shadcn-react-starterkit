@@ -228,7 +228,7 @@ function buildColumns(
       id: "tasks",
       header: "Tasks",
       cell: ({ row }) => (
-        <span className="text-sm tabular-nums text-muted-foreground">
+        <span className="text-sm text-muted-foreground tabular-nums">
           {row.original.tasksClosed}/{row.original.tasksTotal}
         </span>
       ),
@@ -409,7 +409,7 @@ export function ProjectDataTable({
         toolbar={
           <>
             <div className="relative">
-              <IconSearch className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <IconSearch className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search projects..."
                 value={search}
@@ -481,7 +481,7 @@ export function ProjectDataTable({
         title="Delete this project?"
         description={
           <>
-           {" "}
+            {" "}
             <span className="font-medium text-foreground">
               {pendingDelete?.name}
             </span>{" "}

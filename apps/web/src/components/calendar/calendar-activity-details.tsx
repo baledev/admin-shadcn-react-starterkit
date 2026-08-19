@@ -46,9 +46,7 @@ export function ActivityDetailsSheet({
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-2 text-sm">
                   <IconCalendar className="size-4 shrink-0 text-muted-foreground" />
-                  <span>
-                    {formatFullDate(parseIso(activity.date))}
-                  </span>
+                  <span>{formatFullDate(parseIso(activity.date))}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <IconClock className="size-4 shrink-0 text-muted-foreground" />

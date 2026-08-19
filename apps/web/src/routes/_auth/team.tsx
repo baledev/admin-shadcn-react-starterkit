@@ -82,19 +82,18 @@ function InviteDialog({ open, onOpenChange, onInvite }: InviteDialogProps) {
           {/* Role */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="invite-role">Workspace Role</Label>
-            <Select
-              value={role}
-              onValueChange={(v) => setRole(v as TeamRole)}
-            >
+            <Select value={role} onValueChange={(v) => setRole(v as TeamRole)}>
               <SelectTrigger id="invite-role">
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                {ROLE_OPTIONS.filter((opt) => opt.value !== "owner").map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
+                {ROLE_OPTIONS.filter((opt) => opt.value !== "owner").map(
+                  (opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  )
+                )}
               </SelectContent>
             </Select>
           </div>

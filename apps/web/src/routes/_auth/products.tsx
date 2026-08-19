@@ -89,7 +89,8 @@ function ProductStatCards({ products }: { products: Product[] }) {
             Active product catalog
           </div>
           <div className="text-muted-foreground">
-            {products.filter((p) => p.stockStatus === "in_stock").length} in stock
+            {products.filter((p) => p.stockStatus === "in_stock").length} in
+            stock
           </div>
         </CardFooter>
       </Card>
@@ -111,7 +112,9 @@ function ProductStatCards({ products }: { products: Product[] }) {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Products running low
           </div>
-          <div className="text-muted-foreground">10 units or fewer remaining</div>
+          <div className="text-muted-foreground">
+            10 units or fewer remaining
+          </div>
         </CardFooter>
       </Card>
 
@@ -198,7 +201,10 @@ interface ProductSheetProps {
   onOpenChange: (open: boolean) => void
   isEditing: boolean
   form: ProductFormState
-  onField: <K extends keyof ProductFormState>(key: K, value: ProductFormState[K]) => void
+  onField: <K extends keyof ProductFormState>(
+    key: K,
+    value: ProductFormState[K]
+  ) => void
   onSave: (e: React.FormEvent) => void
 }
 
@@ -212,7 +218,10 @@ function ProductSheet({
 }: ProductSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-lg flex flex-col gap-0 p-0">
+      <SheetContent
+        side="right"
+        className="flex flex-col gap-0 p-0 sm:max-w-lg"
+      >
         <SheetHeader className="px-6 pt-6 pb-4">
           <SheetTitle>{isEditing ? "Edit Product" : "Add Product"}</SheetTitle>
           <SheetDescription>
@@ -229,108 +238,110 @@ function ProductSheet({
           className="flex flex-1 flex-col overflow-hidden"
         >
           <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-6 py-5">
-          {/* Name */}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="product-name">Name</Label>
-            <Input
-              id="product-name"
-              placeholder="Wireless Headphones"
-              value={form.name}
-              onChange={(e) => onField("name", e.target.value)}
-              required
-            />
-          </div>
-
-          {/* SKU */}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="product-sku">SKU</Label>
-            <Input
-              id="product-sku"
-              placeholder="WH-BT500"
-              value={form.sku}
-              onChange={(e) => onField("sku", e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Category */}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="product-category">Category</Label>
-            <Select
-              value={form.category}
-              onValueChange={(v) =>
-                onField("category", v as ProductCategory)
-              }
-            >
-              <SelectTrigger id="product-category">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORY_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Price + Stock row */}
-          <div className="grid grid-cols-2 gap-4">
+            {/* Name */}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="product-price">Price (USD)</Label>
+              <Label htmlFor="product-name">Name</Label>
               <Input
-                id="product-price"
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="0.00"
-                value={form.price}
-                onChange={(e) => onField("price", e.target.value)}
+                id="product-name"
+                placeholder="Wireless Headphones"
+                value={form.name}
+                onChange={(e) => onField("name", e.target.value)}
                 required
               />
             </div>
+
+            {/* SKU */}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="product-stock">Stock Qty</Label>
+              <Label htmlFor="product-sku">SKU</Label>
               <Input
-                id="product-stock"
-                type="number"
-                min="0"
-                step="1"
-                placeholder="0"
-                value={form.stock}
-                onChange={(e) => onField("stock", e.target.value)}
+                id="product-sku"
+                placeholder="WH-BT500"
+                value={form.sku}
+                onChange={(e) => onField("sku", e.target.value)}
                 required
               />
             </div>
-          </div>
 
-          {/* Description */}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="product-description">Description</Label>
-            <Textarea
-              id="product-description"
-              placeholder="Brief description of the product…"
-              value={form.description}
-              onChange={(e) => onField("description", e.target.value)}
-              className="min-h-24 resize-none"
-            />
-          </div>
-
-          {/* Stock status preview */}
-          {form.stock !== "" && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Stock status:</span>
-              {(() => {
-                const qty = parseInt(form.stock, 10)
-                const s: StockStatus = isNaN(qty)
-                  ? "out_of_stock"
-                  : deriveStockStatus(qty)
-                const opt = STOCK_STATUS_OPTIONS.find((o) => o.value === s)
-                return <span className="font-medium text-foreground">{opt?.label}</span>
-              })()}
+            {/* Category */}
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="product-category">Category</Label>
+              <Select
+                value={form.category}
+                onValueChange={(v) => onField("category", v as ProductCategory)}
+              >
+                <SelectTrigger id="product-category">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORY_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          )}
+
+            {/* Price + Stock row */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="product-price">Price (USD)</Label>
+                <Input
+                  id="product-price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={form.price}
+                  onChange={(e) => onField("price", e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="product-stock">Stock Qty</Label>
+                <Input
+                  id="product-stock"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                  value={form.stock}
+                  onChange={(e) => onField("stock", e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="product-description">Description</Label>
+              <Textarea
+                id="product-description"
+                placeholder="Brief description of the product…"
+                value={form.description}
+                onChange={(e) => onField("description", e.target.value)}
+                className="min-h-24 resize-none"
+              />
+            </div>
+
+            {/* Stock status preview */}
+            {form.stock !== "" && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>Stock status:</span>
+                {(() => {
+                  const qty = parseInt(form.stock, 10)
+                  const s: StockStatus = isNaN(qty)
+                    ? "out_of_stock"
+                    : deriveStockStatus(qty)
+                  const opt = STOCK_STATUS_OPTIONS.find((o) => o.value === s)
+                  return (
+                    <span className="font-medium text-foreground">
+                      {opt?.label}
+                    </span>
+                  )
+                })()}
+              </div>
+            )}
           </div>
 
           <SheetFooter>
@@ -352,7 +363,9 @@ function ProductSheet({
 function ProductsPage() {
   const [products, setProducts] = React.useState<Product[]>(initialProducts)
   const [sheetOpen, setSheetOpen] = React.useState(false)
-  const [editingProduct, setEditingProduct] = React.useState<Product | null>(null)
+  const [editingProduct, setEditingProduct] = React.useState<Product | null>(
+    null
+  )
   const [form, setForm] = React.useState<ProductFormState>(EMPTY_FORM)
 
   function handleAdd() {

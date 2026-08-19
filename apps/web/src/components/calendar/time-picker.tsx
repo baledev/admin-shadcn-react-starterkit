@@ -43,7 +43,7 @@ export function TimePicker({
         <PopoverTrigger
           id={id}
           aria-label="Pick a time"
-          className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-2.5 py-1 text-sm shadow-xs outline-none transition-[color,box-shadow] hover:bg-muted/30 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-2.5 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none hover:bg-muted/30 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
         >
           <span className="tabular-nums">{value}</span>
           <IconClock className="size-4 shrink-0 text-muted-foreground" />
@@ -99,7 +99,8 @@ function TimeColumn({
     const index = values.indexOf(selected)
     const item = index >= 0 ? (list.children[index] as HTMLElement) : undefined
     if (item) {
-      list.scrollTop = item.offsetTop - list.clientHeight / 2 + item.clientHeight / 2
+      list.scrollTop =
+        item.offsetTop - list.clientHeight / 2 + item.clientHeight / 2
     }
   }, [values, selected])
 

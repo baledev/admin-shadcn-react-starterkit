@@ -16,10 +16,7 @@ export type TeamMember = {
 
 // ─── Display metadata ─────────────────────────────────────────────────────────
 
-export const ROLE_META: Record<
-  TeamRole,
-  { label: string; chip: string }
-> = {
+export const ROLE_META: Record<TeamRole, { label: string; chip: string }> = {
   owner: {
     label: "Owner",
     chip: "bg-primary text-primary-foreground",
@@ -80,7 +77,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "sarah@acme.com",
     role: "owner",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-18T10:15:00Z",
     joinedAt: "2025-01-10",
   },
@@ -90,7 +88,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "john@acme.com",
     role: "admin",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-18T09:45:00Z",
     joinedAt: "2025-01-12",
   },
@@ -100,7 +99,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "ripley@acme.com",
     role: "admin",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-17T15:20:00Z",
     joinedAt: "2025-02-14",
   },
@@ -110,7 +110,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "marcus@acme.com",
     role: "member",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-18T11:02:00Z",
     joinedAt: "2025-03-01",
   },
@@ -129,7 +130,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "spidey@acme.com",
     role: "viewer",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-18T04:30:00Z",
     joinedAt: "2025-06-20",
   },
@@ -139,7 +141,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "batman@acme.com",
     role: "viewer",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-16T22:10:00Z",
     joinedAt: "2025-07-02",
   },
@@ -149,7 +152,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "supes@acme.com",
     role: "member",
     status: "deactivated",
-    avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-05-12T14:00:00Z",
     joinedAt: "2025-04-11",
   },
@@ -168,7 +172,8 @@ export const initialTeamMembers: TeamMember[] = [
     email: "aquaman@acme.com",
     role: "viewer",
     status: "active",
-    avatarUrl: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=64&h=64&fit=crop&auto=format",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=64&h=64&fit=crop&auto=format",
     lastActiveAt: "2026-08-18T08:15:00Z",
     joinedAt: "2025-09-15",
   },

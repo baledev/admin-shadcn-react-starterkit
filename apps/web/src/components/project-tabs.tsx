@@ -4,16 +4,10 @@ import { IconCheck } from "@tabler/icons-react"
 import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
 import { Badge } from "@workspace/ui/components/badge"
 import { Checkbox } from "@workspace/ui/components/checkbox"
-import {
-  type Project,
-  type TaskStatus,
-} from "@/lib/projects-data"
+import { type Project, type TaskStatus } from "@/lib/projects-data"
 import { formatMonthDayYear } from "@/lib/date-utils"
 
-const TASK_STATUS_META: Record<
-  TaskStatus,
-  { label: string; chip: string }
-> = {
+const TASK_STATUS_META: Record<TaskStatus, { label: string; chip: string }> = {
   todo: {
     label: "To Do",
     chip: "bg-muted text-muted-foreground ring-border",
@@ -44,7 +38,10 @@ export function ProjectTasksTab({ project }: { project: Project }) {
   if (tasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-        <IconCheck className="size-12 text-muted-foreground/50" aria-hidden="true" />
+        <IconCheck
+          className="size-12 text-muted-foreground/50"
+          aria-hidden="true"
+        />
         <div>
           <p className="text-sm font-medium">No tasks yet</p>
           <p className="text-sm text-muted-foreground">
@@ -61,10 +58,7 @@ export function ProjectTasksTab({ project }: { project: Project }) {
         const meta = TASK_STATUS_META[task.status]
         const isDone = task.status === "done"
         return (
-          <div
-            key={task.id}
-            className="flex items-center gap-3 py-3"
-          >
+          <div key={task.id} className="flex items-center gap-3 py-3">
             <Checkbox
               checked={isDone}
               onCheckedChange={() => toggle(task.id)}
@@ -103,7 +97,10 @@ export function ProjectIssuesTab({ project }: { project: Project }) {
   if (project.issues.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-        <IconCheck className="size-12 text-muted-foreground/50" aria-hidden="true" />
+        <IconCheck
+          className="size-12 text-muted-foreground/50"
+          aria-hidden="true"
+        />
         <div>
           <p className="text-sm font-medium">No issues tracked</p>
           <p className="text-sm text-muted-foreground">
@@ -130,12 +127,12 @@ export function ProjectIssuesTab({ project }: { project: Project }) {
                 issue.color === "amber"
                   ? "bg-amber-400/90"
                   : issue.color === "cyan"
-                  ? "bg-cyan-400/90"
-                  : issue.color === "fuchsia"
-                  ? "bg-fuchsia-400/90"
-                  : issue.color === "indigo"
-                  ? "bg-indigo-400/90"
-                  : "bg-zinc-400/80"
+                    ? "bg-cyan-400/90"
+                    : issue.color === "fuchsia"
+                      ? "bg-fuchsia-400/90"
+                      : issue.color === "indigo"
+                        ? "bg-indigo-400/90"
+                        : "bg-zinc-400/80"
               }`}
               aria-hidden="true"
             />
@@ -170,7 +167,10 @@ export function ProjectActivityTab({ project }: { project: Project }) {
   if (project.activity.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-        <IconCheck className="size-12 text-muted-foreground/50" aria-hidden="true" />
+        <IconCheck
+          className="size-12 text-muted-foreground/50"
+          aria-hidden="true"
+        />
         <div>
           <p className="text-sm font-medium">No activity yet</p>
           <p className="text-sm text-muted-foreground">

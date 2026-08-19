@@ -103,12 +103,8 @@ const PIE_COLORS = [
 // ─── Stat Cards Component ─────────────────────────────────────────────────────
 
 function AnalyticsStatCards() {
-  const {
-    totalRevenue,
-    totalOrders,
-    avgOrderValue,
-    netCustomerGrowth,
-  } = computeAnalyticsSummary(dailyMetrics)
+  const { totalRevenue, totalOrders, avgOrderValue, netCustomerGrowth } =
+    computeAnalyticsSummary(dailyMetrics)
 
   const fmtCurrency = (n: number) =>
     new Intl.NumberFormat("en-US", {
@@ -223,8 +219,11 @@ function AnalyticsPage() {
             description="Detailed charts, reports, and performance metrics."
           >
             <div className="flex items-center gap-2">
-              <Select value={dateRange} onValueChange={(val) => setDateRange(val ?? "30d")}>
-                <SelectTrigger className="w-36 h-8 text-xs gap-1.5">
+              <Select
+                value={dateRange}
+                onValueChange={(val) => setDateRange(val ?? "30d")}
+              >
+                <SelectTrigger className="h-8 w-36 gap-1.5 text-xs">
                   <IconCalendar className="size-3.5" />
                   <SelectValue placeholder="Date range" />
                 </SelectTrigger>
@@ -250,12 +249,13 @@ function AnalyticsPage() {
 
           {/* Charts grid */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            
             {/* Area Chart: Revenue */}
             <Card>
               <CardHeader>
                 <CardDescription>Revenue Trend</CardDescription>
-                <CardTitle className="text-lg font-semibold">Daily Sales Revenue</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  Daily Sales Revenue
+                </CardTitle>
               </CardHeader>
               <CardContent className="h-[300px]">
                 <ChartContainer
@@ -317,7 +317,9 @@ function AnalyticsPage() {
             <Card>
               <CardHeader>
                 <CardDescription>Order Volume</CardDescription>
-                <CardTitle className="text-lg font-semibold">Weekly Distribution</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  Weekly Distribution
+                </CardTitle>
               </CardHeader>
               <CardContent className="h-[300px]">
                 <ChartContainer
@@ -351,7 +353,9 @@ function AnalyticsPage() {
             <Card>
               <CardHeader>
                 <CardDescription>User Growth</CardDescription>
-                <CardTitle className="text-lg font-semibold">Acquisitions & Churn</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  Acquisitions & Churn
+                </CardTitle>
               </CardHeader>
               <CardContent className="h-[300px]">
                 <ChartContainer
@@ -401,9 +405,11 @@ function AnalyticsPage() {
             <Card>
               <CardHeader>
                 <CardDescription>Acquisition Channels</CardDescription>
-                <CardTitle className="text-lg font-semibold">Traffic Sources</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  Traffic Sources
+                </CardTitle>
               </CardHeader>
-              <CardContent className="h-[300px] flex items-center justify-center">
+              <CardContent className="flex h-[300px] items-center justify-center">
                 <ChartContainer
                   config={pieChartConfig}
                   className="mx-auto aspect-square max-h-[250px] w-full"
@@ -431,20 +437,23 @@ function AnalyticsPage() {
                   </PieChart>
                 </ChartContainer>
               </CardContent>
-              <CardFooter className="flex-wrap gap-x-4 gap-y-1.5 justify-center text-xs pb-4">
+              <CardFooter className="flex-wrap justify-center gap-x-4 gap-y-1.5 pb-4 text-xs">
                 {trafficSources.map((src, i) => (
                   <div key={src.source} className="flex items-center gap-1.5">
                     <div
                       className="size-2 rounded-full"
-                      style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
+                      style={{
+                        backgroundColor: PIE_COLORS[i % PIE_COLORS.length],
+                      }}
                     />
                     <span className="text-muted-foreground">{src.source}</span>
-                    <span className="font-semibold tabular-nums">({src.percentage}%)</span>
+                    <span className="font-semibold tabular-nums">
+                      ({src.percentage}%)
+                    </span>
                   </div>
                 ))}
               </CardFooter>
             </Card>
-
           </div>
         </div>
       </div>

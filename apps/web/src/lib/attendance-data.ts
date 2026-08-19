@@ -34,7 +34,7 @@ export const STATUS_META: Record<
   AttendanceStatus,
   {
     label: string
-    icon: React.ComponentType<any>
+    icon: React.ComponentType<{ className?: string }>
     chip: string
     dot: string
   }
@@ -157,8 +157,11 @@ function generateMockAttendance(): AttendanceRecord[] {
           employeeId: emp.id,
           date: dateStr,
           status: "present",
-          checkIn: "08:" + String(Math.floor(Math.random() * 30)).padStart(2, "0"),
-          checkOut: "17:" + String(Math.floor(Math.random() * 30) + 30).padStart(2, "0"),
+          checkIn:
+            "08:" + String(Math.floor(Math.random() * 30)).padStart(2, "0"),
+          checkOut:
+            "17:" +
+            String(Math.floor(Math.random() * 30) + 30).padStart(2, "0"),
         })
       } else if (rand < 0.9) {
         // Terlambat
@@ -167,8 +170,10 @@ function generateMockAttendance(): AttendanceRecord[] {
           employeeId: emp.id,
           date: dateStr,
           status: "late",
-          checkIn: "09:" + String(Math.floor(Math.random() * 45) + 1).padStart(2, "0"),
-          checkOut: "18:" + String(Math.floor(Math.random() * 30)).padStart(2, "0"),
+          checkIn:
+            "09:" + String(Math.floor(Math.random() * 45) + 1).padStart(2, "0"),
+          checkOut:
+            "18:" + String(Math.floor(Math.random() * 30)).padStart(2, "0"),
           note: "Kesiangan / macet di jalan",
         })
       } else if (rand < 0.94) {

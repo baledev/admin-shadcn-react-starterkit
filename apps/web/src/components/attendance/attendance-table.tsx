@@ -1,4 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar"
 import { Badge } from "@workspace/ui/components/badge"
 import { cn } from "@workspace/ui/lib/utils"
 import {
@@ -29,7 +33,9 @@ export function AttendanceTable({
 }: AttendanceTableProps) {
   // Helper to find a record for a specific employee and date string
   const findRecord = (employeeId: string, dateStr: string) => {
-    return records.find((r) => r.employeeId === employeeId && r.date === dateStr)
+    return records.find(
+      (r) => r.employeeId === employeeId && r.date === dateStr
+    )
   }
 
   // Get initials for Avatar Fallback
@@ -65,7 +71,7 @@ export function AttendanceTable({
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm text-foreground">
             <thead>
-              <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <tr className="border-b border-border bg-muted/40 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 <th className="px-4 py-3">Nama Karyawan</th>
                 <th className="px-4 py-3 text-center">Status</th>
                 <th className="px-4 py-3 text-center">Jam Masuk</th>
@@ -84,7 +90,7 @@ export function AttendanceTable({
                 return (
                   <tr
                     key={emp.id}
-                    className="hover:bg-muted/30 transition-colors"
+                    className="transition-colors hover:bg-muted/30"
                   >
                     <td className="px-4 py-3 font-medium">
                       <div className="flex items-center gap-3">
@@ -95,10 +101,10 @@ export function AttendanceTable({
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="font-semibold text-sm leading-none">
+                          <span className="text-sm leading-none font-semibold">
                             {emp.name}
                           </span>
-                          <span className="text-xs text-muted-foreground mt-1">
+                          <span className="mt-1 text-xs text-muted-foreground">
                             {ROLE_META[emp.role].label}
                           </span>
                         </div>
@@ -122,7 +128,7 @@ export function AttendanceTable({
                     <td className="px-4 py-3 text-center text-xs">
                       {getDuration(record?.checkIn, record?.checkOut)}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">
+                    <td className="max-w-xs truncate px-4 py-3 text-xs text-muted-foreground">
                       {record?.note || "—"}
                     </td>
                     {onEditRecord && (
@@ -157,8 +163,8 @@ export function AttendanceTable({
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm text-foreground">
             <thead>
-              <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                <th className="px-4 py-3 min-w-56">Nama Karyawan</th>
+              <tr className="border-b border-border bg-muted/40 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <th className="min-w-56 px-4 py-3">Nama Karyawan</th>
                 {weekDays.map((date, idx) => {
                   const isDayToday = isToday(date)
                   const dayNum = date.getDate()
@@ -166,7 +172,7 @@ export function AttendanceTable({
                     <th
                       key={idx}
                       className={cn(
-                        "px-2 py-3 text-center min-w-16",
+                        "min-w-16 px-2 py-3 text-center",
                         isDayToday && "bg-primary/5 text-primary"
                       )}
                     >
@@ -176,7 +182,7 @@ export function AttendanceTable({
                         </span>
                         <span
                           className={cn(
-                            "mt-0.5 flex size-5 items-center justify-center text-xs rounded-full font-bold",
+                            "mt-0.5 flex size-5 items-center justify-center rounded-full text-xs font-bold",
                             isDayToday && "bg-primary text-primary-foreground"
                           )}
                         >
@@ -190,7 +196,10 @@ export function AttendanceTable({
             </thead>
             <tbody className="divide-y divide-border">
               {employees.map((emp) => (
-                <tr key={emp.id} className="hover:bg-muted/30 transition-colors">
+                <tr
+                  key={emp.id}
+                  className="transition-colors hover:bg-muted/30"
+                >
                   <td className="px-4 py-2.5 font-medium">
                     <div className="flex items-center gap-2.5">
                       <Avatar className="size-7">
@@ -200,10 +209,10 @@ export function AttendanceTable({
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="font-semibold text-xs leading-none">
+                        <span className="text-xs leading-none font-semibold">
                           {emp.name}
                         </span>
-                        <span className="text-[10px] text-muted-foreground mt-0.5">
+                        <span className="mt-0.5 text-[10px] text-muted-foreground">
                           {ROLE_META[emp.role].label}
                         </span>
                       </div>
@@ -216,7 +225,7 @@ export function AttendanceTable({
                       <td
                         key={idx}
                         className={cn(
-                          "px-2 py-2.5 text-center vertical-middle",
+                          "vertical-middle px-2 py-2.5 text-center",
                           isToday(date) && "bg-primary/5"
                         )}
                       >
@@ -251,8 +260,8 @@ export function AttendanceTable({
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm text-foreground">
           <thead>
-            <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <th className="px-4 py-3 min-w-56 sticky left-0 z-10 bg-card/95 backdrop-blur-xs shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+            <tr className="border-b border-border bg-muted/40 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              <th className="sticky left-0 z-10 min-w-56 bg-card/95 px-4 py-3 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] backdrop-blur-xs">
                 Nama Karyawan
               </th>
               {monthDays.map((date, idx) => {
@@ -262,13 +271,13 @@ export function AttendanceTable({
                   <th
                     key={idx}
                     className={cn(
-                      "px-1 py-2 text-center min-w-8 text-[10px]",
+                      "min-w-8 px-1 py-2 text-center text-[10px]",
                       isDayToday && "bg-primary/5 text-primary"
                     )}
                   >
                     <span
                       className={cn(
-                        "flex size-5 mx-auto items-center justify-center rounded-full font-bold",
+                        "mx-auto flex size-5 items-center justify-center rounded-full font-bold",
                         isDayToday && "bg-primary text-primary-foreground"
                       )}
                     >
@@ -277,10 +286,10 @@ export function AttendanceTable({
                   </th>
                 )
               })}
-              <th className="px-3 py-3 text-center min-w-16 bg-emerald-500/5 text-emerald-700 dark:text-emerald-400">
+              <th className="min-w-16 bg-emerald-500/5 px-3 py-3 text-center text-emerald-700 dark:text-emerald-400">
                 Hadir
               </th>
-              <th className="px-3 py-3 text-center min-w-16 bg-destructive/5 text-destructive">
+              <th className="min-w-16 bg-destructive/5 px-3 py-3 text-center text-destructive">
                 Alpa
               </th>
             </tr>
@@ -310,9 +319,9 @@ export function AttendanceTable({
               return (
                 <tr
                   key={emp.id}
-                  className="hover:bg-muted/30 transition-colors"
+                  className="transition-colors hover:bg-muted/30"
                 >
-                  <td className="px-4 py-2.5 font-medium sticky left-0 z-10 bg-card/95 backdrop-blur-xs shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+                  <td className="sticky left-0 z-10 bg-card/95 px-4 py-2.5 font-medium shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] backdrop-blur-xs">
                     <div className="flex items-center gap-2.5">
                       <Avatar className="size-7">
                         <AvatarImage src={emp.avatarUrl} alt={emp.name} />
@@ -321,10 +330,10 @@ export function AttendanceTable({
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="font-semibold text-xs leading-none">
+                        <span className="text-xs leading-none font-semibold">
                           {emp.name}
                         </span>
-                        <span className="text-[10px] text-muted-foreground mt-0.5">
+                        <span className="mt-0.5 text-[10px] text-muted-foreground">
                           {ROLE_META[emp.role].label}
                         </span>
                       </div>
@@ -347,10 +356,10 @@ export function AttendanceTable({
                       </td>
                     )
                   })}
-                  <td className="px-3 py-2.5 text-center font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 tabular-nums text-xs">
+                  <td className="bg-emerald-500/5 px-3 py-2.5 text-center text-xs font-bold text-emerald-600 tabular-nums dark:text-emerald-400">
                     {presentCount}
                   </td>
-                  <td className="px-3 py-2.5 text-center font-bold text-destructive bg-destructive/5 tabular-nums text-xs">
+                  <td className="bg-destructive/5 px-3 py-2.5 text-center text-xs font-bold text-destructive tabular-nums">
                     {absentCount}
                   </td>
                 </tr>

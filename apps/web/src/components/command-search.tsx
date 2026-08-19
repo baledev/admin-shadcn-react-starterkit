@@ -111,11 +111,7 @@ function CommandSearchDialog({
   )
 }
 
-function CommandSearchTrigger({
-  onClick,
-}: {
-  onClick: () => void
-}) {
+function CommandSearchTrigger({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"

@@ -6,7 +6,12 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/core"
-import { formatWeekdayMonthDay, hourLabel, isToday, toHHmm } from "@/lib/date-utils"
+import {
+  formatWeekdayMonthDay,
+  hourLabel,
+  isToday,
+  toHHmm,
+} from "@/lib/date-utils"
 import { cn } from "@workspace/ui/lib/utils"
 import {
   activitiesOnDate,
@@ -49,16 +54,14 @@ export function CalendarDayView({
 
   function handleDragStart(event: DragStartEvent) {
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     setActiveActivity(activity ?? null)
   }
 
   function handleDragEnd(event: DragEndEvent) {
     setActiveActivity(null)
     const activity = event.active.data.current?.activity as
-      | CalendarActivity
-      | undefined
+      CalendarActivity | undefined
     const hour = event.over?.data.current?.hour as number | undefined
     if (activity && hour !== undefined) {
       onMoveActivity(activity.id, {
@@ -132,11 +135,11 @@ function HourBand({
     <div
       ref={setNodeRef}
       className={cn(
-        "flex min-h-14 items-stretch gap-3 border-b border-border last:border-b-0 transition-colors",
+        "flex min-h-14 items-stretch gap-3 border-b border-border transition-colors last:border-b-0",
         isOver && "bg-muted/60"
       )}
     >
-      <span className="w-14 shrink-0 border-r border-border py-1.5 pr-2 text-right text-[11px] tabular-nums text-muted-foreground">
+      <span className="w-14 shrink-0 border-r border-border py-1.5 pr-2 text-right text-[11px] text-muted-foreground tabular-nums">
         {hourLabel(hour)}
       </span>
       <div className="flex flex-1 flex-col gap-1 py-1.5 pr-2">

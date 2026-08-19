@@ -76,7 +76,8 @@ export const initialActivities: CalendarActivity[] = [
     date: toIso(today),
     start: at(9),
     end: at(10),
-    description: "Weekly sprint planning with the product and engineering teams.",
+    description:
+      "Weekly sprint planning with the product and engineering teams.",
   },
   {
     id: "a2",
