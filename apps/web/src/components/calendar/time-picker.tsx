@@ -51,28 +51,25 @@ export function TimePicker({
         <PopoverContent
           side="bottom"
           align="start"
-          className="w-auto items-center gap-3"
+          className="w-auto gap-2 py-2 px-0"
         >
-          <div className="flex items-start gap-1.5">
+          <div className="flex items-start gap-1">
             <TimeColumn
-              label="Hour"
+              label="Jam"
               values={HOURS}
               selected={Number.isNaN(hour) ? 0 : hour}
               onSelect={handleHourChange}
             />
-            <span className="mt-6 text-sm font-medium text-muted-foreground">
-              :
-            </span>
             <TimeColumn
-              label="Minute"
+              label="Menit"
               values={MINUTES}
               selected={Number.isNaN(minute) ? 0 : minute}
               onSelect={handleMinuteChange}
             />
           </div>
-          <p className="text-[11px] text-muted-foreground">
-            Scroll to pick a time
-          </p>
+          {/* <p className="text-center text-[10px] text-muted-foreground">
+            Scroll untuk memilih
+          </p> */}
         </PopoverContent>
       </Popover>
       {name && <input type="hidden" name={name} value={value} />}
@@ -105,13 +102,13 @@ function TimeColumn({
   }, [values, selected])
 
   return (
-    <div className="flex w-16 flex-col gap-1">
-      <span className="text-center text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
+    <div className="flex w-14 flex-col gap-1">
+      <span className="text-center text-[9px] font-medium tracking-wide text-muted-foreground uppercase">
         {label}
       </span>
       <div
         ref={listRef}
-        className="h-40 overflow-y-auto overscroll-contain rounded-md border border-border py-1"
+        className="h-32 overflow-y-auto overscroll-contain rounded-md border border-border py-1"
       >
         {values.map((v) => (
           <button
@@ -119,7 +116,7 @@ function TimeColumn({
             type="button"
             onClick={() => onSelect(v)}
             className={cn(
-              "flex w-full justify-center rounded-sm px-2 py-1.5 text-sm tabular-nums transition-colors",
+              "flex w-full justify-center rounded-sm px-1 py-1 text-xs tabular-nums transition-colors",
               v === selected
                 ? "bg-foreground font-medium text-background"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
