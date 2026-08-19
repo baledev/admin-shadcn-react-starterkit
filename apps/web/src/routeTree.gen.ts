@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as GuestRouteImport } from './routes/_guest'
 import { Route as AuthAnalyticsRouteImport } from './routes/_auth/analytics'
+import { Route as AuthAttendanceRouteImport } from './routes/_auth/attendance'
 import { Route as AuthCalendarRouteImport } from './routes/_auth/calendar'
 import { Route as AuthCustomersRouteImport } from './routes/_auth/customers'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
@@ -58,6 +59,11 @@ const GuestRoute = GuestRouteImport.update({
 const AuthAnalyticsRoute = AuthAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAttendanceRoute = AuthAttendanceRouteImport.update({
+  id: '/attendance',
+  path: '/attendance',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthCalendarRoute = AuthCalendarRouteImport.update({
@@ -206,6 +212,7 @@ const AuthSettingsProfileRoute = AuthSettingsProfileRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AuthAnalyticsRoute
+  '/attendance': typeof AuthAttendanceRoute
   '/calendar': typeof AuthCalendarRoute
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -238,6 +245,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AuthAnalyticsRoute
+  '/attendance': typeof AuthAttendanceRoute
   '/calendar': typeof AuthCalendarRoute
   '/customers': typeof AuthCustomersRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -271,6 +279,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_guest': typeof GuestRouteWithChildren
   '/_auth/analytics': typeof AuthAnalyticsRoute
+  '/_auth/attendance': typeof AuthAttendanceRoute
   '/_auth/calendar': typeof AuthCalendarRoute
   '/_auth/customers': typeof AuthCustomersRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
@@ -305,6 +314,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/analytics'
+    | '/attendance'
     | '/calendar'
     | '/customers'
     | '/dashboard'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/analytics'
+    | '/attendance'
     | '/calendar'
     | '/customers'
     | '/dashboard'
@@ -369,6 +380,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_guest'
     | '/_auth/analytics'
+    | '/_auth/attendance'
     | '/_auth/calendar'
     | '/_auth/customers'
     | '/_auth/dashboard'
@@ -433,6 +445,13 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/analytics'
       preLoaderRoute: typeof AuthAnalyticsRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/attendance': {
+      id: '/_auth/attendance'
+      path: '/attendance'
+      fullPath: '/attendance'
+      preLoaderRoute: typeof AuthAttendanceRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/calendar': {
@@ -674,6 +693,7 @@ const AuthSettingsRouteWithChildren = AuthSettingsRoute._addFileChildren(
 
 interface AuthRouteChildren {
   AuthAnalyticsRoute: typeof AuthAnalyticsRoute
+  AuthAttendanceRoute: typeof AuthAttendanceRoute
   AuthCalendarRoute: typeof AuthCalendarRoute
   AuthCustomersRoute: typeof AuthCustomersRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
@@ -693,6 +713,7 @@ interface AuthRouteChildren {
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAnalyticsRoute: AuthAnalyticsRoute,
+  AuthAttendanceRoute: AuthAttendanceRoute,
   AuthCalendarRoute: AuthCalendarRoute,
   AuthCustomersRoute: AuthCustomersRoute,
   AuthDashboardRoute: AuthDashboardRoute,

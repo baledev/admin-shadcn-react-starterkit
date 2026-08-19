@@ -33,6 +33,7 @@ import {
   IconBriefcase,
   IconCalendar,
   IconChartBar,
+  IconClipboardCheck,
   IconFolder,
   IconLayoutKanban,
   IconMessage,
@@ -149,6 +150,21 @@ const data = {
           title: "Calendar",
           url: "/calendar",
           icon: <IconCalendar />,
+        },
+      ],
+    },
+    {
+      label: "HR",
+      items: [
+        {
+          title: "Attendance",
+          url: "/attendance",
+          icon: <IconClipboardCheck />,
+        },
+        {
+          title: "Payroll",
+          url: "#",
+          icon: <IconReceipt />,
         },
       ],
     },
