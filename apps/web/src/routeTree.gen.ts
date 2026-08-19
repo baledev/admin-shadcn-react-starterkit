@@ -27,6 +27,7 @@ import { Route as AuthPayrollRouteImport } from './routes/_auth/payroll'
 import { Route as AuthProductsRouteImport } from './routes/_auth/products'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
 import { Route as AuthProjectsRouteImport } from './routes/_auth/projects'
+import { Route as AuthReportsRouteImport } from './routes/_auth/reports'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthTeamRouteImport } from './routes/_auth/team'
 import { Route as AuthWorkspaceRouteImport } from './routes/_auth/workspace'
@@ -41,6 +42,19 @@ import { Route as AuthFinancePaymentsRouteImport } from './routes/_auth/finance/
 import { Route as AuthFinanceTransactionsRouteImport } from './routes/_auth/finance/transactions'
 import { Route as AuthProjectsIndexRouteImport } from './routes/_auth/projects/index'
 import { Route as AuthProjectsProjectIdRouteImport } from './routes/_auth/projects/$projectId'
+import { Route as AuthReportsIndexRouteImport } from './routes/_auth/reports/index'
+import { Route as AuthReportsApAgingRouteImport } from './routes/_auth/reports/ap-aging'
+import { Route as AuthReportsArAgingRouteImport } from './routes/_auth/reports/ar-aging'
+import { Route as AuthReportsAttendanceReportRouteImport } from './routes/_auth/reports/attendance-report'
+import { Route as AuthReportsBalanceSheetRouteImport } from './routes/_auth/reports/balance-sheet'
+import { Route as AuthReportsCashFlowRouteImport } from './routes/_auth/reports/cash-flow'
+import { Route as AuthReportsGeneralLedgerRouteImport } from './routes/_auth/reports/general-ledger'
+import { Route as AuthReportsIncomeStatementRouteImport } from './routes/_auth/reports/income-statement'
+import { Route as AuthReportsInventoryReportRouteImport } from './routes/_auth/reports/inventory-report'
+import { Route as AuthReportsInvoiceSummaryRouteImport } from './routes/_auth/reports/invoice-summary'
+import { Route as AuthReportsPayrollReportRouteImport } from './routes/_auth/reports/payroll-report'
+import { Route as AuthReportsSalesReportRouteImport } from './routes/_auth/reports/sales-report'
+import { Route as AuthReportsTrialBalanceRouteImport } from './routes/_auth/reports/trial-balance'
 import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
 import { Route as AuthSettingsAccountRouteImport } from './routes/_auth/settings/account'
 import { Route as AuthSettingsBillingRouteImport } from './routes/_auth/settings/billing'
@@ -143,6 +157,11 @@ const AuthProjectsRoute = AuthProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthReportsRoute = AuthReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -214,6 +233,77 @@ const AuthProjectsProjectIdRoute = AuthProjectsProjectIdRouteImport.update({
   id: '/$projectId',
   path: '/$projectId',
   getParentRoute: () => AuthProjectsRoute,
+} as any)
+const AuthReportsIndexRoute = AuthReportsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsApAgingRoute = AuthReportsApAgingRouteImport.update({
+  id: '/ap-aging',
+  path: '/ap-aging',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsArAgingRoute = AuthReportsArAgingRouteImport.update({
+  id: '/ar-aging',
+  path: '/ar-aging',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsAttendanceReportRoute =
+  AuthReportsAttendanceReportRouteImport.update({
+    id: '/attendance-report',
+    path: '/attendance-report',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsBalanceSheetRoute = AuthReportsBalanceSheetRouteImport.update({
+  id: '/balance-sheet',
+  path: '/balance-sheet',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsCashFlowRoute = AuthReportsCashFlowRouteImport.update({
+  id: '/cash-flow',
+  path: '/cash-flow',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsGeneralLedgerRoute =
+  AuthReportsGeneralLedgerRouteImport.update({
+    id: '/general-ledger',
+    path: '/general-ledger',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsIncomeStatementRoute =
+  AuthReportsIncomeStatementRouteImport.update({
+    id: '/income-statement',
+    path: '/income-statement',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsInventoryReportRoute =
+  AuthReportsInventoryReportRouteImport.update({
+    id: '/inventory-report',
+    path: '/inventory-report',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsInvoiceSummaryRoute =
+  AuthReportsInvoiceSummaryRouteImport.update({
+    id: '/invoice-summary',
+    path: '/invoice-summary',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsPayrollReportRoute =
+  AuthReportsPayrollReportRouteImport.update({
+    id: '/payroll-report',
+    path: '/payroll-report',
+    getParentRoute: () => AuthReportsRoute,
+  } as any)
+const AuthReportsSalesReportRoute = AuthReportsSalesReportRouteImport.update({
+  id: '/sales-report',
+  path: '/sales-report',
+  getParentRoute: () => AuthReportsRoute,
+} as any)
+const AuthReportsTrialBalanceRoute = AuthReportsTrialBalanceRouteImport.update({
+  id: '/trial-balance',
+  path: '/trial-balance',
+  getParentRoute: () => AuthReportsRoute,
 } as any)
 const AuthSettingsIndexRoute = AuthSettingsIndexRouteImport.update({
   id: '/',
@@ -306,6 +396,7 @@ export interface FileRoutesByFullPath {
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
   '/projects': typeof AuthProjectsRouteWithChildren
+  '/reports': typeof AuthReportsRouteWithChildren
   '/settings': typeof AuthSettingsRouteWithChildren
   '/team': typeof AuthTeamRoute
   '/workspace': typeof AuthWorkspaceRoute
@@ -318,6 +409,18 @@ export interface FileRoutesByFullPath {
   '/finance/payments': typeof AuthFinancePaymentsRoute
   '/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/projects/$projectId': typeof AuthProjectsProjectIdRoute
+  '/reports/ap-aging': typeof AuthReportsApAgingRoute
+  '/reports/ar-aging': typeof AuthReportsArAgingRoute
+  '/reports/attendance-report': typeof AuthReportsAttendanceReportRoute
+  '/reports/balance-sheet': typeof AuthReportsBalanceSheetRoute
+  '/reports/cash-flow': typeof AuthReportsCashFlowRoute
+  '/reports/general-ledger': typeof AuthReportsGeneralLedgerRoute
+  '/reports/income-statement': typeof AuthReportsIncomeStatementRoute
+  '/reports/inventory-report': typeof AuthReportsInventoryReportRoute
+  '/reports/invoice-summary': typeof AuthReportsInvoiceSummaryRoute
+  '/reports/payroll-report': typeof AuthReportsPayrollReportRoute
+  '/reports/sales-report': typeof AuthReportsSalesReportRoute
+  '/reports/trial-balance': typeof AuthReportsTrialBalanceRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
   '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
@@ -326,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/settings/profile': typeof AuthSettingsProfileRoute
   '/finance/': typeof AuthFinanceIndexRoute
   '/projects/': typeof AuthProjectsIndexRoute
+  '/reports/': typeof AuthReportsIndexRoute
   '/settings/': typeof AuthSettingsIndexRoute
   '/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
   '/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
@@ -361,6 +465,18 @@ export interface FileRoutesByTo {
   '/finance/payments': typeof AuthFinancePaymentsRoute
   '/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/projects/$projectId': typeof AuthProjectsProjectIdRoute
+  '/reports/ap-aging': typeof AuthReportsApAgingRoute
+  '/reports/ar-aging': typeof AuthReportsArAgingRoute
+  '/reports/attendance-report': typeof AuthReportsAttendanceReportRoute
+  '/reports/balance-sheet': typeof AuthReportsBalanceSheetRoute
+  '/reports/cash-flow': typeof AuthReportsCashFlowRoute
+  '/reports/general-ledger': typeof AuthReportsGeneralLedgerRoute
+  '/reports/income-statement': typeof AuthReportsIncomeStatementRoute
+  '/reports/inventory-report': typeof AuthReportsInventoryReportRoute
+  '/reports/invoice-summary': typeof AuthReportsInvoiceSummaryRoute
+  '/reports/payroll-report': typeof AuthReportsPayrollReportRoute
+  '/reports/sales-report': typeof AuthReportsSalesReportRoute
+  '/reports/trial-balance': typeof AuthReportsTrialBalanceRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
   '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
@@ -369,6 +485,7 @@ export interface FileRoutesByTo {
   '/settings/profile': typeof AuthSettingsProfileRoute
   '/finance': typeof AuthFinanceIndexRoute
   '/projects': typeof AuthProjectsIndexRoute
+  '/reports': typeof AuthReportsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
   '/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
   '/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
@@ -397,6 +514,7 @@ export interface FileRoutesById {
   '/_auth/products': typeof AuthProductsRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/projects': typeof AuthProjectsRouteWithChildren
+  '/_auth/reports': typeof AuthReportsRouteWithChildren
   '/_auth/settings': typeof AuthSettingsRouteWithChildren
   '/_auth/team': typeof AuthTeamRoute
   '/_auth/workspace': typeof AuthWorkspaceRoute
@@ -409,6 +527,18 @@ export interface FileRoutesById {
   '/_auth/finance/payments': typeof AuthFinancePaymentsRoute
   '/_auth/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/_auth/projects/$projectId': typeof AuthProjectsProjectIdRoute
+  '/_auth/reports/ap-aging': typeof AuthReportsApAgingRoute
+  '/_auth/reports/ar-aging': typeof AuthReportsArAgingRoute
+  '/_auth/reports/attendance-report': typeof AuthReportsAttendanceReportRoute
+  '/_auth/reports/balance-sheet': typeof AuthReportsBalanceSheetRoute
+  '/_auth/reports/cash-flow': typeof AuthReportsCashFlowRoute
+  '/_auth/reports/general-ledger': typeof AuthReportsGeneralLedgerRoute
+  '/_auth/reports/income-statement': typeof AuthReportsIncomeStatementRoute
+  '/_auth/reports/inventory-report': typeof AuthReportsInventoryReportRoute
+  '/_auth/reports/invoice-summary': typeof AuthReportsInvoiceSummaryRoute
+  '/_auth/reports/payroll-report': typeof AuthReportsPayrollReportRoute
+  '/_auth/reports/sales-report': typeof AuthReportsSalesReportRoute
+  '/_auth/reports/trial-balance': typeof AuthReportsTrialBalanceRoute
   '/_auth/settings/account': typeof AuthSettingsAccountRoute
   '/_auth/settings/billing': typeof AuthSettingsBillingRoute
   '/_auth/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
@@ -417,6 +547,7 @@ export interface FileRoutesById {
   '/_auth/settings/profile': typeof AuthSettingsProfileRoute
   '/_auth/finance/': typeof AuthFinanceIndexRoute
   '/_auth/projects/': typeof AuthProjectsIndexRoute
+  '/_auth/reports/': typeof AuthReportsIndexRoute
   '/_auth/settings/': typeof AuthSettingsIndexRoute
   '/_auth/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
   '/_auth/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
@@ -444,6 +575,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/projects'
+    | '/reports'
     | '/settings'
     | '/team'
     | '/workspace'
@@ -456,6 +588,18 @@ export interface FileRouteTypes {
     | '/finance/payments'
     | '/finance/transactions'
     | '/projects/$projectId'
+    | '/reports/ap-aging'
+    | '/reports/ar-aging'
+    | '/reports/attendance-report'
+    | '/reports/balance-sheet'
+    | '/reports/cash-flow'
+    | '/reports/general-ledger'
+    | '/reports/income-statement'
+    | '/reports/inventory-report'
+    | '/reports/invoice-summary'
+    | '/reports/payroll-report'
+    | '/reports/sales-report'
+    | '/reports/trial-balance'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/connected-apps'
@@ -464,6 +608,7 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/finance/'
     | '/projects/'
+    | '/reports/'
     | '/settings/'
     | '/finance/transactions/bills'
     | '/finance/transactions/equity'
@@ -499,6 +644,18 @@ export interface FileRouteTypes {
     | '/finance/payments'
     | '/finance/transactions'
     | '/projects/$projectId'
+    | '/reports/ap-aging'
+    | '/reports/ar-aging'
+    | '/reports/attendance-report'
+    | '/reports/balance-sheet'
+    | '/reports/cash-flow'
+    | '/reports/general-ledger'
+    | '/reports/income-statement'
+    | '/reports/inventory-report'
+    | '/reports/invoice-summary'
+    | '/reports/payroll-report'
+    | '/reports/sales-report'
+    | '/reports/trial-balance'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/connected-apps'
@@ -507,6 +664,7 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/finance'
     | '/projects'
+    | '/reports'
     | '/settings'
     | '/finance/transactions/bills'
     | '/finance/transactions/equity'
@@ -534,6 +692,7 @@ export interface FileRouteTypes {
     | '/_auth/products'
     | '/_auth/profile'
     | '/_auth/projects'
+    | '/_auth/reports'
     | '/_auth/settings'
     | '/_auth/team'
     | '/_auth/workspace'
@@ -546,6 +705,18 @@ export interface FileRouteTypes {
     | '/_auth/finance/payments'
     | '/_auth/finance/transactions'
     | '/_auth/projects/$projectId'
+    | '/_auth/reports/ap-aging'
+    | '/_auth/reports/ar-aging'
+    | '/_auth/reports/attendance-report'
+    | '/_auth/reports/balance-sheet'
+    | '/_auth/reports/cash-flow'
+    | '/_auth/reports/general-ledger'
+    | '/_auth/reports/income-statement'
+    | '/_auth/reports/inventory-report'
+    | '/_auth/reports/invoice-summary'
+    | '/_auth/reports/payroll-report'
+    | '/_auth/reports/sales-report'
+    | '/_auth/reports/trial-balance'
     | '/_auth/settings/account'
     | '/_auth/settings/billing'
     | '/_auth/settings/connected-apps'
@@ -554,6 +725,7 @@ export interface FileRouteTypes {
     | '/_auth/settings/profile'
     | '/_auth/finance/'
     | '/_auth/projects/'
+    | '/_auth/reports/'
     | '/_auth/settings/'
     | '/_auth/finance/transactions/bills'
     | '/_auth/finance/transactions/equity'
@@ -697,6 +869,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProjectsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/reports': {
+      id: '/_auth/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthReportsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -794,6 +973,97 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/$projectId'
       preLoaderRoute: typeof AuthProjectsProjectIdRouteImport
       parentRoute: typeof AuthProjectsRoute
+    }
+    '/_auth/reports/': {
+      id: '/_auth/reports/'
+      path: '/'
+      fullPath: '/reports/'
+      preLoaderRoute: typeof AuthReportsIndexRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/ap-aging': {
+      id: '/_auth/reports/ap-aging'
+      path: '/ap-aging'
+      fullPath: '/reports/ap-aging'
+      preLoaderRoute: typeof AuthReportsApAgingRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/ar-aging': {
+      id: '/_auth/reports/ar-aging'
+      path: '/ar-aging'
+      fullPath: '/reports/ar-aging'
+      preLoaderRoute: typeof AuthReportsArAgingRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/attendance-report': {
+      id: '/_auth/reports/attendance-report'
+      path: '/attendance-report'
+      fullPath: '/reports/attendance-report'
+      preLoaderRoute: typeof AuthReportsAttendanceReportRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/balance-sheet': {
+      id: '/_auth/reports/balance-sheet'
+      path: '/balance-sheet'
+      fullPath: '/reports/balance-sheet'
+      preLoaderRoute: typeof AuthReportsBalanceSheetRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/cash-flow': {
+      id: '/_auth/reports/cash-flow'
+      path: '/cash-flow'
+      fullPath: '/reports/cash-flow'
+      preLoaderRoute: typeof AuthReportsCashFlowRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/general-ledger': {
+      id: '/_auth/reports/general-ledger'
+      path: '/general-ledger'
+      fullPath: '/reports/general-ledger'
+      preLoaderRoute: typeof AuthReportsGeneralLedgerRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/income-statement': {
+      id: '/_auth/reports/income-statement'
+      path: '/income-statement'
+      fullPath: '/reports/income-statement'
+      preLoaderRoute: typeof AuthReportsIncomeStatementRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/inventory-report': {
+      id: '/_auth/reports/inventory-report'
+      path: '/inventory-report'
+      fullPath: '/reports/inventory-report'
+      preLoaderRoute: typeof AuthReportsInventoryReportRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/invoice-summary': {
+      id: '/_auth/reports/invoice-summary'
+      path: '/invoice-summary'
+      fullPath: '/reports/invoice-summary'
+      preLoaderRoute: typeof AuthReportsInvoiceSummaryRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/payroll-report': {
+      id: '/_auth/reports/payroll-report'
+      path: '/payroll-report'
+      fullPath: '/reports/payroll-report'
+      preLoaderRoute: typeof AuthReportsPayrollReportRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/sales-report': {
+      id: '/_auth/reports/sales-report'
+      path: '/sales-report'
+      fullPath: '/reports/sales-report'
+      preLoaderRoute: typeof AuthReportsSalesReportRouteImport
+      parentRoute: typeof AuthReportsRoute
+    }
+    '/_auth/reports/trial-balance': {
+      id: '/_auth/reports/trial-balance'
+      path: '/trial-balance'
+      fullPath: '/reports/trial-balance'
+      preLoaderRoute: typeof AuthReportsTrialBalanceRouteImport
+      parentRoute: typeof AuthReportsRoute
     }
     '/_auth/settings/': {
       id: '/_auth/settings/'
@@ -903,6 +1173,42 @@ const AuthProjectsRouteWithChildren = AuthProjectsRoute._addFileChildren(
   AuthProjectsRouteChildren,
 )
 
+interface AuthReportsRouteChildren {
+  AuthReportsApAgingRoute: typeof AuthReportsApAgingRoute
+  AuthReportsArAgingRoute: typeof AuthReportsArAgingRoute
+  AuthReportsAttendanceReportRoute: typeof AuthReportsAttendanceReportRoute
+  AuthReportsBalanceSheetRoute: typeof AuthReportsBalanceSheetRoute
+  AuthReportsCashFlowRoute: typeof AuthReportsCashFlowRoute
+  AuthReportsGeneralLedgerRoute: typeof AuthReportsGeneralLedgerRoute
+  AuthReportsIncomeStatementRoute: typeof AuthReportsIncomeStatementRoute
+  AuthReportsInventoryReportRoute: typeof AuthReportsInventoryReportRoute
+  AuthReportsInvoiceSummaryRoute: typeof AuthReportsInvoiceSummaryRoute
+  AuthReportsPayrollReportRoute: typeof AuthReportsPayrollReportRoute
+  AuthReportsSalesReportRoute: typeof AuthReportsSalesReportRoute
+  AuthReportsTrialBalanceRoute: typeof AuthReportsTrialBalanceRoute
+  AuthReportsIndexRoute: typeof AuthReportsIndexRoute
+}
+
+const AuthReportsRouteChildren: AuthReportsRouteChildren = {
+  AuthReportsApAgingRoute: AuthReportsApAgingRoute,
+  AuthReportsArAgingRoute: AuthReportsArAgingRoute,
+  AuthReportsAttendanceReportRoute: AuthReportsAttendanceReportRoute,
+  AuthReportsBalanceSheetRoute: AuthReportsBalanceSheetRoute,
+  AuthReportsCashFlowRoute: AuthReportsCashFlowRoute,
+  AuthReportsGeneralLedgerRoute: AuthReportsGeneralLedgerRoute,
+  AuthReportsIncomeStatementRoute: AuthReportsIncomeStatementRoute,
+  AuthReportsInventoryReportRoute: AuthReportsInventoryReportRoute,
+  AuthReportsInvoiceSummaryRoute: AuthReportsInvoiceSummaryRoute,
+  AuthReportsPayrollReportRoute: AuthReportsPayrollReportRoute,
+  AuthReportsSalesReportRoute: AuthReportsSalesReportRoute,
+  AuthReportsTrialBalanceRoute: AuthReportsTrialBalanceRoute,
+  AuthReportsIndexRoute: AuthReportsIndexRoute,
+}
+
+const AuthReportsRouteWithChildren = AuthReportsRoute._addFileChildren(
+  AuthReportsRouteChildren,
+)
+
 interface AuthSettingsRouteChildren {
   AuthSettingsAccountRoute: typeof AuthSettingsAccountRoute
   AuthSettingsBillingRoute: typeof AuthSettingsBillingRoute
@@ -968,6 +1274,7 @@ interface AuthRouteChildren {
   AuthProductsRoute: typeof AuthProductsRoute
   AuthProfileRoute: typeof AuthProfileRoute
   AuthProjectsRoute: typeof AuthProjectsRouteWithChildren
+  AuthReportsRoute: typeof AuthReportsRouteWithChildren
   AuthSettingsRoute: typeof AuthSettingsRouteWithChildren
   AuthTeamRoute: typeof AuthTeamRoute
   AuthWorkspaceRoute: typeof AuthWorkspaceRoute
@@ -994,6 +1301,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthProductsRoute: AuthProductsRoute,
   AuthProfileRoute: AuthProfileRoute,
   AuthProjectsRoute: AuthProjectsRouteWithChildren,
+  AuthReportsRoute: AuthReportsRouteWithChildren,
   AuthSettingsRoute: AuthSettingsRouteWithChildren,
   AuthTeamRoute: AuthTeamRoute,
   AuthWorkspaceRoute: AuthWorkspaceRoute,

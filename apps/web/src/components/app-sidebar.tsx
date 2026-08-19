@@ -203,6 +203,30 @@ const data = {
       ],
     },
     {
+      label: "Reporting",
+      items: [
+        {
+          title: "Reports",
+          url: "#",
+          icon: <IconChartBar />,
+          items: [
+            { title: "Income Statement", url: "/reports/income-statement" },
+            { title: "Balance Sheet", url: "/reports/balance-sheet" },
+            { title: "Cash Flow", url: "/reports/cash-flow" },
+            { title: "General Ledger", url: "/reports/general-ledger" },
+            { title: "Trial Balance", url: "/reports/trial-balance" },
+            { title: "AR Aging", url: "/reports/ar-aging" },
+            { title: "AP Aging", url: "/reports/ap-aging" },
+            { title: "Sales Report", url: "/reports/sales-report" },
+            { title: "Inventory Report", url: "/reports/inventory-report" },
+            { title: "Invoice Summary", url: "/reports/invoice-summary" },
+            { title: "Payroll Report", url: "/reports/payroll-report" },
+            { title: "Attendance Report", url: "/reports/attendance-report" },
+          ],
+        },
+      ],
+    },
+    {
       label: "Other",
       items: [
         {
