@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -118,14 +119,10 @@ export function RunPayrollDialog({
           </div>
         </div>
 
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline" type="button" />}>
             Cancel
-          </Button>
+          </DialogClose>
           <Button type="button" onClick={onConfirm}>
             Run Payroll
           </Button>
