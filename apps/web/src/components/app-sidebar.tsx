@@ -28,7 +28,20 @@ import {
   TerminalSquareIcon,
   UsersIcon,
 } from "lucide-react"
-import { IconBell, IconBriefcase, IconCalendar, IconChartBar, IconFolder, IconLayoutKanban, IconMessage, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
+import {
+  IconBell,
+  IconBriefcase,
+  IconCalendar,
+  IconChartBar,
+  IconFolder,
+  IconLayoutKanban,
+  IconMessage,
+  IconPackage,
+  IconReceipt,
+  IconShoppingCart,
+  IconUserCheck,
+  IconUsers,
+} from "@tabler/icons-react"
 
 const data = {
   user: {
@@ -55,89 +68,114 @@ const data = {
   ],
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: <LayoutDashboardIcon />,
-    },
-    {
-      title: "Customers",
-      url: "/customers",
-      icon: <UsersIcon />,
-    },
-    {
-      title: "Orders",
-      url: "/orders",
-      icon: <IconShoppingCart />,
-    },
-    {
-      title: "Products",
-      url: "/products",
-      icon: <IconPackage />,
-    },
-    {
-      title: "Invoices",
-      url: "/invoices",
-      icon: <IconReceipt />,
-    },
-    {
-      title: "Team",
-      url: "/team",
-      icon: <IconUsers />,
-    },
-    {
-      title: "Notifications",
-      url: "/notifications",
-      icon: <IconBell />,
-    },
-    {
-      title: "Messages",
-      url: "/messages",
-      icon: <IconMessage />,
-    },
-    {
-      title: "Analytics",
-      url: "/analytics",
-      icon: <IconChartBar />,
-    },
-    {
-      title: "Files",
-      url: "/files",
-      icon: <IconFolder />,
-    },
-    {
-      title: "Projects",
-      url: "/projects",
-      icon: <IconBriefcase />,
-    },
-    {
-      title: "Kanban",
-      url: "/kanban",
-      icon: <IconLayoutKanban />,
-    },
-    {
-      title: "Calendar",
-      url: "/calendar",
-      icon: <IconCalendar />,
-    },
-    {
-      title: "Playground",
-      url: "#",
-      icon: <TerminalSquareIcon />,
+      label: "Platform",
       items: [
-        { title: "History", url: "#" },
-        { title: "Starred", url: "#" },
-        { title: "Settings", url: "#" },
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: <LayoutDashboardIcon />,
+        },
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: <BookOpenIcon />,
+      label: "Commerce",
+      items: [
+        {
+          title: "Customers",
+          url: "/customers",
+          icon: <UsersIcon />,
+        },
+        {
+          title: "Orders",
+          url: "/orders",
+          icon: <IconShoppingCart />,
+        },
+        {
+          title: "Products",
+          url: "/products",
+          icon: <IconPackage />,
+        },
+        {
+          title: "Invoices",
+          url: "/invoices",
+          icon: <IconReceipt />,
+        },
+      ],
     },
     {
-      title: "Settings",
-      url: "/settings",
-      icon: <Settings2Icon />,
+      label: "Workspace",
+      items: [
+        {
+          title: "My Workspace",
+          url: "/workspace",
+          icon: <IconUserCheck />,
+        },
+        {
+          title: "Team",
+          url: "/team",
+          icon: <IconUsers />,
+        },
+        {
+          title: "Notifications",
+          url: "/notifications",
+          icon: <IconBell />,
+        },
+        {
+          title: "Messages",
+          url: "/messages",
+          icon: <IconMessage />,
+        },
+        {
+          title: "Analytics",
+          url: "/analytics",
+          icon: <IconChartBar />,
+        },
+        {
+          title: "Files",
+          url: "/files",
+          icon: <IconFolder />,
+        },
+        {
+          title: "Projects",
+          url: "/projects",
+          icon: <IconBriefcase />,
+        },
+        {
+          title: "Kanban",
+          url: "/kanban",
+          icon: <IconLayoutKanban />,
+        },
+        {
+          title: "Calendar",
+          url: "/calendar",
+          icon: <IconCalendar />,
+        },
+      ],
+    },
+    {
+      label: "Other",
+      items: [
+        {
+          title: "Playground",
+          url: "#",
+          icon: <TerminalSquareIcon />,
+          items: [
+            { title: "History", url: "#" },
+            { title: "Starred", url: "#" },
+            { title: "Settings", url: "#" },
+          ],
+        },
+        {
+          title: "Documentation",
+          url: "#",
+          icon: <BookOpenIcon />,
+        },
+        {
+          title: "Settings",
+          url: "/settings",
+          icon: <Settings2Icon />,
+        },
+      ],
     },
   ],
   projects: [
@@ -178,7 +216,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain groups={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
