@@ -49,7 +49,8 @@ function titleCase(value: string) {
 function buildBreadcrumbs(routeId: string): { label: string; to: string }[] {
   const segments = routeId.split("/").filter(Boolean)
   const urlSegments = segments.filter(
-    (seg) => !seg.startsWith("_") && !seg.startsWith("$")
+    (seg) =>
+      !seg.startsWith("_") && !seg.startsWith("$") && seg !== "index"
   )
   return urlSegments.map((seg, index) => ({
     label: titleCase(seg),

@@ -24,12 +24,15 @@ import { Route as AuthNotificationsRouteImport } from './routes/_auth/notificati
 import { Route as AuthOrdersRouteImport } from './routes/_auth/orders'
 import { Route as AuthProductsRouteImport } from './routes/_auth/products'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
+import { Route as AuthProjectsRouteImport } from './routes/_auth/projects'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthTeamRouteImport } from './routes/_auth/team'
 import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
 import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as GuestSignInRouteImport } from './routes/_guest/sign-in'
 import { Route as GuestSignUpRouteImport } from './routes/_guest/sign-up'
+import { Route as AuthProjectsIndexRouteImport } from './routes/_auth/projects/index'
+import { Route as AuthProjectsProjectIdRouteImport } from './routes/_auth/projects/$projectId'
 import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
 import { Route as AuthSettingsAccountRouteImport } from './routes/_auth/settings/account'
 import { Route as AuthSettingsBillingRouteImport } from './routes/_auth/settings/billing'
@@ -111,6 +114,11 @@ const AuthProfileRoute = AuthProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthProjectsRoute = AuthProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -140,6 +148,16 @@ const GuestSignUpRoute = GuestSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
   getParentRoute: () => GuestRoute,
+} as any)
+const AuthProjectsIndexRoute = AuthProjectsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthProjectsRoute,
+} as any)
+const AuthProjectsProjectIdRoute = AuthProjectsProjectIdRouteImport.update({
+  id: '/$projectId',
+  path: '/$projectId',
+  getParentRoute: () => AuthProjectsRoute,
 } as any)
 const AuthSettingsIndexRoute = AuthSettingsIndexRouteImport.update({
   id: '/',
@@ -193,18 +211,21 @@ export interface FileRoutesByFullPath {
   '/orders': typeof AuthOrdersRoute
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
+  '/projects': typeof AuthProjectsRouteWithChildren
   '/settings': typeof AuthSettingsRouteWithChildren
   '/team': typeof AuthTeamRoute
   '/forgot-password': typeof GuestForgotPasswordRoute
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
   '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
   '/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/settings/plans': typeof AuthSettingsPlansRoute
   '/settings/profile': typeof AuthSettingsProfileRoute
+  '/projects/': typeof AuthProjectsIndexRoute
   '/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -226,12 +247,14 @@ export interface FileRoutesByTo {
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
   '/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
   '/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/settings/plans': typeof AuthSettingsPlansRoute
   '/settings/profile': typeof AuthSettingsProfileRoute
+  '/projects': typeof AuthProjectsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -251,18 +274,21 @@ export interface FileRoutesById {
   '/_auth/orders': typeof AuthOrdersRoute
   '/_auth/products': typeof AuthProductsRoute
   '/_auth/profile': typeof AuthProfileRoute
+  '/_auth/projects': typeof AuthProjectsRouteWithChildren
   '/_auth/settings': typeof AuthSettingsRouteWithChildren
   '/_auth/team': typeof AuthTeamRoute
   '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_guest/sign-in': typeof GuestSignInRoute
   '/_guest/sign-up': typeof GuestSignUpRoute
+  '/_auth/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/_auth/settings/account': typeof AuthSettingsAccountRoute
   '/_auth/settings/billing': typeof AuthSettingsBillingRoute
   '/_auth/settings/connected-apps': typeof AuthSettingsConnectedAppsRoute
   '/_auth/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/_auth/settings/plans': typeof AuthSettingsPlansRoute
   '/_auth/settings/profile': typeof AuthSettingsProfileRoute
+  '/_auth/projects/': typeof AuthProjectsIndexRoute
   '/_auth/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -281,18 +307,21 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/profile'
+    | '/projects'
     | '/settings'
     | '/team'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/projects/$projectId'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/connected-apps'
     | '/settings/notifications'
     | '/settings/plans'
     | '/settings/profile'
+    | '/projects/'
     | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -314,12 +343,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/projects/$projectId'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/connected-apps'
     | '/settings/notifications'
     | '/settings/plans'
     | '/settings/profile'
+    | '/projects'
     | '/settings'
   id:
     | '__root__'
@@ -338,18 +369,21 @@ export interface FileRouteTypes {
     | '/_auth/orders'
     | '/_auth/products'
     | '/_auth/profile'
+    | '/_auth/projects'
     | '/_auth/settings'
     | '/_auth/team'
     | '/_guest/forgot-password'
     | '/_guest/reset-password'
     | '/_guest/sign-in'
     | '/_guest/sign-up'
+    | '/_auth/projects/$projectId'
     | '/_auth/settings/account'
     | '/_auth/settings/billing'
     | '/_auth/settings/connected-apps'
     | '/_auth/settings/notifications'
     | '/_auth/settings/plans'
     | '/_auth/settings/profile'
+    | '/_auth/projects/'
     | '/_auth/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -466,6 +500,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProfileRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/projects': {
+      id: '/_auth/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AuthProjectsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -507,6 +548,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-up'
       preLoaderRoute: typeof GuestSignUpRouteImport
       parentRoute: typeof GuestRoute
+    }
+    '/_auth/projects/': {
+      id: '/_auth/projects/'
+      path: '/'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof AuthProjectsIndexRouteImport
+      parentRoute: typeof AuthProjectsRoute
+    }
+    '/_auth/projects/$projectId': {
+      id: '/_auth/projects/$projectId'
+      path: '/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof AuthProjectsProjectIdRouteImport
+      parentRoute: typeof AuthProjectsRoute
     }
     '/_auth/settings/': {
       id: '/_auth/settings/'
@@ -560,6 +615,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthProjectsRouteChildren {
+  AuthProjectsProjectIdRoute: typeof AuthProjectsProjectIdRoute
+  AuthProjectsIndexRoute: typeof AuthProjectsIndexRoute
+}
+
+const AuthProjectsRouteChildren: AuthProjectsRouteChildren = {
+  AuthProjectsProjectIdRoute: AuthProjectsProjectIdRoute,
+  AuthProjectsIndexRoute: AuthProjectsIndexRoute,
+}
+
+const AuthProjectsRouteWithChildren = AuthProjectsRoute._addFileChildren(
+  AuthProjectsRouteChildren,
+)
+
 interface AuthSettingsRouteChildren {
   AuthSettingsAccountRoute: typeof AuthSettingsAccountRoute
   AuthSettingsBillingRoute: typeof AuthSettingsBillingRoute
@@ -597,6 +666,7 @@ interface AuthRouteChildren {
   AuthOrdersRoute: typeof AuthOrdersRoute
   AuthProductsRoute: typeof AuthProductsRoute
   AuthProfileRoute: typeof AuthProfileRoute
+  AuthProjectsRoute: typeof AuthProjectsRouteWithChildren
   AuthSettingsRoute: typeof AuthSettingsRouteWithChildren
   AuthTeamRoute: typeof AuthTeamRoute
 }
@@ -614,6 +684,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthOrdersRoute: AuthOrdersRoute,
   AuthProductsRoute: AuthProductsRoute,
   AuthProfileRoute: AuthProfileRoute,
+  AuthProjectsRoute: AuthProjectsRouteWithChildren,
   AuthSettingsRoute: AuthSettingsRouteWithChildren,
   AuthTeamRoute: AuthTeamRoute,
 }

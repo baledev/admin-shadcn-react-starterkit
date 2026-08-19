@@ -28,7 +28,7 @@ import {
   TerminalSquareIcon,
   UsersIcon,
 } from "lucide-react"
-import { IconBell, IconCalendar, IconChartBar, IconFolder, IconLayoutKanban, IconMessage, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
+import { IconBell, IconBriefcase, IconCalendar, IconChartBar, IconFolder, IconLayoutKanban, IconMessage, IconPackage, IconReceipt, IconShoppingCart, IconUsers } from "@tabler/icons-react"
 
 const data = {
   user: {
@@ -103,6 +103,11 @@ const data = {
       title: "Files",
       url: "/files",
       icon: <IconFolder />,
+    },
+    {
+      title: "Projects",
+      url: "/projects",
+      icon: <IconBriefcase />,
     },
     {
       title: "Kanban",
