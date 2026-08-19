@@ -20,8 +20,6 @@ import {
 } from "@workspace/ui/components/select"
 import {
   type JournalEntry,
-  type JournalType,
-  type EntryStatus,
   JOURNAL_TYPE_META,
   ENTRY_STATUS_META,
 } from "@/lib/journal-entries-data"
@@ -73,7 +71,7 @@ export function JournalEntryDataTable({
             />
           </div>
 
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Semua Jurnal" />
             </SelectTrigger>
@@ -86,7 +84,7 @@ export function JournalEntryDataTable({
             </SelectContent>
           </Select>
 
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "all")}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Semua Status" />
             </SelectTrigger>

@@ -85,7 +85,7 @@ export function PaymentsFormSheet({
               <FieldLabel htmlFor="pmt-dir">Arah Aliran Dana</FieldLabel>
               <Select
                 value={form.direction}
-                onValueChange={(val: PaymentDirection) => onField("direction", val)}
+                onValueChange={(val) => { if (val) onField("direction", val as PaymentDirection) }}
               >
                 <SelectTrigger id="pmt-dir">
                   <SelectValue placeholder="Pilih Arah Dana" />
@@ -128,7 +128,7 @@ export function PaymentsFormSheet({
               <FieldLabel htmlFor="pmt-account">Akun Kas / Bank Pengirim/Penerima</FieldLabel>
               <Select
                 value={form.accountCode}
-                onValueChange={(val) => onField("accountCode", val)}
+                onValueChange={(val) => onField("accountCode", val || "")}
               >
                 <SelectTrigger id="pmt-account">
                   <SelectValue placeholder="Pilih Akun Kas/Bank" />
@@ -148,7 +148,7 @@ export function PaymentsFormSheet({
               <FieldLabel htmlFor="pmt-method">Metode Pembayaran</FieldLabel>
               <Select
                 value={form.method}
-                onValueChange={(val: PaymentMethod) => onField("method", val)}
+                onValueChange={(val) => { if (val) onField("method", val as PaymentMethod) }}
               >
                 <SelectTrigger id="pmt-method">
                   <SelectValue placeholder="Pilih Metode" />
@@ -202,10 +202,8 @@ export function PaymentsFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!form.partnerName || !form.amount || !form.accountCode}>
               Simpan Pembayaran

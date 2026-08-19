@@ -69,7 +69,7 @@ export function EquityDataTable({
             />
           </div>
 
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Semua Tipe Modal" />
             </SelectTrigger>

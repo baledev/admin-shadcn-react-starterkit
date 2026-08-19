@@ -72,7 +72,7 @@ export function KasbonFormSheet({
             {/* Employee Select */}
             <Field>
               <FieldLabel htmlFor="kasbon-employee">Karyawan</FieldLabel>
-              <Select value={form.employeeId} onValueChange={handleEmployeeChange}>
+              <Select value={form.employeeId} onValueChange={(val) => handleEmployeeChange(val || "")}>
                 <SelectTrigger id="kasbon-employee">
                   <SelectValue placeholder="Pilih Karyawan" />
                 </SelectTrigger>
@@ -137,10 +137,8 @@ export function KasbonFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!form.employeeId || !form.amount || !form.purpose}>
               Simpan Pengajuan

@@ -216,7 +216,7 @@ function KasbonPage() {
                 <Label htmlFor="repay-type">Metode Pembayaran</Label>
                 <Select
                   value={repayType}
-                  onValueChange={(val: "payroll_deduction" | "cash") => setRepayType(val)}
+                  onValueChange={(val) => { if (val) setRepayType(val as any) }}
                 >
                   <SelectTrigger id="repay-type">
                     <SelectValue />

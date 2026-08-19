@@ -24,9 +24,7 @@ import { Field, FieldLabel } from "@workspace/ui/components/field"
 import { parseIso, toIsoDate } from "@/lib/date-utils"
 import { type Account, formatRupiah } from "@/lib/accounts-data"
 import {
-  type JournalEntry,
   type JournalType,
-  type JournalLine,
   JOURNAL_TYPE_OPTIONS,
 } from "@/lib/journal-entries-data"
 
@@ -141,7 +139,7 @@ export function JournalEntryFormSheet({
                 <FieldLabel htmlFor="entry-type">Tipe Jurnal</FieldLabel>
                 <Select
                   value={form.type}
-                  onValueChange={(val: JournalType) => onField("type", val)}
+                  onValueChange={(val) => { if (val) onField("type", val as JournalType) }}
                 >
                   <SelectTrigger id="entry-type">
                     <SelectValue placeholder="Pilih Jurnal" />
@@ -283,10 +281,8 @@ export function JournalEntryFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!isBalanced || form.lines.some(l => !l.accountCode)}>
               Post Jurnal

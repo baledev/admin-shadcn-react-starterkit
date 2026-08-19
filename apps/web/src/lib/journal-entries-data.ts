@@ -1,5 +1,3 @@
-import { Account } from "./accounts-data"
-
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type JournalType = "general" | "sales" | "purchase" | "cash"
@@ -110,7 +108,7 @@ export const initialJournalEntries: JournalEntry[] = [
     totalCredit: 25000000,
     lines: [
       { accountCode: "1120", accountName: "Piutang Usaha", description: "Tagihan Web Design Alice", debit: 25000000, credit: 0 },
-      { accountCode: "4110", name: "Pendapatan Jasa", accountName: "Pendapatan Jasa", description: "Pendapatan jasa web design", debit: 0, credit: 25000000 },
+      { accountCode: "4110", accountName: "Pendapatan Jasa", description: "Pendapatan jasa web design", debit: 0, credit: 25000000 },
     ],
   },
   {

@@ -8,7 +8,6 @@ import {
 } from "@/lib/transfers-data"
 import { TransfersFormSheet, type TransferFormState } from "@/components/transfers-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
 import { Separator } from "@workspace/ui/components/separator"
 import {
   Sheet,

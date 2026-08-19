@@ -69,7 +69,6 @@ export function AccountsFormSheet({
         (acc) => acc.parentCode === form.parentCode && acc.level === 3
       )
       const nextNum = children.length + 1
-      const suffix = nextNum.toString().padStart(2, "0") // e.g. "01", "02"
       
       // Propose code: parentCode + next index (e.g. 1111, 1112)
       // Since our static codes are like "1111", "1112", we can just do parentCode + index, or parentCode's prefix + next.
@@ -121,7 +120,7 @@ export function AccountsFormSheet({
               <FieldLabel htmlFor="account-type">Tipe Akun</FieldLabel>
               <Select
                 value={form.type}
-                onValueChange={handleTypeChange}
+                onValueChange={(val) => { if (val) handleTypeChange(val as AccountType) }}
                 disabled={isEditing}
               >
                 <SelectTrigger id="account-type">
@@ -142,7 +141,7 @@ export function AccountsFormSheet({
               <FieldLabel htmlFor="account-parent">Sub-Grup Induk (Level 2)</FieldLabel>
               <Select
                 value={form.parentCode}
-                onValueChange={(val) => onField("parentCode", val)}
+                onValueChange={(val) => onField("parentCode", val || "")}
                 disabled={isEditing}
               >
                 <SelectTrigger id="account-parent">
@@ -211,10 +210,8 @@ export function AccountsFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit">Simpan</Button>
           </SheetFooter>

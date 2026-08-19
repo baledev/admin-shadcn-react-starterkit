@@ -81,7 +81,7 @@ export function TransfersFormSheet({
               <FieldLabel htmlFor="trf-from">Dari Rekening / Kas</FieldLabel>
               <Select
                 value={form.fromAccountCode}
-                onValueChange={(val) => onField("fromAccountCode", val)}
+                onValueChange={(val) => onField("fromAccountCode", val || "")}
               >
                 <SelectTrigger id="trf-from">
                   <SelectValue placeholder="Pilih Rekening Asal" />
@@ -101,7 +101,7 @@ export function TransfersFormSheet({
               <FieldLabel htmlFor="trf-to">Ke Rekening / Kas Tujuan</FieldLabel>
               <Select
                 value={form.toAccountCode}
-                onValueChange={(val) => onField("toAccountCode", val)}
+                onValueChange={(val) => onField("toAccountCode", val || "")}
                 disabled={!form.fromAccountCode}
               >
                 <SelectTrigger id="trf-to">
@@ -156,10 +156,8 @@ export function TransfersFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!form.fromAccountCode || !form.toAccountCode || !form.amount}>
               Simpan Transfer

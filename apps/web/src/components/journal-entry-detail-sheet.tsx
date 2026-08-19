@@ -1,7 +1,5 @@
-import * as React from "react"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
-import { Separator } from "@workspace/ui/components/separator"
 import {
   Sheet,
   SheetContent,
@@ -132,8 +130,8 @@ export function JournalEntryDetailSheet({
         </div>
 
         <SheetFooter className="border-t border-border pt-4 mt-auto">
-          <SheetClose asChild>
-            <Button variant="outline">Tutup</Button>
+          <SheetClose render={<Button variant="outline" />}>
+            Tutup
           </SheetClose>
         </SheetFooter>
       </SheetContent>

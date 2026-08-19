@@ -9,7 +9,6 @@ import {
 } from "@/lib/equity-data"
 import { EquityFormSheet, type EquityFormState } from "@/components/equity-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
 import { Separator } from "@workspace/ui/components/separator"
 import {
   Sheet,

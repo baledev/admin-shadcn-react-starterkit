@@ -69,7 +69,7 @@ export function TransfersDataTable({
             />
           </div>
 
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "all")}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Semua Status" />
             </SelectTrigger>

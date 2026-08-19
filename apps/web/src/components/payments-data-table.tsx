@@ -22,7 +22,6 @@ import {
   type Payment,
   PAYMENT_DIRECTION_META,
   PAYMENT_STATUS_META,
-  PAYMENT_METHOD_META,
 } from "@/lib/payments-data"
 import { formatRupiah } from "@/lib/accounts-data"
 
@@ -30,14 +29,12 @@ interface PaymentsDataTableProps {
   data: Payment[]
   onAddPayment: () => void
   onViewDetail: (payment: Payment) => void
-  onVoidPayment?: (payment: Payment) => void
 }
 
 export function PaymentsDataTable({
   data,
   onAddPayment,
   onViewDetail,
-  onVoidPayment,
 }: PaymentsDataTableProps) {
   const [search, setSearch] = React.useState("")
   const [directionFilter, setDirectionFilter] = React.useState<string>("all")
@@ -71,7 +68,7 @@ export function PaymentsDataTable({
             />
           </div>
 
-          <Select value={directionFilter} onValueChange={setDirectionFilter}>
+          <Select value={directionFilter} onValueChange={(val) => setDirectionFilter(val || "all")}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Semua Transaksi" />
             </SelectTrigger>

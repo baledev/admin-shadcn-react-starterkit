@@ -74,7 +74,7 @@ export function ExpensesFinanceFormSheet({
               <FieldLabel htmlFor="exp-employee">Karyawan</FieldLabel>
               <Select
                 value={form.employeeId}
-                onValueChange={(val) => onField("employeeId", val)}
+                onValueChange={(val) => onField("employeeId", val || "")}
               >
                 <SelectTrigger id="exp-employee">
                   <SelectValue placeholder="Pilih Karyawan" />
@@ -94,7 +94,7 @@ export function ExpensesFinanceFormSheet({
               <FieldLabel htmlFor="exp-category">Kategori Pengeluaran</FieldLabel>
               <Select
                 value={form.category}
-                onValueChange={(val: ExpenseCategory) => onField("category", val)}
+                onValueChange={(val) => { if (val) onField("category", val as ExpenseCategory) }}
               >
                 <SelectTrigger id="exp-category">
                   <SelectValue placeholder="Pilih Kategori" />
@@ -160,10 +160,8 @@ export function ExpensesFinanceFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!form.employeeId || !form.amount || !form.description}>
               Ajukan Klaim

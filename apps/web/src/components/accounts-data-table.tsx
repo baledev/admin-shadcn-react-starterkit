@@ -20,7 +20,6 @@ import {
 } from "@workspace/ui/components/select"
 import {
   type Account,
-  type AccountType,
   ACCOUNT_TYPE_META,
   formatRupiah,
 } from "@/lib/accounts-data"
@@ -69,7 +68,7 @@ export function AccountsDataTable({
             />
           </div>
           
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Tipe Akun" />
             </SelectTrigger>

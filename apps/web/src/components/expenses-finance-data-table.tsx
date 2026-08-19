@@ -1,5 +1,5 @@
 import * as React from "react"
-import { IconSearch, IconEye, IconPlus, IconCheck } from "@tabler/icons-react"
+import { IconSearch, IconEye, IconPlus } from "@tabler/icons-react"
 import { Input } from "@workspace/ui/components/input"
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -73,7 +73,7 @@ export function ExpensesFinanceDataTable({
             />
           </div>
 
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "all")}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Semua Status" />
             </SelectTrigger>
@@ -86,7 +86,7 @@ export function ExpensesFinanceDataTable({
             </SelectContent>
           </Select>
 
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <Select value={categoryFilter} onValueChange={(val) => setCategoryFilter(val || "all")}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Semua Kategori" />
             </SelectTrigger>

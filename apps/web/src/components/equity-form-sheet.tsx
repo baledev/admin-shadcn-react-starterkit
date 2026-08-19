@@ -73,7 +73,7 @@ export function EquityFormSheet({
               <FieldLabel htmlFor="eq-type">Jenis Transaksi</FieldLabel>
               <Select
                 value={form.type}
-                onValueChange={(val: EquityType) => onField("type", val)}
+                onValueChange={(val) => { if (val) onField("type", val as EquityType) }}
               >
                 <SelectTrigger id="eq-type">
                   <SelectValue placeholder="Pilih Jenis Transaksi" />
@@ -149,10 +149,8 @@ export function EquityFormSheet({
           </div>
 
           <SheetFooter className="mt-auto border-t border-border pt-4">
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Batal
-              </Button>
+            <SheetClose render={<Button type="button" variant="outline" />}>
+              Batal
             </SheetClose>
             <Button type="submit" disabled={!form.investorName || !form.amount}>
               Simpan Transaksi

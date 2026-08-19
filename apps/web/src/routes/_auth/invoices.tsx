@@ -261,7 +261,7 @@ function InvoiceDetailSheet({
 // ─── Main Page Component ──────────────────────────────────────────────────────
 
 function InvoicesPage() {
-  const [invoices, setInvoices] = React.useState<Invoice[]>(initialInvoices)
+  const [invoices] = React.useState<Invoice[]>(initialInvoices)
   const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(null)
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
 

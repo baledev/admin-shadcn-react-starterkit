@@ -3,14 +3,12 @@ import { createFileRoute } from "@tanstack/react-router"
 import { ExpensesFinanceDataTable } from "@/components/expenses-finance-data-table"
 import {
   type Expense,
-  type ExpenseCategory,
   initialExpenses,
   EXPENSE_STATUS_META,
   EXPENSE_CATEGORY_META,
 } from "@/lib/expenses-finance-data"
 import { ExpensesFinanceFormSheet, type ExpenseFormState } from "@/components/expenses-finance-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
 import { Separator } from "@workspace/ui/components/separator"
 import {
   Sheet,
