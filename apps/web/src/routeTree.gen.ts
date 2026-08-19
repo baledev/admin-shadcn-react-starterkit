@@ -34,6 +34,11 @@ import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-
 import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as GuestSignInRouteImport } from './routes/_guest/sign-in'
 import { Route as GuestSignUpRouteImport } from './routes/_guest/sign-up'
+import { Route as AuthFinanceIndexRouteImport } from './routes/_auth/finance/index'
+import { Route as AuthFinanceChartOfAccountsRouteImport } from './routes/_auth/finance/chart-of-accounts'
+import { Route as AuthFinanceJournalEntriesRouteImport } from './routes/_auth/finance/journal-entries'
+import { Route as AuthFinancePaymentsRouteImport } from './routes/_auth/finance/payments'
+import { Route as AuthFinanceTransactionsRouteImport } from './routes/_auth/finance/transactions'
 import { Route as AuthProjectsIndexRouteImport } from './routes/_auth/projects/index'
 import { Route as AuthProjectsProjectIdRouteImport } from './routes/_auth/projects/$projectId'
 import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
@@ -43,6 +48,12 @@ import { Route as AuthSettingsConnectedAppsRouteImport } from './routes/_auth/se
 import { Route as AuthSettingsNotificationsRouteImport } from './routes/_auth/settings/notifications'
 import { Route as AuthSettingsPlansRouteImport } from './routes/_auth/settings/plans'
 import { Route as AuthSettingsProfileRouteImport } from './routes/_auth/settings/profile'
+import { Route as AuthFinanceTransactionsBillsRouteImport } from './routes/_auth/finance/transactions/bills'
+import { Route as AuthFinanceTransactionsEquityRouteImport } from './routes/_auth/finance/transactions/equity'
+import { Route as AuthFinanceTransactionsExpensesRouteImport } from './routes/_auth/finance/transactions/expenses'
+import { Route as AuthFinanceTransactionsInvoicesRouteImport } from './routes/_auth/finance/transactions/invoices'
+import { Route as AuthFinanceTransactionsKasbonRouteImport } from './routes/_auth/finance/transactions/kasbon'
+import { Route as AuthFinanceTransactionsTransfersRouteImport } from './routes/_auth/finance/transactions/transfers'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -167,6 +178,33 @@ const GuestSignUpRoute = GuestSignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => GuestRoute,
 } as any)
+const AuthFinanceIndexRoute = AuthFinanceIndexRouteImport.update({
+  id: '/finance/',
+  path: '/finance/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthFinanceChartOfAccountsRoute =
+  AuthFinanceChartOfAccountsRouteImport.update({
+    id: '/finance/chart-of-accounts',
+    path: '/finance/chart-of-accounts',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthFinanceJournalEntriesRoute =
+  AuthFinanceJournalEntriesRouteImport.update({
+    id: '/finance/journal-entries',
+    path: '/finance/journal-entries',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthFinancePaymentsRoute = AuthFinancePaymentsRouteImport.update({
+  id: '/finance/payments',
+  path: '/finance/payments',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthFinanceTransactionsRoute = AuthFinanceTransactionsRouteImport.update({
+  id: '/finance/transactions',
+  path: '/finance/transactions',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthProjectsIndexRoute = AuthProjectsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -214,6 +252,42 @@ const AuthSettingsProfileRoute = AuthSettingsProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthSettingsRoute,
 } as any)
+const AuthFinanceTransactionsBillsRoute =
+  AuthFinanceTransactionsBillsRouteImport.update({
+    id: '/bills',
+    path: '/bills',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
+const AuthFinanceTransactionsEquityRoute =
+  AuthFinanceTransactionsEquityRouteImport.update({
+    id: '/equity',
+    path: '/equity',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
+const AuthFinanceTransactionsExpensesRoute =
+  AuthFinanceTransactionsExpensesRouteImport.update({
+    id: '/expenses',
+    path: '/expenses',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
+const AuthFinanceTransactionsInvoicesRoute =
+  AuthFinanceTransactionsInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
+const AuthFinanceTransactionsKasbonRoute =
+  AuthFinanceTransactionsKasbonRouteImport.update({
+    id: '/kasbon',
+    path: '/kasbon',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
+const AuthFinanceTransactionsTransfersRoute =
+  AuthFinanceTransactionsTransfersRouteImport.update({
+    id: '/transfers',
+    path: '/transfers',
+    getParentRoute: () => AuthFinanceTransactionsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -239,6 +313,10 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/finance/chart-of-accounts': typeof AuthFinanceChartOfAccountsRoute
+  '/finance/journal-entries': typeof AuthFinanceJournalEntriesRoute
+  '/finance/payments': typeof AuthFinancePaymentsRoute
+  '/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
@@ -246,8 +324,15 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/settings/plans': typeof AuthSettingsPlansRoute
   '/settings/profile': typeof AuthSettingsProfileRoute
+  '/finance/': typeof AuthFinanceIndexRoute
   '/projects/': typeof AuthProjectsIndexRoute
   '/settings/': typeof AuthSettingsIndexRoute
+  '/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
+  '/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
+  '/finance/transactions/expenses': typeof AuthFinanceTransactionsExpensesRoute
+  '/finance/transactions/invoices': typeof AuthFinanceTransactionsInvoicesRoute
+  '/finance/transactions/kasbon': typeof AuthFinanceTransactionsKasbonRoute
+  '/finance/transactions/transfers': typeof AuthFinanceTransactionsTransfersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -271,6 +356,10 @@ export interface FileRoutesByTo {
   '/reset-password': typeof GuestResetPasswordRoute
   '/sign-in': typeof GuestSignInRoute
   '/sign-up': typeof GuestSignUpRoute
+  '/finance/chart-of-accounts': typeof AuthFinanceChartOfAccountsRoute
+  '/finance/journal-entries': typeof AuthFinanceJournalEntriesRoute
+  '/finance/payments': typeof AuthFinancePaymentsRoute
+  '/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/settings/account': typeof AuthSettingsAccountRoute
   '/settings/billing': typeof AuthSettingsBillingRoute
@@ -278,8 +367,15 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/settings/plans': typeof AuthSettingsPlansRoute
   '/settings/profile': typeof AuthSettingsProfileRoute
+  '/finance': typeof AuthFinanceIndexRoute
   '/projects': typeof AuthProjectsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
+  '/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
+  '/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
+  '/finance/transactions/expenses': typeof AuthFinanceTransactionsExpensesRoute
+  '/finance/transactions/invoices': typeof AuthFinanceTransactionsInvoicesRoute
+  '/finance/transactions/kasbon': typeof AuthFinanceTransactionsKasbonRoute
+  '/finance/transactions/transfers': typeof AuthFinanceTransactionsTransfersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -308,6 +404,10 @@ export interface FileRoutesById {
   '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_guest/sign-in': typeof GuestSignInRoute
   '/_guest/sign-up': typeof GuestSignUpRoute
+  '/_auth/finance/chart-of-accounts': typeof AuthFinanceChartOfAccountsRoute
+  '/_auth/finance/journal-entries': typeof AuthFinanceJournalEntriesRoute
+  '/_auth/finance/payments': typeof AuthFinancePaymentsRoute
+  '/_auth/finance/transactions': typeof AuthFinanceTransactionsRouteWithChildren
   '/_auth/projects/$projectId': typeof AuthProjectsProjectIdRoute
   '/_auth/settings/account': typeof AuthSettingsAccountRoute
   '/_auth/settings/billing': typeof AuthSettingsBillingRoute
@@ -315,8 +415,15 @@ export interface FileRoutesById {
   '/_auth/settings/notifications': typeof AuthSettingsNotificationsRoute
   '/_auth/settings/plans': typeof AuthSettingsPlansRoute
   '/_auth/settings/profile': typeof AuthSettingsProfileRoute
+  '/_auth/finance/': typeof AuthFinanceIndexRoute
   '/_auth/projects/': typeof AuthProjectsIndexRoute
   '/_auth/settings/': typeof AuthSettingsIndexRoute
+  '/_auth/finance/transactions/bills': typeof AuthFinanceTransactionsBillsRoute
+  '/_auth/finance/transactions/equity': typeof AuthFinanceTransactionsEquityRoute
+  '/_auth/finance/transactions/expenses': typeof AuthFinanceTransactionsExpensesRoute
+  '/_auth/finance/transactions/invoices': typeof AuthFinanceTransactionsInvoicesRoute
+  '/_auth/finance/transactions/kasbon': typeof AuthFinanceTransactionsKasbonRoute
+  '/_auth/finance/transactions/transfers': typeof AuthFinanceTransactionsTransfersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -344,6 +451,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/finance/chart-of-accounts'
+    | '/finance/journal-entries'
+    | '/finance/payments'
+    | '/finance/transactions'
     | '/projects/$projectId'
     | '/settings/account'
     | '/settings/billing'
@@ -351,8 +462,15 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/plans'
     | '/settings/profile'
+    | '/finance/'
     | '/projects/'
     | '/settings/'
+    | '/finance/transactions/bills'
+    | '/finance/transactions/equity'
+    | '/finance/transactions/expenses'
+    | '/finance/transactions/invoices'
+    | '/finance/transactions/kasbon'
+    | '/finance/transactions/transfers'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -376,6 +494,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
+    | '/finance/chart-of-accounts'
+    | '/finance/journal-entries'
+    | '/finance/payments'
+    | '/finance/transactions'
     | '/projects/$projectId'
     | '/settings/account'
     | '/settings/billing'
@@ -383,8 +505,15 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/plans'
     | '/settings/profile'
+    | '/finance'
     | '/projects'
     | '/settings'
+    | '/finance/transactions/bills'
+    | '/finance/transactions/equity'
+    | '/finance/transactions/expenses'
+    | '/finance/transactions/invoices'
+    | '/finance/transactions/kasbon'
+    | '/finance/transactions/transfers'
   id:
     | '__root__'
     | '/'
@@ -412,6 +541,10 @@ export interface FileRouteTypes {
     | '/_guest/reset-password'
     | '/_guest/sign-in'
     | '/_guest/sign-up'
+    | '/_auth/finance/chart-of-accounts'
+    | '/_auth/finance/journal-entries'
+    | '/_auth/finance/payments'
+    | '/_auth/finance/transactions'
     | '/_auth/projects/$projectId'
     | '/_auth/settings/account'
     | '/_auth/settings/billing'
@@ -419,8 +552,15 @@ export interface FileRouteTypes {
     | '/_auth/settings/notifications'
     | '/_auth/settings/plans'
     | '/_auth/settings/profile'
+    | '/_auth/finance/'
     | '/_auth/projects/'
     | '/_auth/settings/'
+    | '/_auth/finance/transactions/bills'
+    | '/_auth/finance/transactions/equity'
+    | '/_auth/finance/transactions/expenses'
+    | '/_auth/finance/transactions/invoices'
+    | '/_auth/finance/transactions/kasbon'
+    | '/_auth/finance/transactions/transfers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -606,6 +746,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestSignUpRouteImport
       parentRoute: typeof GuestRoute
     }
+    '/_auth/finance/': {
+      id: '/_auth/finance/'
+      path: '/finance'
+      fullPath: '/finance/'
+      preLoaderRoute: typeof AuthFinanceIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/finance/chart-of-accounts': {
+      id: '/_auth/finance/chart-of-accounts'
+      path: '/finance/chart-of-accounts'
+      fullPath: '/finance/chart-of-accounts'
+      preLoaderRoute: typeof AuthFinanceChartOfAccountsRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/finance/journal-entries': {
+      id: '/_auth/finance/journal-entries'
+      path: '/finance/journal-entries'
+      fullPath: '/finance/journal-entries'
+      preLoaderRoute: typeof AuthFinanceJournalEntriesRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/finance/payments': {
+      id: '/_auth/finance/payments'
+      path: '/finance/payments'
+      fullPath: '/finance/payments'
+      preLoaderRoute: typeof AuthFinancePaymentsRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/finance/transactions': {
+      id: '/_auth/finance/transactions'
+      path: '/finance/transactions'
+      fullPath: '/finance/transactions'
+      preLoaderRoute: typeof AuthFinanceTransactionsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/projects/': {
       id: '/_auth/projects/'
       path: '/'
@@ -669,6 +844,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsProfileRouteImport
       parentRoute: typeof AuthSettingsRoute
     }
+    '/_auth/finance/transactions/bills': {
+      id: '/_auth/finance/transactions/bills'
+      path: '/bills'
+      fullPath: '/finance/transactions/bills'
+      preLoaderRoute: typeof AuthFinanceTransactionsBillsRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
+    '/_auth/finance/transactions/equity': {
+      id: '/_auth/finance/transactions/equity'
+      path: '/equity'
+      fullPath: '/finance/transactions/equity'
+      preLoaderRoute: typeof AuthFinanceTransactionsEquityRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
+    '/_auth/finance/transactions/expenses': {
+      id: '/_auth/finance/transactions/expenses'
+      path: '/expenses'
+      fullPath: '/finance/transactions/expenses'
+      preLoaderRoute: typeof AuthFinanceTransactionsExpensesRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
+    '/_auth/finance/transactions/invoices': {
+      id: '/_auth/finance/transactions/invoices'
+      path: '/invoices'
+      fullPath: '/finance/transactions/invoices'
+      preLoaderRoute: typeof AuthFinanceTransactionsInvoicesRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
+    '/_auth/finance/transactions/kasbon': {
+      id: '/_auth/finance/transactions/kasbon'
+      path: '/kasbon'
+      fullPath: '/finance/transactions/kasbon'
+      preLoaderRoute: typeof AuthFinanceTransactionsKasbonRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
+    '/_auth/finance/transactions/transfers': {
+      id: '/_auth/finance/transactions/transfers'
+      path: '/transfers'
+      fullPath: '/finance/transactions/transfers'
+      preLoaderRoute: typeof AuthFinanceTransactionsTransfersRouteImport
+      parentRoute: typeof AuthFinanceTransactionsRoute
+    }
   }
 }
 
@@ -710,6 +927,31 @@ const AuthSettingsRouteWithChildren = AuthSettingsRoute._addFileChildren(
   AuthSettingsRouteChildren,
 )
 
+interface AuthFinanceTransactionsRouteChildren {
+  AuthFinanceTransactionsBillsRoute: typeof AuthFinanceTransactionsBillsRoute
+  AuthFinanceTransactionsEquityRoute: typeof AuthFinanceTransactionsEquityRoute
+  AuthFinanceTransactionsExpensesRoute: typeof AuthFinanceTransactionsExpensesRoute
+  AuthFinanceTransactionsInvoicesRoute: typeof AuthFinanceTransactionsInvoicesRoute
+  AuthFinanceTransactionsKasbonRoute: typeof AuthFinanceTransactionsKasbonRoute
+  AuthFinanceTransactionsTransfersRoute: typeof AuthFinanceTransactionsTransfersRoute
+}
+
+const AuthFinanceTransactionsRouteChildren: AuthFinanceTransactionsRouteChildren =
+  {
+    AuthFinanceTransactionsBillsRoute: AuthFinanceTransactionsBillsRoute,
+    AuthFinanceTransactionsEquityRoute: AuthFinanceTransactionsEquityRoute,
+    AuthFinanceTransactionsExpensesRoute: AuthFinanceTransactionsExpensesRoute,
+    AuthFinanceTransactionsInvoicesRoute: AuthFinanceTransactionsInvoicesRoute,
+    AuthFinanceTransactionsKasbonRoute: AuthFinanceTransactionsKasbonRoute,
+    AuthFinanceTransactionsTransfersRoute:
+      AuthFinanceTransactionsTransfersRoute,
+  }
+
+const AuthFinanceTransactionsRouteWithChildren =
+  AuthFinanceTransactionsRoute._addFileChildren(
+    AuthFinanceTransactionsRouteChildren,
+  )
+
 interface AuthRouteChildren {
   AuthAnalyticsRoute: typeof AuthAnalyticsRoute
   AuthAttendanceRoute: typeof AuthAttendanceRoute
@@ -729,6 +971,11 @@ interface AuthRouteChildren {
   AuthSettingsRoute: typeof AuthSettingsRouteWithChildren
   AuthTeamRoute: typeof AuthTeamRoute
   AuthWorkspaceRoute: typeof AuthWorkspaceRoute
+  AuthFinanceChartOfAccountsRoute: typeof AuthFinanceChartOfAccountsRoute
+  AuthFinanceJournalEntriesRoute: typeof AuthFinanceJournalEntriesRoute
+  AuthFinancePaymentsRoute: typeof AuthFinancePaymentsRoute
+  AuthFinanceTransactionsRoute: typeof AuthFinanceTransactionsRouteWithChildren
+  AuthFinanceIndexRoute: typeof AuthFinanceIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -750,6 +997,11 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsRoute: AuthSettingsRouteWithChildren,
   AuthTeamRoute: AuthTeamRoute,
   AuthWorkspaceRoute: AuthWorkspaceRoute,
+  AuthFinanceChartOfAccountsRoute: AuthFinanceChartOfAccountsRoute,
+  AuthFinanceJournalEntriesRoute: AuthFinanceJournalEntriesRoute,
+  AuthFinancePaymentsRoute: AuthFinancePaymentsRoute,
+  AuthFinanceTransactionsRoute: AuthFinanceTransactionsRouteWithChildren,
+  AuthFinanceIndexRoute: AuthFinanceIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

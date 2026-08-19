@@ -30,6 +30,7 @@ import {
 } from "lucide-react"
 import {
   IconBell,
+  IconBook2,
   IconBriefcase,
   IconCalendar,
   IconChartBar,
@@ -42,6 +43,7 @@ import {
   IconShoppingCart,
   IconUserCheck,
   IconUsers,
+  IconWallet,
 } from "@tabler/icons-react"
 
 const data = {
@@ -100,6 +102,36 @@ const data = {
           title: "Invoices",
           url: "/invoices",
           icon: <IconReceipt />,
+        },
+      ],
+    },
+    {
+      label: "Finance",
+      items: [
+        {
+          title: "Overview",
+          url: "/finance",
+          icon: <IconChartBar />,
+        },
+        {
+          title: "Chart of Accounts",
+          url: "/finance/chart-of-accounts",
+          icon: <IconBook2 />,
+        },
+        {
+          title: "Journal Entries",
+          url: "/finance/journal-entries",
+          icon: <IconReceipt />,
+        },
+        {
+          title: "Transactions",
+          url: "/finance/transactions/invoices",
+          icon: <IconWallet />,
+        },
+        {
+          title: "Payments",
+          url: "/finance/payments",
+          icon: <IconShoppingCart />,
         },
       ],
     },
