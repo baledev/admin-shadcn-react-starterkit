@@ -13,7 +13,7 @@ import {
 } from "@workspace/ui/components/popover"
 import { cn } from "@workspace/ui/lib/utils"
 
-export function DatePickerSimple({
+export function DatePicker({
   date: controlledDate,
   onSelect: controlledOnSelect,
   placeholder = "Select date",

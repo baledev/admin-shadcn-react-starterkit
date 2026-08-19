@@ -23,7 +23,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
-import { DatePickerSimple } from "@workspace/ui/components/date-picker"
+import { DatePicker } from "@workspace/ui/components/date-picker"
 import { TimePicker } from "@/components/calendar/time-picker"
 import { parseIso, toIsoDate } from "@/lib/date-utils"
 import { initialTeamMembers } from "@/lib/team-data"
@@ -126,7 +126,7 @@ export function AttendanceFormSheet({
             {/* Tanggal Picker */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="attendance-date">Tanggal</Label>
-              <DatePickerSimple
+              <DatePicker
                 id="attendance-date"
                 date={form.date ? parseIso(form.date) : undefined}
                 onSelect={(date) => {

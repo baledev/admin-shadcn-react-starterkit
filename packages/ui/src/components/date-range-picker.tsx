@@ -15,7 +15,7 @@ import {
 } from "@workspace/ui/components/popover"
 import { cn } from "@workspace/ui/lib/utils"
 
-export function DatePickerWithRange({
+export function DateRangePicker({
   date: controlledDate,
   onSelect: controlledOnSelect,
   id,
