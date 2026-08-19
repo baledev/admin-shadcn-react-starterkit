@@ -163,7 +163,7 @@ const data = {
         },
         {
           title: "Payroll",
-          url: "#",
+          url: "/payroll",
           icon: <IconReceipt />,
         },
       ],

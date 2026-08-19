@@ -23,6 +23,7 @@ import { Route as AuthKanbanRouteImport } from './routes/_auth/kanban'
 import { Route as AuthMessagesRouteImport } from './routes/_auth/messages'
 import { Route as AuthNotificationsRouteImport } from './routes/_auth/notifications'
 import { Route as AuthOrdersRouteImport } from './routes/_auth/orders'
+import { Route as AuthPayrollRouteImport } from './routes/_auth/payroll'
 import { Route as AuthProductsRouteImport } from './routes/_auth/products'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
 import { Route as AuthProjectsRouteImport } from './routes/_auth/projects'
@@ -109,6 +110,11 @@ const AuthNotificationsRoute = AuthNotificationsRouteImport.update({
 const AuthOrdersRoute = AuthOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthPayrollRoute = AuthPayrollRouteImport.update({
+  id: '/payroll',
+  path: '/payroll',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthProductsRoute = AuthProductsRouteImport.update({
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof AuthMessagesRoute
   '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
+  '/payroll': typeof AuthPayrollRoute
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
   '/projects': typeof AuthProjectsRouteWithChildren
@@ -255,6 +262,7 @@ export interface FileRoutesByTo {
   '/messages': typeof AuthMessagesRoute
   '/notifications': typeof AuthNotificationsRoute
   '/orders': typeof AuthOrdersRoute
+  '/payroll': typeof AuthPayrollRoute
   '/products': typeof AuthProductsRoute
   '/profile': typeof AuthProfileRoute
   '/team': typeof AuthTeamRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/_auth/messages': typeof AuthMessagesRoute
   '/_auth/notifications': typeof AuthNotificationsRoute
   '/_auth/orders': typeof AuthOrdersRoute
+  '/_auth/payroll': typeof AuthPayrollRoute
   '/_auth/products': typeof AuthProductsRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/projects': typeof AuthProjectsRouteWithChildren
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/orders'
+    | '/payroll'
     | '/products'
     | '/profile'
     | '/projects'
@@ -357,6 +367,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/orders'
+    | '/payroll'
     | '/products'
     | '/profile'
     | '/team'
@@ -390,6 +401,7 @@ export interface FileRouteTypes {
     | '/_auth/messages'
     | '/_auth/notifications'
     | '/_auth/orders'
+    | '/_auth/payroll'
     | '/_auth/products'
     | '/_auth/profile'
     | '/_auth/projects'
@@ -515,6 +527,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/orders'
       preLoaderRoute: typeof AuthOrdersRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/payroll': {
+      id: '/_auth/payroll'
+      path: '/payroll'
+      fullPath: '/payroll'
+      preLoaderRoute: typeof AuthPayrollRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/products': {
@@ -703,6 +722,7 @@ interface AuthRouteChildren {
   AuthMessagesRoute: typeof AuthMessagesRoute
   AuthNotificationsRoute: typeof AuthNotificationsRoute
   AuthOrdersRoute: typeof AuthOrdersRoute
+  AuthPayrollRoute: typeof AuthPayrollRoute
   AuthProductsRoute: typeof AuthProductsRoute
   AuthProfileRoute: typeof AuthProfileRoute
   AuthProjectsRoute: typeof AuthProjectsRouteWithChildren
@@ -723,6 +743,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthMessagesRoute: AuthMessagesRoute,
   AuthNotificationsRoute: AuthNotificationsRoute,
   AuthOrdersRoute: AuthOrdersRoute,
+  AuthPayrollRoute: AuthPayrollRoute,
   AuthProductsRoute: AuthProductsRoute,
   AuthProfileRoute: AuthProfileRoute,
   AuthProjectsRoute: AuthProjectsRouteWithChildren,
