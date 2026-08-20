@@ -1,7 +1,14 @@
 import { type InventoryItem } from "@/lib/inventory-report-data"
 import { formatRupiah } from "@/lib/payroll-data"
 import { Badge } from "@workspace/ui/components/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table"
 
 interface InventoryReportTableProps {
   items: InventoryItem[]
@@ -9,7 +16,7 @@ interface InventoryReportTableProps {
 
 export function InventoryReportTable({ items }: InventoryReportTableProps) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -25,29 +32,45 @@ export function InventoryReportTable({ items }: InventoryReportTableProps) {
         </TableHeader>
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.id} className="hover:bg-muted/10 text-sm">
-              <TableCell className="font-mono text-xs text-muted-foreground">{item.sku}</TableCell>
+            <TableRow key={item.id} className="text-sm hover:bg-muted/10">
+              <TableCell className="font-mono text-xs text-muted-foreground">
+                {item.sku}
+              </TableCell>
               <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell className="text-muted-foreground text-xs">{item.category}</TableCell>
-              <TableCell className="text-center tabular-nums font-semibold">{item.stockLevel}</TableCell>
-              <TableCell className="text-center tabular-nums text-muted-foreground">{item.reorderPoint}</TableCell>
-              <TableCell className="text-right tabular-nums text-muted-foreground">{formatRupiah(item.unitCost)}</TableCell>
-              <TableCell className="text-right tabular-nums font-semibold">{formatRupiah(item.totalValue)}</TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                {item.category}
+              </TableCell>
+              <TableCell className="text-center font-semibold tabular-nums">
+                {item.stockLevel}
+              </TableCell>
+              <TableCell className="text-center text-muted-foreground tabular-nums">
+                {item.reorderPoint}
+              </TableCell>
+              <TableCell className="text-right text-muted-foreground tabular-nums">
+                {formatRupiah(item.unitCost)}
+              </TableCell>
+              <TableCell className="text-right font-semibold tabular-nums">
+                {formatRupiah(item.totalValue)}
+              </TableCell>
               <TableCell className="text-center">
                 {item.status === "in_stock" && (
-                  <Badge variant="outline" className="bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-300 dark:ring-emerald-400/30">
+                  <Badge
+                    variant="outline"
+                    className="bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-300 dark:ring-emerald-400/30"
+                  >
                     Ada Stok
                   </Badge>
                 )}
                 {item.status === "low_stock" && (
-                  <Badge variant="outline" className="bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/15 dark:text-amber-300 dark:ring-amber-400/30">
+                  <Badge
+                    variant="outline"
+                    className="bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/15 dark:text-amber-300 dark:ring-amber-400/30"
+                  >
                     Stok Menipis
                   </Badge>
                 )}
                 {item.status === "out_of_stock" && (
-                  <Badge variant="destructive">
-                    Stok Habis
-                  </Badge>
+                  <Badge variant="destructive">Stok Habis</Badge>
                 )}
               </TableCell>
             </TableRow>
@@ -57,4 +80,3 @@ export function InventoryReportTable({ items }: InventoryReportTableProps) {
     </div>
   )
 }
-

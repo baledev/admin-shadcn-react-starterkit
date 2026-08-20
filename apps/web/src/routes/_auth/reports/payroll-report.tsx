@@ -22,9 +22,21 @@ function PayrollReportPage() {
   const data = initialPayrollReport
 
   const summaryItems = [
-    { label: "Total Pengeluaran Gaji", value: formatRupiah(data.totalPayroll), description: "Jumlah payroll bersih" },
-    { label: "Total Karyawan Dibayar", value: `${data.employeeCount} Karyawan`, description: "Karyawan dalam daftar gaji" },
-    { label: "Rata-Rata Gaji Bersih", value: formatRupiah(data.avgNetPay), description: "Rata-rata take home pay" },
+    {
+      label: "Total Pengeluaran Gaji",
+      value: formatRupiah(data.totalPayroll),
+      description: "Jumlah payroll bersih",
+    },
+    {
+      label: "Total Karyawan Dibayar",
+      value: `${data.employeeCount} Karyawan`,
+      description: "Karyawan dalam daftar gaji",
+    },
+    {
+      label: "Rata-Rata Gaji Bersih",
+      value: formatRupiah(data.avgNetPay),
+      description: "Rata-rata take home pay",
+    },
     {
       label: "Total Potongan",
       value: formatRupiah(data.totalDeductions),

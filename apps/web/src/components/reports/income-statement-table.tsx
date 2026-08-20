@@ -2,7 +2,14 @@ import * as React from "react"
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react"
 import { type IncomeStatementSection } from "@/lib/income-statement-data"
 import { formatRupiah } from "@/lib/payroll-data"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface IncomeStatementTableProps {
@@ -29,7 +36,7 @@ export function IncomeStatementTable({
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -47,8 +54,10 @@ export function IncomeStatementTable({
                 {/* Parent Row */}
                 <TableRow
                   className={cn(
-                    "cursor-pointer hover:bg-muted/40 font-medium",
-                    section.type === "revenue" ? "text-emerald-700 dark:text-emerald-400" : "text-foreground"
+                    "cursor-pointer font-medium hover:bg-muted/40",
+                    section.type === "revenue"
+                      ? "text-emerald-700 dark:text-emerald-400"
+                      : "text-foreground"
                   )}
                   onClick={() => hasChildren && toggleExpand(section.id)}
                 >
@@ -64,7 +73,7 @@ export function IncomeStatementTable({
                     )}
                     {section.name}
                   </TableCell>
-                  <TableCell className="text-right py-3 tabular-nums">
+                  <TableCell className="py-3 text-right tabular-nums">
                     {formatRupiah(section.amount)}
                   </TableCell>
                 </TableRow>
@@ -73,11 +82,12 @@ export function IncomeStatementTable({
                 {hasChildren &&
                   isExpanded &&
                   section.children?.map((child) => (
-                    <TableRow key={child.id} className="hover:bg-muted/20 text-muted-foreground">
-                      <TableCell className="pl-8 py-2">
-                        {child.name}
-                      </TableCell>
-                      <TableCell className="text-right py-2 tabular-nums">
+                    <TableRow
+                      key={child.id}
+                      className="text-muted-foreground hover:bg-muted/20"
+                    >
+                      <TableCell className="py-2 pl-8">{child.name}</TableCell>
+                      <TableCell className="py-2 text-right tabular-nums">
                         {formatRupiah(child.amount)}
                       </TableCell>
                     </TableRow>
@@ -87,21 +97,27 @@ export function IncomeStatementTable({
           })}
 
           {/* Totals Summary */}
-          <TableRow className="border-t-2 border-border font-semibold text-foreground bg-muted/20">
-            <TableCell className="py-3 pl-4">Total Pendapatan (Revenue)</TableCell>
-            <TableCell className="text-right py-3 tabular-nums text-emerald-700 dark:text-emerald-400">
+          <TableRow className="border-t-2 border-border bg-muted/20 font-semibold text-foreground">
+            <TableCell className="py-3 pl-4">
+              Total Pendapatan (Revenue)
+            </TableCell>
+            <TableCell className="py-3 text-right text-emerald-700 tabular-nums dark:text-emerald-400">
               {formatRupiah(revenue)}
             </TableCell>
           </TableRow>
-          <TableRow className="font-semibold text-foreground bg-muted/20">
-            <TableCell className="py-3 pl-4">Total HPP & Beban (Expenses)</TableCell>
-            <TableCell className="text-right py-3 tabular-nums text-rose-700 dark:text-rose-400">
+          <TableRow className="bg-muted/20 font-semibold text-foreground">
+            <TableCell className="py-3 pl-4">
+              Total HPP & Beban (Expenses)
+            </TableCell>
+            <TableCell className="py-3 text-right text-rose-700 tabular-nums dark:text-rose-400">
               {formatRupiah(expense)}
             </TableCell>
           </TableRow>
-          <TableRow className="border-t-2 border-border font-bold text-foreground bg-primary/5 text-lg">
-            <TableCell className="py-4 pl-4">Laba Bersih (Net Profit)</TableCell>
-            <TableCell className="text-right py-4 tabular-nums text-primary">
+          <TableRow className="border-t-2 border-border bg-primary/5 text-lg font-bold text-foreground">
+            <TableCell className="py-4 pl-4">
+              Laba Bersih (Net Profit)
+            </TableCell>
+            <TableCell className="py-4 text-right text-primary tabular-nums">
               {formatRupiah(netProfit)}
             </TableCell>
           </TableRow>

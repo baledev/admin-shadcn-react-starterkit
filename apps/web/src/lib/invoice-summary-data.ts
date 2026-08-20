@@ -1,4 +1,5 @@
-export type InvoiceReportStatus = "paid" | "partially_paid" | "sent" | "draft" | "overdue" | "cancelled"
+export type InvoiceReportStatus =
+  "paid" | "partially_paid" | "sent" | "draft" | "overdue" | "cancelled"
 
 export interface InvoiceReportItem {
   invoiceId: string
@@ -35,10 +36,60 @@ export const initialInvoiceSummary: InvoiceReportSummary = {
     { status: "draft", count: 3, value: 25000000 },
   ],
   items: [
-    { invoiceId: "INV-001", invoiceNumber: "INV-2026-001", customerName: "PT Maju Bersama", issueDate: "2026-08-01", dueDate: "2026-08-15", amount: 120000000, paidAmount: 120000000, outstandingAmount: 0, status: "paid" },
-    { invoiceId: "INV-002", invoiceNumber: "INV-2026-002", customerName: "CV Harapan Baru", issueDate: "2026-08-05", dueDate: "2026-08-20", amount: 90000000, paidAmount: 90000000, outstandingAmount: 0, status: "paid" },
-    { invoiceId: "INV-003", invoiceNumber: "INV-2026-003", customerName: "Toko Sinar Jaya", issueDate: "2026-08-10", dueDate: "2026-09-10", amount: 90000000, paidAmount: 0, outstandingAmount: 90000000, status: "sent" },
-    { invoiceId: "INV-004", invoiceNumber: "INV-2026-004", customerName: "PT Maju Bersama", issueDate: "2026-08-15", dueDate: "2026-08-30", amount: 25000000, paidAmount: 0, outstandingAmount: 25000000, status: "overdue" },
-    { invoiceId: "INV-005", invoiceNumber: "INV-2026-005", customerName: "CV Harapan Baru", issueDate: "2026-08-25", dueDate: "2026-09-25", amount: 25000000, paidAmount: 0, outstandingAmount: 25000000, status: "draft" },
+    {
+      invoiceId: "INV-001",
+      invoiceNumber: "INV-2026-001",
+      customerName: "PT Maju Bersama",
+      issueDate: "2026-08-01",
+      dueDate: "2026-08-15",
+      amount: 120000000,
+      paidAmount: 120000000,
+      outstandingAmount: 0,
+      status: "paid",
+    },
+    {
+      invoiceId: "INV-002",
+      invoiceNumber: "INV-2026-002",
+      customerName: "CV Harapan Baru",
+      issueDate: "2026-08-05",
+      dueDate: "2026-08-20",
+      amount: 90000000,
+      paidAmount: 90000000,
+      outstandingAmount: 0,
+      status: "paid",
+    },
+    {
+      invoiceId: "INV-003",
+      invoiceNumber: "INV-2026-003",
+      customerName: "Toko Sinar Jaya",
+      issueDate: "2026-08-10",
+      dueDate: "2026-09-10",
+      amount: 90000000,
+      paidAmount: 0,
+      outstandingAmount: 90000000,
+      status: "sent",
+    },
+    {
+      invoiceId: "INV-004",
+      invoiceNumber: "INV-2026-004",
+      customerName: "PT Maju Bersama",
+      issueDate: "2026-08-15",
+      dueDate: "2026-08-30",
+      amount: 25000000,
+      paidAmount: 0,
+      outstandingAmount: 25000000,
+      status: "overdue",
+    },
+    {
+      invoiceId: "INV-005",
+      invoiceNumber: "INV-2026-005",
+      customerName: "CV Harapan Baru",
+      issueDate: "2026-08-25",
+      dueDate: "2026-09-25",
+      amount: 25000000,
+      paidAmount: 0,
+      outstandingAmount: 25000000,
+      status: "draft",
+    },
   ],
 }

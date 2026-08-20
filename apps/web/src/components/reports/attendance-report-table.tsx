@@ -1,6 +1,13 @@
 import { type AttendanceReportItem } from "@/lib/attendance-report-data"
 import { Progress } from "@workspace/ui/components/progress"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface AttendanceReportTableProps {
@@ -9,7 +16,7 @@ interface AttendanceReportTableProps {
 
 export function AttendanceReportTable({ items }: AttendanceReportTableProps) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -25,22 +32,27 @@ export function AttendanceReportTable({ items }: AttendanceReportTableProps) {
         </TableHeader>
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.employeeId} className="hover:bg-muted/10 text-sm">
+            <TableRow
+              key={item.employeeId}
+              className="text-sm hover:bg-muted/10"
+            >
               <TableCell className="font-medium">{item.employeeName}</TableCell>
-              <TableCell className="text-muted-foreground text-xs">{item.department}</TableCell>
-              <TableCell className="text-center tabular-nums font-semibold text-emerald-600 dark:text-emerald-400">
+              <TableCell className="text-xs text-muted-foreground">
+                {item.department}
+              </TableCell>
+              <TableCell className="text-center font-semibold text-emerald-600 tabular-nums dark:text-emerald-400">
                 {item.presentCount}
               </TableCell>
-              <TableCell className="text-center tabular-nums text-amber-600 dark:text-amber-400">
+              <TableCell className="text-center text-amber-600 tabular-nums dark:text-amber-400">
                 {item.lateCount}
               </TableCell>
-              <TableCell className="text-center tabular-nums text-rose-600 dark:text-rose-400">
+              <TableCell className="text-center text-rose-600 tabular-nums dark:text-rose-400">
                 {item.absentCount}
               </TableCell>
-              <TableCell className="text-center tabular-nums text-muted-foreground">
+              <TableCell className="text-center text-muted-foreground tabular-nums">
                 {item.permitCount}
               </TableCell>
-              <TableCell className="text-center tabular-nums text-muted-foreground">
+              <TableCell className="text-center text-muted-foreground tabular-nums">
                 {item.sickCount}
               </TableCell>
               <TableCell>
@@ -50,7 +62,7 @@ export function AttendanceReportTable({ items }: AttendanceReportTableProps) {
                   </div>
                   <span
                     className={cn(
-                      "text-xs font-bold tabular-nums min-w-[32px] text-right",
+                      "min-w-[32px] text-right text-xs font-bold tabular-nums",
                       item.attendanceRate >= 95
                         ? "text-emerald-600 dark:text-emerald-400"
                         : item.attendanceRate >= 90
@@ -69,4 +81,3 @@ export function AttendanceReportTable({ items }: AttendanceReportTableProps) {
     </div>
   )
 }
-

@@ -23,9 +23,21 @@ function InvoiceSummaryPage() {
   const data = initialInvoiceSummary
 
   const summaryItems = [
-    { label: "Total Invoice Diterbitkan", value: formatRupiah(data.totalInvoiced), description: "Total nilai tagihan keluar" },
-    { label: "Total Terbayar", value: formatRupiah(data.totalPaid), description: "Tagihan yang sudah dilunasi" },
-    { label: "Total Outstanding", value: formatRupiah(data.totalOutstanding), description: "Tagihan terkirim belum dibayar" },
+    {
+      label: "Total Invoice Diterbitkan",
+      value: formatRupiah(data.totalInvoiced),
+      description: "Total nilai tagihan keluar",
+    },
+    {
+      label: "Total Terbayar",
+      value: formatRupiah(data.totalPaid),
+      description: "Tagihan yang sudah dilunasi",
+    },
+    {
+      label: "Total Outstanding",
+      value: formatRupiah(data.totalOutstanding),
+      description: "Tagihan terkirim belum dibayar",
+    },
     {
       label: "Total Terlambat (Overdue)",
       value: formatRupiah(data.totalOverdue),

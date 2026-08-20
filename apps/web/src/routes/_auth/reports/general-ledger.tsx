@@ -6,7 +6,13 @@ import { ReportExportButton } from "@/components/reports/report-export-button"
 import { ReportFilterBar } from "@/components/reports/report-filter-bar"
 import { GeneralLedgerTable } from "@/components/reports/general-ledger-table"
 import { initialGeneralLedger } from "@/lib/general-ledger-data"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
 
 export const Route = createFileRoute("/_auth/reports/general-ledger")({
   component: GeneralLedgerPage,
@@ -18,8 +24,12 @@ function GeneralLedgerPage() {
     to: new Date(2026, 7, 31),
   })
 
-  const [selectedAccount, setSelectedAccount] = React.useState<string>(initialGeneralLedger[0]?.accountCode || "")
-  const activeLedger = initialGeneralLedger.find((l) => l.accountCode === selectedAccount)
+  const [selectedAccount, setSelectedAccount] = React.useState<string>(
+    initialGeneralLedger[0]?.accountCode || ""
+  )
+  const activeLedger = initialGeneralLedger.find(
+    (l) => l.accountCode === selectedAccount
+  )
 
   return (
     <div className="flex flex-1 flex-col">
@@ -37,7 +47,10 @@ function GeneralLedgerPage() {
             onDateChange={setDate}
             prependChildren={
               <div className="w-full sm:w-72">
-                <Select value={selectedAccount} onValueChange={(val) => val && setSelectedAccount(val)}>
+                <Select
+                  value={selectedAccount}
+                  onValueChange={(val) => val && setSelectedAccount(val)}
+                >
                   <SelectTrigger render={<button type="button" />}>
                     <SelectValue placeholder="Pilih Akun" />
                   </SelectTrigger>

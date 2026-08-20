@@ -22,19 +22,33 @@ function InventoryReportPage() {
   const data = initialInventoryReport
 
   const summaryItems = [
-    { label: "Total SKU Terdaftar", value: `${data.totalSKUs} SKU`, description: "Jenis produk terdaftar" },
-    { label: "Total Nilai Aset Stok", value: formatRupiah(data.totalValue), description: "Jumlah stok × harga pokok" },
+    {
+      label: "Total SKU Terdaftar",
+      value: `${data.totalSKUs} SKU`,
+      description: "Jenis produk terdaftar",
+    },
+    {
+      label: "Total Nilai Aset Stok",
+      value: formatRupiah(data.totalValue),
+      description: "Jumlah stok × harga pokok",
+    },
     {
       label: "Stok Menipis (Low Stock)",
       value: `${data.lowStockItems} Item`,
       description: "Mencapai titik pemesanan ulang",
-      trend: data.lowStockItems > 0 ? { value: "Reorder", isPositive: false } : undefined,
+      trend:
+        data.lowStockItems > 0
+          ? { value: "Reorder", isPositive: false }
+          : undefined,
     },
     {
       label: "Stok Habis (Out of Stock)",
       value: `${data.outOfStockItems} Item`,
       description: "Stok kosong/nol",
-      trend: data.outOfStockItems > 0 ? { value: "Segera", isPositive: false } : undefined,
+      trend:
+        data.outOfStockItems > 0
+          ? { value: "Segera", isPositive: false }
+          : undefined,
     },
   ]
 

@@ -1,8 +1,20 @@
 "use client"
 
 import { Cell, Pie, PieChart } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@workspace/ui/components/chart"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@workspace/ui/components/chart"
 import { type InvoiceReportStatus } from "@/lib/invoice-summary-data"
 
 interface InvoiceSummaryChartProps {
@@ -33,14 +45,20 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function InvoiceSummaryChart({ statusCounts }: InvoiceSummaryChartProps) {
+export function InvoiceSummaryChart({
+  statusCounts,
+}: InvoiceSummaryChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-base font-semibold">Proporsi Status Invoice</CardTitle>
-        <CardDescription>Pembagian total nilai nominal invoice berdasarkan status saat ini</CardDescription>
+        <CardTitle className="text-base font-semibold">
+          Proporsi Status Invoice
+        </CardTitle>
+        <CardDescription>
+          Pembagian total nilai nominal invoice berdasarkan status saat ini
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 flex items-center justify-center min-h-[220px]">
+      <CardContent className="flex min-h-[220px] flex-1 items-center justify-center pb-0">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[200px] w-full"
@@ -59,16 +77,13 @@ export function InvoiceSummaryChart({ statusCounts }: InvoiceSummaryChartProps) 
               paddingAngle={2}
             >
               {statusCounts.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={statusColors[entry.status]}
-                />
+                <Cell key={`cell-${index}`} fill={statusColors[entry.status]} />
               ))}
             </Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-xs pb-6">
+      <CardFooter className="flex-col gap-2 pb-6 text-xs">
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
           {statusCounts.map((entry) => (
             <div key={entry.status} className="flex items-center gap-1.5">

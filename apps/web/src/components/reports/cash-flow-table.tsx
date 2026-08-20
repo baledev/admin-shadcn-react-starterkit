@@ -1,7 +1,14 @@
 import * as React from "react"
 import { type CashFlowData } from "@/lib/cash-flow-data"
 import { formatRupiah } from "@/lib/payroll-data"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface CashFlowTableProps {
@@ -10,7 +17,7 @@ interface CashFlowTableProps {
 
 export function CashFlowTable({ data }: CashFlowTableProps) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -28,12 +35,17 @@ export function CashFlowTable({ data }: CashFlowTableProps) {
 
               {/* Items */}
               {section.items.map((item) => (
-                <TableRow key={item.id} className="hover:bg-muted/10 text-muted-foreground">
-                  <TableCell className="pl-8 py-2">{item.name}</TableCell>
+                <TableRow
+                  key={item.id}
+                  className="text-muted-foreground hover:bg-muted/10"
+                >
+                  <TableCell className="py-2 pl-8">{item.name}</TableCell>
                   <TableCell
                     className={cn(
-                      "text-right py-2 tabular-nums",
-                      item.amount < 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"
+                      "py-2 text-right tabular-nums",
+                      item.amount < 0
+                        ? "text-rose-600 dark:text-rose-400"
+                        : "text-emerald-600 dark:text-emerald-400"
                     )}
                   >
                     {formatRupiah(item.amount)}
@@ -42,12 +54,16 @@ export function CashFlowTable({ data }: CashFlowTableProps) {
               ))}
 
               {/* Section Total */}
-              <TableRow className="font-semibold text-foreground border-b border-border">
-                <TableCell className="pl-4 py-3">Total Arus Kas Bersih {section.title.split(" (")[0]}</TableCell>
+              <TableRow className="border-b border-border font-semibold text-foreground">
+                <TableCell className="py-3 pl-4">
+                  Total Arus Kas Bersih {section.title.split(" (")[0]}
+                </TableCell>
                 <TableCell
                   className={cn(
-                    "text-right py-3 tabular-nums",
-                    section.total < 0 ? "text-rose-700 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400"
+                    "py-3 text-right tabular-nums",
+                    section.total < 0
+                      ? "text-rose-700 dark:text-rose-400"
+                      : "text-emerald-700 dark:text-emerald-400"
                   )}
                 >
                   {formatRupiah(section.total)}
@@ -57,12 +73,16 @@ export function CashFlowTable({ data }: CashFlowTableProps) {
           ))}
 
           {/* Net Change in Cash */}
-          <TableRow className="border-t-2 border-border font-bold bg-muted/30">
-            <TableCell className="py-4">Kenaikan / (Penurunan) Bersih Kas</TableCell>
+          <TableRow className="border-t-2 border-border bg-muted/30 font-bold">
+            <TableCell className="py-4">
+              Kenaikan / (Penurunan) Bersih Kas
+            </TableCell>
             <TableCell
               className={cn(
-                "text-right py-4 tabular-nums",
-                data.netChange < 0 ? "text-rose-700 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400"
+                "py-4 text-right tabular-nums",
+                data.netChange < 0
+                  ? "text-rose-700 dark:text-rose-400"
+                  : "text-emerald-700 dark:text-emerald-400"
               )}
             >
               {formatRupiah(data.netChange)}
@@ -71,14 +91,16 @@ export function CashFlowTable({ data }: CashFlowTableProps) {
 
           {/* Opening and Closing Balance */}
           <TableRow className="text-muted-foreground">
-            <TableCell className="pl-4 py-2">Saldo Awal Kas & Setara Kas</TableCell>
-            <TableCell className="text-right py-2 tabular-nums">
+            <TableCell className="py-2 pl-4">
+              Saldo Awal Kas & Setara Kas
+            </TableCell>
+            <TableCell className="py-2 text-right tabular-nums">
               {formatRupiah(data.openingBalance)}
             </TableCell>
           </TableRow>
-          <TableRow className="font-bold text-foreground bg-primary/5 text-lg">
+          <TableRow className="bg-primary/5 text-lg font-bold text-foreground">
             <TableCell className="py-4">Saldo Akhir Kas & Setara Kas</TableCell>
-            <TableCell className="text-right py-4 tabular-nums text-primary">
+            <TableCell className="py-4 text-right text-primary tabular-nums">
               {formatRupiah(data.closingBalance)}
             </TableCell>
           </TableRow>
@@ -87,4 +109,3 @@ export function CashFlowTable({ data }: CashFlowTableProps) {
     </div>
   )
 }
-

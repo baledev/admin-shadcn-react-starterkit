@@ -22,9 +22,21 @@ function BalanceSheetPage() {
   const data = initialBalanceSheet
 
   const summaryItems = [
-    { label: "Total Aset (Aktiva)", value: formatRupiah(data.totalAssets), description: "Kas, piutang, persediaan, aset tetap" },
-    { label: "Total Liabilitas", value: formatRupiah(data.totalLiabilities), description: "Hutang usaha, utang bank" },
-    { label: "Total Ekuitas", value: formatRupiah(data.totalEquity), description: "Modal disetor & laba ditahan" },
+    {
+      label: "Total Aset (Aktiva)",
+      value: formatRupiah(data.totalAssets),
+      description: "Kas, piutang, persediaan, aset tetap",
+    },
+    {
+      label: "Total Liabilitas",
+      value: formatRupiah(data.totalLiabilities),
+      description: "Hutang usaha, utang bank",
+    },
+    {
+      label: "Total Ekuitas",
+      value: formatRupiah(data.totalEquity),
+      description: "Modal disetor & laba ditahan",
+    },
     {
       label: "Rasio Lancar (Current Ratio)",
       value: "3.0x",

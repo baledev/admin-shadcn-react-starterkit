@@ -22,12 +22,26 @@ function APAgingPage() {
   const data = initialAPAging
 
   const summaryItems = [
-    { label: "Total Hutang Usaha (AP)", value: formatRupiah(data.totalAP), description: "Semua tagihan vendor belum dibayar" },
-    { label: "Belum Jatuh Tempo (Current)", value: formatRupiah(data.totalCurrent), description: "Tagihan dalam masa termin" },
-    { label: "Tertunggak (1 - 30 Hari)", value: formatRupiah(data.total1to30), description: "Tunggakan jangka pendek" },
+    {
+      label: "Total Hutang Usaha (AP)",
+      value: formatRupiah(data.totalAP),
+      description: "Semua tagihan vendor belum dibayar",
+    },
+    {
+      label: "Belum Jatuh Tempo (Current)",
+      value: formatRupiah(data.totalCurrent),
+      description: "Tagihan dalam masa termin",
+    },
+    {
+      label: "Tertunggak (1 - 30 Hari)",
+      value: formatRupiah(data.total1to30),
+      description: "Tunggakan jangka pendek",
+    },
     {
       label: "Tertunggak (&gt; 30 Hari)",
-      value: formatRupiah(data.total31to60 + data.total61to90 + data.totalOver90),
+      value: formatRupiah(
+        data.total31to60 + data.total61to90 + data.totalOver90
+      ),
       description: "Jatuh tempo kritis",
       trend: { value: "Perhatian", isPositive: false },
     },

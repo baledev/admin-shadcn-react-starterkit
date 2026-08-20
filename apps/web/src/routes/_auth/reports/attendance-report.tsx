@@ -21,19 +21,30 @@ function AttendanceReportPage() {
   const data = initialAttendanceReport
 
   const summaryItems = [
-    { label: "Total Karyawan Aktif", value: `${data.totalActiveEmployees} Orang`, description: "Karyawan wajib absensi" },
+    {
+      label: "Total Karyawan Aktif",
+      value: `${data.totalActiveEmployees} Orang`,
+      description: "Karyawan wajib absensi",
+    },
     {
       label: "Rata-Rata Kehadiran",
       value: `${data.avgAttendanceRate}%`,
       description: "Tingkat persentase hadir",
       trend: { value: "Sangat Baik", isPositive: true },
     },
-    { label: "Total Kasus Terlambat", value: `${data.totalLate} Kali`, description: "Keterlambatan jam masuk kerja" },
+    {
+      label: "Total Kasus Terlambat",
+      value: `${data.totalLate} Kali`,
+      description: "Keterlambatan jam masuk kerja",
+    },
     {
       label: "Total Alpa / Absen",
       value: `${data.totalAbsent} Hari`,
       description: "Ketidakhadiran tanpa keterangan",
-      trend: data.totalAbsent > 0 ? { value: "Perhatian", isPositive: false } : undefined,
+      trend:
+        data.totalAbsent > 0
+          ? { value: "Perhatian", isPositive: false }
+          : undefined,
     },
   ]
 

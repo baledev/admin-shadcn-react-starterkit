@@ -34,17 +34,37 @@ export const initialCashFlow: CashFlowData = {
       title: "Arus Kas dari Aktivitas Operasi (Operating Activities)",
       total: 120000000,
       items: [
-        { id: "cf-op-1", name: "Penerimaan Kas dari Pelanggan", amount: 240000000 },
-        { id: "cf-op-2", name: "Pembayaran Kas kepada Pemasok", amount: -75000000 },
-        { id: "cf-op-3", name: "Pembayaran Kas untuk Gaji Karyawan", amount: -35000000 },
-        { id: "cf-op-4", name: "Pembayaran Pajak dan Beban Bunga", amount: -10000000 },
+        {
+          id: "cf-op-1",
+          name: "Penerimaan Kas dari Pelanggan",
+          amount: 240000000,
+        },
+        {
+          id: "cf-op-2",
+          name: "Pembayaran Kas kepada Pemasok",
+          amount: -75000000,
+        },
+        {
+          id: "cf-op-3",
+          name: "Pembayaran Kas untuk Gaji Karyawan",
+          amount: -35000000,
+        },
+        {
+          id: "cf-op-4",
+          name: "Pembayaran Pajak dan Beban Bunga",
+          amount: -10000000,
+        },
       ],
     },
     {
       title: "Arus Kas dari Aktivitas Investasi (Investing Activities)",
       total: -45000000,
       items: [
-        { id: "cf-inv-1", name: "Pembelian Peralatan Kantor", amount: -45000000 },
+        {
+          id: "cf-inv-1",
+          name: "Pembelian Peralatan Kantor",
+          amount: -45000000,
+        },
         { id: "cf-inv-2", name: "Penjualan Aset Tetap", amount: 0 },
       ],
     },

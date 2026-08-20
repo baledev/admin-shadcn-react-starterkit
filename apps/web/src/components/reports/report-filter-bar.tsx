@@ -19,7 +19,7 @@ export function ReportFilterBar({
   prependChildren,
 }: ReportFilterBarProps) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center py-2">
+    <div className="flex flex-col gap-3 py-2 sm:flex-row sm:items-center">
       {prependChildren}
       <div className="w-full sm:w-64">
         <DateRangePicker

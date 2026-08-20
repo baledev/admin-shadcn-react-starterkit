@@ -1,4 +1,8 @@
-import { IconDownload, IconFileSpreadsheet, IconFileTypePdf } from "@tabler/icons-react"
+import {
+  IconDownload,
+  IconFileSpreadsheet,
+  IconFileTypePdf,
+} from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import {
   DropdownMenu,
@@ -10,12 +14,14 @@ import {
 export function ReportExportButton() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={
-        <Button variant="outline" size="sm">
-          <IconDownload className="mr-2 size-4" />
-          Export
-        </Button>
-      } />
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline" size="sm">
+            <IconDownload className="mr-2 size-4" />
+            Export
+          </Button>
+        }
+      />
       <DropdownMenuContent align="end">
         <DropdownMenuItem>
           <IconFileSpreadsheet className="mr-2 size-4 text-emerald-600" />

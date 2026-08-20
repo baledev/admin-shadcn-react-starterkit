@@ -23,9 +23,21 @@ function SalesReportPage() {
   const data = initialSalesReport
 
   const summaryItems = [
-    { label: "Total Omset Penjualan", value: formatRupiah(data.totalSales), description: "Pendapatan kotor penjualan" },
-    { label: "Jumlah Transaksi (Order)", value: `${data.totalOrders} Order`, description: "Total pesanan masuk" },
-    { label: "Rata-Rata Nilai Order", value: formatRupiah(data.avgOrderValue), description: "AOV per transaksi" },
+    {
+      label: "Total Omset Penjualan",
+      value: formatRupiah(data.totalSales),
+      description: "Pendapatan kotor penjualan",
+    },
+    {
+      label: "Jumlah Transaksi (Order)",
+      value: `${data.totalOrders} Order`,
+      description: "Total pesanan masuk",
+    },
+    {
+      label: "Rata-Rata Nilai Order",
+      value: formatRupiah(data.avgOrderValue),
+      description: "AOV per transaksi",
+    },
     {
       label: "Produk Terlaris",
       value: data.topProduct,
@@ -51,7 +63,10 @@ function SalesReportPage() {
 
           <SalesReportChart data={data.trend} />
 
-          <SalesReportTable products={data.products} customers={data.customers} />
+          <SalesReportTable
+            products={data.products}
+            customers={data.customers}
+          />
         </div>
       </div>
     </div>

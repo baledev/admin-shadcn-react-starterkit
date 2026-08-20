@@ -22,8 +22,16 @@ function TrialBalancePage() {
   const data = initialTrialBalance
 
   const summaryItems = [
-    { label: "Total Saldo Debit", value: formatRupiah(data.totalDebit), description: "Jumlah seluruh akun bersaldo debit" },
-    { label: "Total Saldo Kredit", value: formatRupiah(data.totalCredit), description: "Jumlah seluruh akun bersaldo kredit" },
+    {
+      label: "Total Saldo Debit",
+      value: formatRupiah(data.totalDebit),
+      description: "Jumlah seluruh akun bersaldo debit",
+    },
+    {
+      label: "Total Saldo Kredit",
+      value: formatRupiah(data.totalCredit),
+      description: "Jumlah seluruh akun bersaldo kredit",
+    },
     {
       label: "Status Neraca Percobaan",
       value: "Balanced",

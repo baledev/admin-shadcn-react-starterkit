@@ -22,9 +22,21 @@ function CashFlowPage() {
   const data = initialCashFlow
 
   const summaryItems = [
-    { label: "Kas Aktivitas Operasi", value: formatRupiah(data.netOperating), description: "Arus kas bersih operasional" },
-    { label: "Kas Aktivitas Investasi", value: formatRupiah(data.netInvesting), description: "Pembelian/penjualan aset" },
-    { label: "Kas Aktivitas Pendanaan", value: formatRupiah(data.netFinancing), description: "Modal disetor, pinjaman" },
+    {
+      label: "Kas Aktivitas Operasi",
+      value: formatRupiah(data.netOperating),
+      description: "Arus kas bersih operasional",
+    },
+    {
+      label: "Kas Aktivitas Investasi",
+      value: formatRupiah(data.netInvesting),
+      description: "Pembelian/penjualan aset",
+    },
+    {
+      label: "Kas Aktivitas Pendanaan",
+      value: formatRupiah(data.netFinancing),
+      description: "Modal disetor, pinjaman",
+    },
     {
       label: "Saldo Akhir Kas",
       value: formatRupiah(data.closingBalance),

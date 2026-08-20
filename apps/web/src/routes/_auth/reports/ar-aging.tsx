@@ -22,9 +22,21 @@ function ARAgingPage() {
   const data = initialARAging
 
   const summaryItems = [
-    { label: "Total Piutang Usaha (AR)", value: formatRupiah(data.totalAR), description: "Semua invoice belum lunas" },
-    { label: "Belum Jatuh Tempo (Current)", value: formatRupiah(data.totalCurrent), description: "Invoice dalam masa kredit" },
-    { label: "Tertunggak (1 - 60 Hari)", value: formatRupiah(data.total1to30 + data.total31to60), description: "Tunggakan jangka pendek" },
+    {
+      label: "Total Piutang Usaha (AR)",
+      value: formatRupiah(data.totalAR),
+      description: "Semua invoice belum lunas",
+    },
+    {
+      label: "Belum Jatuh Tempo (Current)",
+      value: formatRupiah(data.totalCurrent),
+      description: "Invoice dalam masa kredit",
+    },
+    {
+      label: "Tertunggak (1 - 60 Hari)",
+      value: formatRupiah(data.total1to30 + data.total31to60),
+      description: "Tunggakan jangka pendek",
+    },
     {
       label: "Kritis (&gt; 60 Hari)",
       value: formatRupiah(data.total61to90 + data.totalOver90),

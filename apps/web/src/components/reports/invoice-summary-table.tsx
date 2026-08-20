@@ -1,7 +1,17 @@
-import { type InvoiceReportItem, type InvoiceReportStatus } from "@/lib/invoice-summary-data"
+import {
+  type InvoiceReportItem,
+  type InvoiceReportStatus,
+} from "@/lib/invoice-summary-data"
 import { formatRupiah } from "@/lib/payroll-data"
 import { Badge } from "@workspace/ui/components/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/components/table"
 
 interface InvoiceSummaryTableProps {
   items: InvoiceReportItem[]
@@ -9,7 +19,8 @@ interface InvoiceSummaryTableProps {
 
 const statusBadgeStyles: Record<InvoiceReportStatus, string> = {
   paid: "bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-300 dark:ring-emerald-400/30",
-  partially_paid: "bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/15 dark:text-amber-300 dark:ring-amber-400/30",
+  partially_paid:
+    "bg-amber-500/15 text-amber-700 ring-amber-500/30 dark:bg-amber-400/15 dark:text-amber-300 dark:ring-amber-400/30",
   sent: "bg-blue-500/15 text-blue-700 ring-blue-500/30 dark:bg-blue-400/15 dark:text-blue-300 dark:ring-blue-400/30",
   draft: "bg-muted text-muted-foreground ring-border/50",
   overdue: "bg-destructive text-destructive-foreground",
@@ -27,7 +38,7 @@ const statusLabels: Record<InvoiceReportStatus, string> = {
 
 export function InvoiceSummaryTable({ items }: InvoiceSummaryTableProps) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -43,20 +54,36 @@ export function InvoiceSummaryTable({ items }: InvoiceSummaryTableProps) {
         </TableHeader>
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.invoiceId} className="hover:bg-muted/10 text-sm">
-              <TableCell className="font-mono text-xs font-semibold">{item.invoiceNumber}</TableCell>
+            <TableRow
+              key={item.invoiceId}
+              className="text-sm hover:bg-muted/10"
+            >
+              <TableCell className="font-mono text-xs font-semibold">
+                {item.invoiceNumber}
+              </TableCell>
               <TableCell className="font-medium">{item.customerName}</TableCell>
-              <TableCell className="tabular-nums text-muted-foreground text-xs">{item.issueDate}</TableCell>
-              <TableCell className="tabular-nums text-muted-foreground text-xs">{item.dueDate}</TableCell>
-              <TableCell className="text-right tabular-nums text-foreground">{formatRupiah(item.amount)}</TableCell>
-              <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">
+              <TableCell className="text-xs text-muted-foreground tabular-nums">
+                {item.issueDate}
+              </TableCell>
+              <TableCell className="text-xs text-muted-foreground tabular-nums">
+                {item.dueDate}
+              </TableCell>
+              <TableCell className="text-right text-foreground tabular-nums">
+                {formatRupiah(item.amount)}
+              </TableCell>
+              <TableCell className="text-right text-emerald-600 tabular-nums dark:text-emerald-400">
                 {item.paidAmount > 0 ? formatRupiah(item.paidAmount) : "-"}
               </TableCell>
-              <TableCell className="text-right tabular-nums text-rose-600 dark:text-rose-400 font-medium">
-                {item.outstandingAmount > 0 ? formatRupiah(item.outstandingAmount) : "-"}
+              <TableCell className="text-right font-medium text-rose-600 tabular-nums dark:text-rose-400">
+                {item.outstandingAmount > 0
+                  ? formatRupiah(item.outstandingAmount)
+                  : "-"}
               </TableCell>
               <TableCell className="text-center">
-                <Badge variant="outline" className={statusBadgeStyles[item.status]}>
+                <Badge
+                  variant="outline"
+                  className={statusBadgeStyles[item.status]}
+                >
                   {statusLabels[item.status]}
                 </Badge>
               </TableCell>
@@ -67,4 +94,3 @@ export function InvoiceSummaryTable({ items }: InvoiceSummaryTableProps) {
     </div>
   )
 }
-
