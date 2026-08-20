@@ -16,11 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -60,7 +56,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -71,15 +67,21 @@ function buildColumns(
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("fromAccountName", {
       header: "Dari Akun",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-semibold text-foreground">{row.original.fromAccountName}</span>
-          <span className="font-mono text-xs text-muted-foreground">{row.original.fromAccountCode}</span>
+          <span className="font-semibold text-foreground">
+            {row.original.fromAccountName}
+          </span>
+          <span className="font-mono text-xs text-muted-foreground">
+            {row.original.fromAccountCode}
+          </span>
         </div>
       ),
     }),
@@ -87,15 +89,19 @@ function buildColumns(
       header: "Ke Akun",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-semibold text-foreground">{row.original.toAccountName}</span>
-          <span className="font-mono text-xs text-muted-foreground">{row.original.toAccountCode}</span>
+          <span className="font-semibold text-foreground">
+            {row.original.toAccountName}
+          </span>
+          <span className="font-mono text-xs text-muted-foreground">
+            {row.original.toAccountCode}
+          </span>
         </div>
       ),
     }),
     columnHelper.accessor("amount", {
       header: () => <div className="text-right">Jumlah Transfer</div>,
       cell: ({ row }) => (
-        <div className="text-right font-mono text-sm tabular-nums font-semibold">
+        <div className="text-right font-mono text-sm font-semibold tabular-nums">
           {formatRupiah(row.original.amount)}
         </div>
       ),
@@ -135,7 +141,7 @@ function buildColumns(
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs font-semibold text-emerald-700 border-emerald-200 hover:bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800"
+                className="h-8 border-emerald-200 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
                 onClick={() => onCompleteTransfer(t)}
               >
                 Kirim

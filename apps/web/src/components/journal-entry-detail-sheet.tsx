@@ -44,7 +44,7 @@ export function JournalEntryDetailSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="flex h-full flex-col sm:max-w-xl">
         <SheetHeader>
-          <SheetTitle className="font-mono text-lg flex items-center gap-2">
+          <SheetTitle className="flex items-center gap-2 font-mono text-lg">
             Detail Journal Entry: {entry.id}
           </SheetTitle>
           <SheetDescription>
@@ -52,44 +52,64 @@ export function JournalEntryDetailSheet({
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 space-y-6 overflow-y-auto mt-6 px-1">
+        <div className="mt-6 flex-1 space-y-6 overflow-y-auto px-1">
           {/* Metadata Grid */}
-          <div className="grid grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg border border-border">
+          <div className="grid grid-cols-2 gap-4 rounded-lg border border-border bg-muted/30 p-4">
             <div>
-              <span className="text-xs text-muted-foreground block mb-1">Status</span>
+              <span className="mb-1 block text-xs text-muted-foreground">
+                Status
+              </span>
               <Badge variant="outline" className={`ring-1 ${statusMeta.chip}`}>
                 {statusMeta.label}
               </Badge>
             </div>
             <div>
-              <span className="text-xs text-muted-foreground block mb-1">Jurnal</span>
+              <span className="mb-1 block text-xs text-muted-foreground">
+                Jurnal
+              </span>
               <Badge variant="secondary" className={`${typeMeta.color}`}>
                 {typeMeta.label}
               </Badge>
             </div>
             <div className="col-span-2">
-              <span className="text-xs text-muted-foreground block mb-1">Referensi</span>
+              <span className="mb-1 block text-xs text-muted-foreground">
+                Referensi
+              </span>
               <span className="text-sm font-semibold text-foreground">
-                {entry.reference || <span className="text-muted-foreground/50 font-normal italic">-</span>}
+                {entry.reference || (
+                  <span className="font-normal text-muted-foreground/50 italic">
+                    -
+                  </span>
+                )}
               </span>
             </div>
             <div className="col-span-2">
-              <span className="text-xs text-muted-foreground block mb-1">Catatan / Deskripsi Utama</span>
-              <span className="text-sm text-foreground font-medium">{entry.note || "-"}</span>
+              <span className="mb-1 block text-xs text-muted-foreground">
+                Catatan / Deskripsi Utama
+              </span>
+              <span className="text-sm font-medium text-foreground">
+                {entry.note || "-"}
+              </span>
             </div>
           </div>
 
           {/* Ledger Lines */}
           <div>
-            <h4 className="text-sm font-semibold mb-3">Rincian Pos Debet / Kredit (Double-Entry)</h4>
-            <div className="rounded-md border border-border overflow-hidden">
+            <h4 className="mb-3 text-sm font-semibold">
+              Rincian Pos Debet / Kredit (Double-Entry)
+            </h4>
+            <div className="overflow-hidden rounded-md border border-border">
               <Table>
                 <TableHeader className="bg-muted/50">
                   <TableRow>
                     <TableHead className="w-[180px]">Akun</TableHead>
                     <TableHead>Keterangan Line</TableHead>
-                    <TableHead className="text-right w-[110px]">Debet</TableHead>
-                    <TableHead className="text-right w-[110px]">Kredit</TableHead>
+                    <TableHead className="w-[110px] text-right">
+                      Debet
+                    </TableHead>
+                    <TableHead className="w-[110px] text-right">
+                      Kredit
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -97,12 +117,23 @@ export function JournalEntryDetailSheet({
                     <TableRow key={idx}>
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="font-mono text-xs font-semibold">{line.accountCode}</span>
-                          <span className="text-xs text-muted-foreground">{line.accountName}</span>
+                          <span className="font-mono text-xs font-semibold">
+                            {line.accountCode}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {line.accountName}
+                          </span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-xs font-medium max-w-[120px] truncate" title={line.description}>
-                        {line.description || <span className="text-muted-foreground/30 italic">Sama dengan utama</span>}
+                      <TableCell
+                        className="max-w-[120px] truncate text-xs font-medium"
+                        title={line.description}
+                      >
+                        {line.description || (
+                          <span className="text-muted-foreground/30 italic">
+                            Sama dengan utama
+                          </span>
+                        )}
                       </TableCell>
                       <TableCell className="text-right font-mono text-xs tabular-nums">
                         {line.debit > 0 ? formatRupiah(line.debit) : "-"}
@@ -112,14 +143,16 @@ export function JournalEntryDetailSheet({
                       </TableCell>
                     </TableRow>
                   ))}
-                  
+
                   {/* Totals Row */}
                   <TableRow className="bg-muted/40 font-bold">
-                    <TableCell colSpan={2} className="text-sm">Total</TableCell>
-                    <TableCell className="text-right font-mono text-xs tabular-nums text-foreground">
+                    <TableCell colSpan={2} className="text-sm">
+                      Total
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-xs text-foreground tabular-nums">
                       {formatRupiah(entry.totalDebit)}
                     </TableCell>
-                    <TableCell className="text-right font-mono text-xs tabular-nums text-foreground">
+                    <TableCell className="text-right font-mono text-xs text-foreground tabular-nums">
                       {formatRupiah(entry.totalCredit)}
                     </TableCell>
                   </TableRow>
@@ -129,10 +162,8 @@ export function JournalEntryDetailSheet({
           </div>
         </div>
 
-        <SheetFooter className="border-t border-border pt-4 mt-auto">
-          <SheetClose render={<Button variant="outline" />}>
-            Tutup
-          </SheetClose>
+        <SheetFooter className="mt-auto border-t border-border pt-4">
+          <SheetClose render={<Button variant="outline" />}>Tutup</SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

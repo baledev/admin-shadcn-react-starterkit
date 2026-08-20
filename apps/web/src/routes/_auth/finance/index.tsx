@@ -41,27 +41,41 @@ function FinanceOverviewPage() {
             {/* Recent Ledger Transactions */}
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle className="text-base font-semibold">Jurnal Ledger Terbaru</CardTitle>
-                <CardDescription>Transaksi terakhir yang diposting ke buku besar.</CardDescription>
+                <CardTitle className="text-base font-semibold">
+                  Jurnal Ledger Terbaru
+                </CardTitle>
+                <CardDescription>
+                  Transaksi terakhir yang diposting ke buku besar.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {recentEntries.map((entry) => (
                   <div
                     key={entry.id}
-                    className="flex flex-col gap-1.5 border border-border p-2.5 rounded-lg text-xs"
+                    className="flex flex-col gap-1.5 rounded-lg border border-border p-2.5 text-xs"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-mono font-bold text-primary">{entry.id}</span>
-                      <span className="text-muted-foreground font-mono tabular-nums">{entry.date}</span>
+                      <span className="font-mono font-bold text-primary">
+                        {entry.id}
+                      </span>
+                      <span className="font-mono text-muted-foreground tabular-nums">
+                        {entry.date}
+                      </span>
                     </div>
-                    <p className="font-semibold text-foreground truncate" title={entry.note}>
+                    <p
+                      className="truncate font-semibold text-foreground"
+                      title={entry.note}
+                    >
                       {entry.note}
                     </p>
                     <div className="flex items-center justify-between">
-                      <Badge variant="secondary" className="text-[10px] scale-95 origin-left">
+                      <Badge
+                        variant="secondary"
+                        className="origin-left scale-95 text-[10px]"
+                      >
                         {entry.type.toUpperCase()}
                       </Badge>
-                      <span className="font-bold font-mono text-foreground">
+                      <span className="font-mono font-bold text-foreground">
                         {formatRupiah(entry.totalDebit)}
                       </span>
                     </div>

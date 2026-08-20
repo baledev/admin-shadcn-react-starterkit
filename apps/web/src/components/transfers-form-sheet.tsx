@@ -52,7 +52,12 @@ export function TransfersFormSheet({
   onSave,
 }: TransfersFormSheetProps) {
   const cashBankAccounts = React.useMemo(() => {
-    return accounts.filter((acc) => acc.level === 3 && acc.parentCode === "1100" && acc.code.startsWith("111"))
+    return accounts.filter(
+      (acc) =>
+        acc.level === 3 &&
+        acc.parentCode === "1100" &&
+        acc.code.startsWith("111")
+    )
   }, [accounts])
 
   const destinationAccounts = React.useMemo(() => {
@@ -65,7 +70,8 @@ export function TransfersFormSheet({
         <SheetHeader>
           <SheetTitle>Mutasi Dana Antar Rekening</SheetTitle>
           <SheetDescription>
-            Pindahkan saldo dana kas/bank internal perusahaan ke rekening/kas bank lain.
+            Pindahkan saldo dana kas/bank internal perusahaan ke rekening/kas
+            bank lain.
           </SheetDescription>
         </SheetHeader>
 
@@ -124,7 +130,9 @@ export function TransfersFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="trf-amount">Nominal Transfer (Rp)</FieldLabel>
+              <FieldLabel htmlFor="trf-amount">
+                Nominal Transfer (Rp)
+              </FieldLabel>
               <Input
                 id="trf-amount"
                 type="number"
@@ -149,7 +157,12 @@ export function TransfersFormSheet({
           </div>
 
           <SheetFooter>
-            <Button type="submit" disabled={!form.fromAccountCode || !form.toAccountCode || !form.amount}>
+            <Button
+              type="submit"
+              disabled={
+                !form.fromAccountCode || !form.toAccountCode || !form.amount
+              }
+            >
               Simpan Transfer
             </Button>
             <SheetClose render={<Button variant="outline" type="button" />}>

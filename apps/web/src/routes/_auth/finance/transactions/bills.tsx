@@ -1,12 +1,11 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { BillsDataTable } from "@/components/bills-data-table"
+import { type Bill, initialBills, BILL_STATUS_META } from "@/lib/bills-data"
 import {
-  type Bill,
-  initialBills,
-  BILL_STATUS_META,
-} from "@/lib/bills-data"
-import { BillsFormSheet, type BillFormState } from "@/components/bills-form-sheet"
+  BillsFormSheet,
+  type BillFormState,
+} from "@/components/bills-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { Separator } from "@workspace/ui/components/separator"
@@ -35,7 +34,9 @@ function BillsPage() {
     vendorName: "",
     vendorEmail: "",
     issuedAt: new Date().toISOString().split("T")[0],
-    dueAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    dueAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0],
     notes: "",
     lines: [{ description: "", accountCode: "", qty: 1, unitPrice: 0 }],
   }))
@@ -57,7 +58,9 @@ function BillsPage() {
       vendorName: "",
       vendorEmail: "",
       issuedAt: new Date().toISOString().split("T")[0],
-      dueAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      dueAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       notes: "",
       lines: [{ description: "", accountCode: "", qty: 1, unitPrice: 0 }],
     })
@@ -66,7 +69,7 @@ function BillsPage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const subtotal = formState.lines.reduce(
       (sum, line) => sum + (line.qty * line.unitPrice || 0),
       0
@@ -79,7 +82,10 @@ function BillsPage() {
       vendorName: formState.vendorName,
       vendorEmail: formState.vendorEmail,
       status: "received",
-      lines: formState.lines.map((l) => ({ ...l, amount: l.qty * l.unitPrice })),
+      lines: formState.lines.map((l) => ({
+        ...l,
+        amount: l.qty * l.unitPrice,
+      })),
       subtotal,
       tax,
       total,
@@ -94,7 +100,9 @@ function BillsPage() {
 
   const handlePayBill = (bill: Bill) => {
     setBills(
-      bills.map((b) => (b.id === bill.id ? { ...b, status: "paid" as const } : b))
+      bills.map((b) =>
+        b.id === bill.id ? { ...b, status: "paid" as const } : b
+      )
     )
   }
 
@@ -102,11 +110,16 @@ function BillsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-medium text-foreground">Daftar Bill Vendor (Accounts Payable)</h2>
-          <p className="text-sm text-muted-foreground">List tagihan masuk dari vendor/supplier atas pembelian barang/jasa operasional.</p>
+          <h2 className="text-sm font-medium text-foreground">
+            Daftar Bill Vendor (Accounts Payable)
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            List tagihan masuk dari vendor/supplier atas pembelian barang/jasa
+            operasional.
+          </p>
         </div>
         <Button size="sm" onClick={handleAddBill}>
-          <IconPlus className="size-4 mr-2" />
+          <IconPlus className="mr-2 size-4" />
           Catat Bill Baru
         </Button>
       </div>
@@ -129,16 +142,21 @@ function BillsPage() {
       {/* Bill Detail Sheet */}
       {selectedBill && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md flex flex-col h-full">
+          <SheetContent className="flex h-full flex-col sm:max-w-md">
             <SheetHeader>
               <SheetTitle className="font-mono">{selectedBill.id}</SheetTitle>
-              <SheetDescription>Dibuat pada {selectedBill.issuedAt}</SheetDescription>
+              <SheetDescription>
+                Dibuat pada {selectedBill.issuedAt}
+              </SheetDescription>
             </SheetHeader>
 
-            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
+            <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
-                <Badge variant="outline" className={`ring-1 ${BILL_STATUS_META[selectedBill.status].chip}`}>
+                <Badge
+                  variant="outline"
+                  className={`ring-1 ${BILL_STATUS_META[selectedBill.status].chip}`}
+                >
                   {BILL_STATUS_META[selectedBill.status].label}
                 </Badge>
               </div>
@@ -146,16 +164,22 @@ function BillsPage() {
               <Separator />
 
               <div>
-                <h4 className="text-sm font-semibold mb-2">Vendor</h4>
-                <div className="text-sm bg-muted/50 rounded-lg p-3">
-                  <p className="font-medium text-foreground">{selectedBill.vendorName}</p>
-                  <p className="text-muted-foreground text-xs">{selectedBill.vendorEmail}</p>
+                <h4 className="mb-2 text-sm font-semibold">Vendor</h4>
+                <div className="rounded-lg bg-muted/50 p-3 text-sm">
+                  <p className="font-medium text-foreground">
+                    {selectedBill.vendorName}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {selectedBill.vendorEmail}
+                  </p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold mb-2">Rincian Pembelian</h4>
-                <div className="space-y-3 bg-muted/30 rounded-lg p-3">
+                <h4 className="mb-2 text-sm font-semibold">
+                  Rincian Pembelian
+                </h4>
+                <div className="space-y-3 rounded-lg bg-muted/30 p-3">
                   {selectedBill.lines.map((line, idx) => (
                     <div key={idx} className="flex justify-between text-sm">
                       <div>
@@ -191,30 +215,41 @@ function BillsPage() {
 
               {selectedBill.notes && (
                 <div>
-                  <h4 className="text-sm font-semibold mb-1">Catatan</h4>
-                  <p className="text-sm text-muted-foreground">{selectedBill.notes}</p>
+                  <h4 className="mb-1 text-sm font-semibold">Catatan</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedBill.notes}
+                  </p>
                 </div>
               )}
 
               {/* collapsible preview of double-entry */}
-              <div className="rounded-lg border border-border p-3 text-xs bg-muted/20 space-y-1.5">
-                <span className="font-semibold block text-foreground">Auto Journal Entry Preview:</span>
+              <div className="space-y-1.5 rounded-lg border border-border bg-muted/20 p-3 text-xs">
+                <span className="block font-semibold text-foreground">
+                  Auto Journal Entry Preview:
+                </span>
                 {selectedBill.lines.map((line, idx) => (
-                  <div key={idx} className="flex justify-between text-muted-foreground">
+                  <div
+                    key={idx}
+                    className="flex justify-between text-muted-foreground"
+                  >
                     <span>Dr. Akun Beban/Aset ({line.accountCode})</span>
-                    <span className="font-mono">{formatRupiah(line.amount)}</span>
+                    <span className="font-mono">
+                      {formatRupiah(line.amount)}
+                    </span>
                   </div>
                 ))}
-                <div className="flex justify-between text-muted-foreground pl-4">
+                <div className="flex justify-between pl-4 text-muted-foreground">
                   <span>Cr. Hutang Usaha (2110)</span>
-                  <span className="font-mono">{formatRupiah(selectedBill.total)}</span>
+                  <span className="font-mono">
+                    {formatRupiah(selectedBill.total)}
+                  </span>
                 </div>
               </div>
-              </div>
+            </div>
 
             <SheetFooter className="mt-auto border-t border-border pt-4">
               <Button className="w-full" variant="outline" size="sm">
-                <IconDownload className="size-4 mr-2" />
+                <IconDownload className="mr-2 size-4" />
                 Cetak Bill
               </Button>
             </SheetFooter>

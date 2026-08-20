@@ -5,7 +5,10 @@ import { Button } from "@workspace/ui/components/button"
 import { PageHeader } from "@/components/page-header"
 import { JournalEntryDataTable } from "@/components/journal-entry-data-table"
 import { JournalEntryDetailSheet } from "@/components/journal-entry-detail-sheet"
-import { JournalEntryFormSheet, type JournalEntryFormState } from "@/components/journal-entry-form-sheet"
+import {
+  JournalEntryFormSheet,
+  type JournalEntryFormState,
+} from "@/components/journal-entry-form-sheet"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type JournalEntry,
@@ -18,12 +21,18 @@ export const Route = createFileRoute("/_auth/finance/journal-entries")({
 })
 
 function JournalEntriesPage() {
-  const [entries, setEntries] = React.useState<JournalEntry[]>(initialJournalEntries)
-  const [selectedEntry, setSelectedEntry] = React.useState<JournalEntry | null>(null)
-  
+  const [entries, setEntries] = React.useState<JournalEntry[]>(
+    initialJournalEntries
+  )
+  const [selectedEntry, setSelectedEntry] = React.useState<JournalEntry | null>(
+    null
+  )
+
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
-  const [pendingCancel, setPendingCancel] = React.useState<JournalEntry | null>(null)
+  const [pendingCancel, setPendingCancel] = React.useState<JournalEntry | null>(
+    null
+  )
 
   const [formState, setFormState] = React.useState<JournalEntryFormState>({
     date: new Date().toISOString().split("T")[0],
@@ -79,8 +88,14 @@ function JournalEntriesPage() {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
 
-    const totalDebit = formState.lines.reduce((sum, l) => sum + (l.debit || 0), 0)
-    const totalCredit = formState.lines.reduce((sum, l) => sum + (l.credit || 0), 0)
+    const totalDebit = formState.lines.reduce(
+      (sum, l) => sum + (l.debit || 0),
+      0
+    )
+    const totalCredit = formState.lines.reduce(
+      (sum, l) => sum + (l.credit || 0),
+      0
+    )
 
     const formattedLines = formState.lines.map((line) => {
       const acc = initialAccounts.find((a) => a.code === line.accountCode)
@@ -118,7 +133,7 @@ function JournalEntriesPage() {
             description="Daftar pos jurnal umum transaksi keuangan perusahaan untuk pembukuan double-entry balanced."
           >
             <Button size="sm" onClick={handleAddEntry}>
-              <IconPlus className="size-4 mr-2" />
+              <IconPlus className="mr-2 size-4" />
               Input Jurnal Manual
             </Button>
           </PageHeader>
@@ -154,7 +169,12 @@ function JournalEntriesPage() {
         title="Batalkan Jurnal Entry?"
         description={
           <>
-            Jurnal entry <span className="font-semibold text-foreground">{pendingCancel?.id}</span> akan dibatalkan (void). Saldo tidak akan terhitung lagi di buku besar.
+            Jurnal entry{" "}
+            <span className="font-semibold text-foreground">
+              {pendingCancel?.id}
+            </span>{" "}
+            akan dibatalkan (void). Saldo tidak akan terhitung lagi di buku
+            besar.
           </>
         }
         confirmLabel="Batalkan Jurnal"

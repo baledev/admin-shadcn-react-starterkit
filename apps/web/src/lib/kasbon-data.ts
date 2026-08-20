@@ -1,6 +1,7 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type KasbonStatus = "pending" | "approved" | "rejected" | "active" | "paid"
+export type KasbonStatus =
+  "pending" | "approved" | "rejected" | "active" | "paid"
 export type RepaymentType = "payroll_deduction" | "cash"
 
 export type KasbonRepayment = {
@@ -62,10 +63,11 @@ export const KASBON_STATUS_OPTIONS: { value: KasbonStatus; label: string }[] = [
   { value: "paid", label: "Lunas" },
 ]
 
-export const REPAYMENT_TYPE_OPTIONS: { value: RepaymentType; label: string }[] = [
-  { value: "payroll_deduction", label: "Potong Gaji (Payroll)" },
-  { value: "cash", label: "Tunai / Transfer" },
-]
+export const REPAYMENT_TYPE_OPTIONS: { value: RepaymentType; label: string }[] =
+  [
+    { value: "payroll_deduction", label: "Potong Gaji (Payroll)" },
+    { value: "cash", label: "Tunai / Transfer" },
+  ]
 
 // ─── Static Data ──────────────────────────────────────────────────────────────
 
@@ -123,7 +125,8 @@ export const initialKasbons: Kasbon[] = [
     purpose: "Uang muka biaya renovasi rumah",
     status: "active",
     repayments: [],
-    notes: "Persetujuan Direktur Utama. Dicicil 10 bulan @ 1.000.000 mulai akhir Februari",
+    notes:
+      "Persetujuan Direktur Utama. Dicicil 10 bulan @ 1.000.000 mulai akhir Februari",
   },
   {
     id: "KSB-2026-004",
@@ -165,10 +168,14 @@ export function computeKasbonStats(kasbons: Kasbon[]): {
   let pendingCount = 0
 
   for (const k of kasbons) {
-    if (k.status === "active" || k.status === "approved" || k.status === "paid") {
+    if (
+      k.status === "active" ||
+      k.status === "approved" ||
+      k.status === "paid"
+    ) {
       totalDisbursed += k.amount
       totalActiveLoan += k.remainingAmount
-      totalRepaid += (k.amount - k.remainingAmount)
+      totalRepaid += k.amount - k.remainingAmount
     }
     if (k.status === "pending") {
       pendingCount++

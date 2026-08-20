@@ -1,6 +1,7 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type AccountType = "asset" | "liability" | "equity" | "revenue" | "expense"
+export type AccountType =
+  "asset" | "liability" | "equity" | "revenue" | "expense"
 
 export type Account = {
   code: string // unique code, e.g., "1111"
@@ -58,55 +59,288 @@ export const ACCOUNT_TYPE_OPTIONS: { value: AccountType; label: string }[] = [
 export const initialAccounts: Account[] = [
   // 1000 - ASET (Level 1)
   { code: "1000", name: "Aset", type: "asset", level: 1, balance: 1350000000 },
-  
+
   // 1100 - Aset Lancar (Level 2)
-  { code: "1100", name: "Aset Lancar", type: "asset", level: 2, parentCode: "1000", balance: 850000000 },
-  
+  {
+    code: "1100",
+    name: "Aset Lancar",
+    type: "asset",
+    level: 2,
+    parentCode: "1000",
+    balance: 850000000,
+  },
+
   // Kas & Bank (Level 3)
-  { code: "1111", name: "Kas Tunai", type: "asset", level: 3, parentCode: "1100", balance: 50000000, description: "Kas tunai di kantor" },
-  { code: "1112", name: "Bank BCA", type: "asset", level: 3, parentCode: "1100", balance: 450000000, description: "Rekening Operasional BCA" },
-  { code: "1113", name: "Bank BRI", type: "asset", level: 3, parentCode: "1100", balance: 200000000, description: "Rekening Cadangan BRI" },
-  
+  {
+    code: "1111",
+    name: "Kas Tunai",
+    type: "asset",
+    level: 3,
+    parentCode: "1100",
+    balance: 50000000,
+    description: "Kas tunai di kantor",
+  },
+  {
+    code: "1112",
+    name: "Bank BCA",
+    type: "asset",
+    level: 3,
+    parentCode: "1100",
+    balance: 450000000,
+    description: "Rekening Operasional BCA",
+  },
+  {
+    code: "1113",
+    name: "Bank BRI",
+    type: "asset",
+    level: 3,
+    parentCode: "1100",
+    balance: 200000000,
+    description: "Rekening Cadangan BRI",
+  },
+
   // Piutang (Level 3)
-  { code: "1120", name: "Piutang Usaha", type: "asset", level: 3, parentCode: "1100", balance: 120000000, description: "Piutang dari invoice customer" },
-  { code: "1130", name: "Piutang Karyawan", type: "asset", level: 3, parentCode: "1100", balance: 30000000, description: "Kasbon / pinjaman karyawan" },
-  
+  {
+    code: "1120",
+    name: "Piutang Usaha",
+    type: "asset",
+    level: 3,
+    parentCode: "1100",
+    balance: 120000000,
+    description: "Piutang dari invoice customer",
+  },
+  {
+    code: "1130",
+    name: "Piutang Karyawan",
+    type: "asset",
+    level: 3,
+    parentCode: "1100",
+    balance: 30000000,
+    description: "Kasbon / pinjaman karyawan",
+  },
+
   // 1200 - Aset Tetap (Level 2)
-  { code: "1200", name: "Aset Tetap", type: "asset", level: 2, parentCode: "1000", balance: 500000000 },
-  { code: "1210", name: "Peralatan Kantor", type: "asset", level: 3, parentCode: "1200", balance: 150000000, description: "Komputer, meja, kursi" },
-  { code: "1220", name: "Kendaraan", type: "asset", level: 3, parentCode: "1200", balance: 350000000, description: "Mobil/motor operasional" },
+  {
+    code: "1200",
+    name: "Aset Tetap",
+    type: "asset",
+    level: 2,
+    parentCode: "1000",
+    balance: 500000000,
+  },
+  {
+    code: "1210",
+    name: "Peralatan Kantor",
+    type: "asset",
+    level: 3,
+    parentCode: "1200",
+    balance: 150000000,
+    description: "Komputer, meja, kursi",
+  },
+  {
+    code: "1220",
+    name: "Kendaraan",
+    type: "asset",
+    level: 3,
+    parentCode: "1200",
+    balance: 350000000,
+    description: "Mobil/motor operasional",
+  },
 
   // 2000 - KEWAJIBAN (Level 1)
-  { code: "2000", name: "Kewajiban", type: "liability", level: 1, balance: 280000000 },
-  
+  {
+    code: "2000",
+    name: "Kewajiban",
+    type: "liability",
+    level: 1,
+    balance: 280000000,
+  },
+
   // 2100 - Kewajiban Lancar (Level 2)
-  { code: "2100", name: "Kewajiban Lancar", type: "liability", level: 2, parentCode: "2000", balance: 280000000 },
-  { code: "2110", name: "Hutang Usaha", type: "liability", level: 3, parentCode: "2100", balance: 250000000, description: "Hutang pembelian (Bills)" },
-  { code: "2120", name: "Hutang Reimbursement", type: "liability", level: 3, parentCode: "2100", balance: 30000000, description: "Expense karyawan belum dibayar" },
+  {
+    code: "2100",
+    name: "Kewajiban Lancar",
+    type: "liability",
+    level: 2,
+    parentCode: "2000",
+    balance: 280000000,
+  },
+  {
+    code: "2110",
+    name: "Hutang Usaha",
+    type: "liability",
+    level: 3,
+    parentCode: "2100",
+    balance: 250000000,
+    description: "Hutang pembelian (Bills)",
+  },
+  {
+    code: "2120",
+    name: "Hutang Reimbursement",
+    type: "liability",
+    level: 3,
+    parentCode: "2100",
+    balance: 30000000,
+    description: "Expense karyawan belum dibayar",
+  },
 
   // 3000 - EKUITAS (Level 1)
-  { code: "3000", name: "Ekuitas", type: "equity", level: 1, balance: 1070000000 },
-  { code: "3100", name: "Modal Disetor", type: "equity", level: 2, parentCode: "3000", balance: 800000000, description: "Modal awal dari pemilik" },
-  { code: "3200", name: "Prive / Penarikan", type: "equity", level: 3, parentCode: "3100", balance: -50000000, description: "Pengambilan modal pribadi" },
-  { code: "3300", name: "Laba Ditahan", type: "equity", level: 2, parentCode: "3000", balance: 220000000, description: "Akumulasi laba tahun-tahun sebelumnya" },
-  { code: "3400", name: "Laba Tahun Berjalan", type: "equity", level: 2, parentCode: "3000", balance: 100000000, description: "Laba bersih periode berjalan" },
+  {
+    code: "3000",
+    name: "Ekuitas",
+    type: "equity",
+    level: 1,
+    balance: 1070000000,
+  },
+  {
+    code: "3100",
+    name: "Modal Disetor",
+    type: "equity",
+    level: 2,
+    parentCode: "3000",
+    balance: 800000000,
+    description: "Modal awal dari pemilik",
+  },
+  {
+    code: "3200",
+    name: "Prive / Penarikan",
+    type: "equity",
+    level: 3,
+    parentCode: "3100",
+    balance: -50000000,
+    description: "Pengambilan modal pribadi",
+  },
+  {
+    code: "3300",
+    name: "Laba Ditahan",
+    type: "equity",
+    level: 2,
+    parentCode: "3000",
+    balance: 220000000,
+    description: "Akumulasi laba tahun-tahun sebelumnya",
+  },
+  {
+    code: "3400",
+    name: "Laba Tahun Berjalan",
+    type: "equity",
+    level: 2,
+    parentCode: "3000",
+    balance: 100000000,
+    description: "Laba bersih periode berjalan",
+  },
 
   // 4000 - PENDAPATAN (Level 1)
-  { code: "4000", name: "Pendapatan", type: "revenue", level: 1, balance: 350000000 },
-  { code: "4100", name: "Pendapatan Operasional", type: "revenue", level: 2, parentCode: "4000", balance: 320000000 },
-  { code: "4110", name: "Pendapatan Jasa", type: "revenue", level: 3, parentCode: "4100", balance: 320000000, description: "Pendapatan dari jasa / invoice" },
-  { code: "4200", name: "Pendapatan Non-Operasional", type: "revenue", level: 2, parentCode: "4000", balance: 30000000 },
-  { code: "4210", name: "Pendapatan Bunga Bank", type: "revenue", level: 3, parentCode: "4200", balance: 30000000, description: "Bunga dari rekening bank" },
+  {
+    code: "4000",
+    name: "Pendapatan",
+    type: "revenue",
+    level: 1,
+    balance: 350000000,
+  },
+  {
+    code: "4100",
+    name: "Pendapatan Operasional",
+    type: "revenue",
+    level: 2,
+    parentCode: "4000",
+    balance: 320000000,
+  },
+  {
+    code: "4110",
+    name: "Pendapatan Jasa",
+    type: "revenue",
+    level: 3,
+    parentCode: "4100",
+    balance: 320000000,
+    description: "Pendapatan dari jasa / invoice",
+  },
+  {
+    code: "4200",
+    name: "Pendapatan Non-Operasional",
+    type: "revenue",
+    level: 2,
+    parentCode: "4000",
+    balance: 30000000,
+  },
+  {
+    code: "4210",
+    name: "Pendapatan Bunga Bank",
+    type: "revenue",
+    level: 3,
+    parentCode: "4200",
+    balance: 30000000,
+    description: "Bunga dari rekening bank",
+  },
 
   // 5000 - BEBAN (Level 1)
-  { code: "5000", name: "Beban", type: "expense", level: 1, balance: 250000000 },
-  { code: "5100", name: "Beban HPP / Biaya Langsung", type: "expense", level: 2, parentCode: "5000", balance: 100000000 },
-  { code: "5110", name: "Beban Pokok Penjualan", type: "expense", level: 3, parentCode: "5100", balance: 100000000, description: "Harga Pokok Penjualan" },
-  { code: "5200", name: "Beban Operasional", type: "expense", level: 2, parentCode: "5000", balance: 150000000 },
-  { code: "5210", name: "Beban Gaji Karyawan", type: "expense", level: 3, parentCode: "5200", balance: 90000000, description: "Gaji & tunjangan payroll" },
-  { code: "5220", name: "Beban Sewa Kantor", type: "expense", level: 3, parentCode: "5200", balance: 40000000, description: "Sewa gedung kantor" },
-  { code: "5230", name: "Beban Listrik & Internet", type: "expense", level: 3, parentCode: "5200", balance: 15000000, description: "Operasional utilitas bulanan" },
-  { code: "5240", name: "Beban Transportasi", type: "expense", level: 3, parentCode: "5200", balance: 5000000, description: "Bensin, parkir, dinas luar" },
+  {
+    code: "5000",
+    name: "Beban",
+    type: "expense",
+    level: 1,
+    balance: 250000000,
+  },
+  {
+    code: "5100",
+    name: "Beban HPP / Biaya Langsung",
+    type: "expense",
+    level: 2,
+    parentCode: "5000",
+    balance: 100000000,
+  },
+  {
+    code: "5110",
+    name: "Beban Pokok Penjualan",
+    type: "expense",
+    level: 3,
+    parentCode: "5100",
+    balance: 100000000,
+    description: "Harga Pokok Penjualan",
+  },
+  {
+    code: "5200",
+    name: "Beban Operasional",
+    type: "expense",
+    level: 2,
+    parentCode: "5000",
+    balance: 150000000,
+  },
+  {
+    code: "5210",
+    name: "Beban Gaji Karyawan",
+    type: "expense",
+    level: 3,
+    parentCode: "5200",
+    balance: 90000000,
+    description: "Gaji & tunjangan payroll",
+  },
+  {
+    code: "5220",
+    name: "Beban Sewa Kantor",
+    type: "expense",
+    level: 3,
+    parentCode: "5200",
+    balance: 40000000,
+    description: "Sewa gedung kantor",
+  },
+  {
+    code: "5230",
+    name: "Beban Listrik & Internet",
+    type: "expense",
+    level: 3,
+    parentCode: "5200",
+    balance: 15000000,
+    description: "Operasional utilitas bulanan",
+  },
+  {
+    code: "5240",
+    name: "Beban Transportasi",
+    type: "expense",
+    level: 3,
+    parentCode: "5200",
+    balance: 5000000,
+    description: "Bensin, parkir, dinas luar",
+  },
 ]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -138,7 +372,7 @@ export function computeAccountBalances(accounts: Account[]): Account[] {
       const parent = accountMap.get(acc.parentCode)
       if (parent) {
         parent.balance += acc.balance
-        
+
         if (parent.parentCode) {
           const grandparent = accountMap.get(parent.parentCode)
           if (grandparent) {

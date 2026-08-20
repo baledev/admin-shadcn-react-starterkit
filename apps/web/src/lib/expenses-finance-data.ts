@@ -1,7 +1,9 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type ExpenseStatus = "draft" | "submitted" | "approved" | "reimbursed" | "rejected"
-export type ExpenseCategory = "travel" | "meals" | "office" | "marketing" | "other"
+export type ExpenseStatus =
+  "draft" | "submitted" | "approved" | "reimbursed" | "rejected"
+export type ExpenseCategory =
+  "travel" | "meals" | "office" | "marketing" | "other"
 
 export type Expense = {
   id: string // "EXP-2026-001"
@@ -54,15 +56,19 @@ export const EXPENSE_CATEGORY_META: Record<
   other: { label: "Lain-lain", accountCode: "5200" },
 }
 
-export const EXPENSE_STATUS_OPTIONS: { value: ExpenseStatus; label: string }[] = [
-  { value: "draft", label: "Draft" },
-  { value: "submitted", label: "Diajukan" },
-  { value: "approved", label: "Disetujui" },
-  { value: "reimbursed", label: "Dibayar" },
-  { value: "rejected", label: "Ditolak" },
-]
+export const EXPENSE_STATUS_OPTIONS: { value: ExpenseStatus; label: string }[] =
+  [
+    { value: "draft", label: "Draft" },
+    { value: "submitted", label: "Diajukan" },
+    { value: "approved", label: "Disetujui" },
+    { value: "reimbursed", label: "Dibayar" },
+    { value: "rejected", label: "Ditolak" },
+  ]
 
-export const EXPENSE_CATEGORY_OPTIONS: { value: ExpenseCategory; label: string }[] = [
+export const EXPENSE_CATEGORY_OPTIONS: {
+  value: ExpenseCategory
+  label: string
+}[] = [
   { value: "travel", label: "Perjalanan Dinas" },
   { value: "meals", label: "Konsumsi / Makan" },
   { value: "office", label: "Keperluan Kantor" },

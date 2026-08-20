@@ -16,11 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -63,7 +59,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -75,8 +71,12 @@ function buildColumns(
       header: "Karyawan",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-medium text-foreground">{row.original.employeeName}</span>
-          <span className="text-xs text-muted-foreground">{row.original.employeeEmail}</span>
+          <span className="font-medium text-foreground">
+            {row.original.employeeName}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {row.original.employeeEmail}
+          </span>
         </div>
       ),
     }),
@@ -84,7 +84,11 @@ function buildColumns(
       header: "Kategori",
       cell: ({ row }) => {
         const catMeta = EXPENSE_CATEGORY_META[row.original.category]
-        return <span className="text-xs font-semibold text-foreground/80">{catMeta.label}</span>
+        return (
+          <span className="text-xs font-semibold text-foreground/80">
+            {catMeta.label}
+          </span>
+        )
       },
       filterFn: (row, _columnId, filterValue: string[]) => {
         if (!filterValue?.length) return true
@@ -94,13 +98,18 @@ function buildColumns(
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("description", {
       header: "Keterangan",
       cell: ({ row }) => (
-        <span className="max-w-[200px] truncate block" title={row.original.description}>
+        <span
+          className="block max-w-[200px] truncate"
+          title={row.original.description}
+        >
           {row.original.description}
         </span>
       ),
@@ -108,7 +117,7 @@ function buildColumns(
     columnHelper.accessor("amount", {
       header: () => <div className="text-right">Jumlah</div>,
       cell: ({ row }) => (
-        <div className="text-right font-mono text-sm tabular-nums font-semibold">
+        <div className="text-right font-mono text-sm font-semibold tabular-nums">
           {formatRupiah(row.original.amount)}
         </div>
       ),
@@ -148,7 +157,7 @@ function buildColumns(
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs font-semibold text-violet-700 border-violet-200 hover:bg-violet-50 dark:text-violet-300 dark:border-violet-800"
+                className="h-8 border-violet-200 text-xs font-semibold text-violet-700 hover:bg-violet-50 dark:border-violet-800 dark:text-violet-300"
                 onClick={() => onApproveExpense(exp)}
               >
                 Setujui
@@ -158,7 +167,7 @@ function buildColumns(
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs font-semibold text-emerald-700 border-emerald-200 hover:bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800"
+                className="h-8 border-emerald-200 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
                 onClick={() => onReimburseExpense(exp)}
               >
                 Bayar

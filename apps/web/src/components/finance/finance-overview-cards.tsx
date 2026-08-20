@@ -1,4 +1,9 @@
-import { IconCash, IconReceipt, IconReceiptTax, IconTrendingUp } from "@tabler/icons-react"
+import {
+  IconCash,
+  IconReceipt,
+  IconReceiptTax,
+  IconTrendingUp,
+} from "@tabler/icons-react"
 import { Badge } from "@workspace/ui/components/badge"
 import {
   Card,
@@ -28,7 +33,7 @@ export function FinanceOverviewCards() {
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              <IconCash className="size-3.5 mr-1" aria-hidden="true" />
+              <IconCash className="mr-1 size-3.5" aria-hidden="true" />
               Liquid
             </Badge>
           </CardAction>
@@ -52,7 +57,10 @@ export function FinanceOverviewCards() {
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              <IconReceipt className="size-3.5 mr-1 text-emerald-600" aria-hidden="true" />
+              <IconReceipt
+                className="mr-1 size-3.5 text-emerald-600"
+                aria-hidden="true"
+              />
               Inflow
             </Badge>
           </CardAction>
@@ -62,7 +70,8 @@ export function FinanceOverviewCards() {
             Piutang Usaha & Kasbon Karyawan
           </div>
           <div className="text-muted-foreground">
-            Customer: {formatRupiah(120000000)} • Kasbon: {formatRupiah(30000000)}
+            Customer: {formatRupiah(120000000)} • Kasbon:{" "}
+            {formatRupiah(30000000)}
           </div>
         </CardFooter>
       </Card>
@@ -75,8 +84,11 @@ export function FinanceOverviewCards() {
             {formatRupiah(payables)}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline" className="text-destructive border-destructive/20 bg-destructive/5">
-              <IconReceiptTax className="size-3.5 mr-1" aria-hidden="true" />
+            <Badge
+              variant="outline"
+              className="border-destructive/20 bg-destructive/5 text-destructive"
+            >
+              <IconReceiptTax className="mr-1 size-3.5" aria-hidden="true" />
               Outflow
             </Badge>
           </CardAction>
@@ -86,7 +98,8 @@ export function FinanceOverviewCards() {
             Hutang Vendor & Klaim Expense
           </div>
           <div className="text-muted-foreground">
-            Vendor: {formatRupiah(250000000)} • Reimburse: {formatRupiah(30000000)}
+            Vendor: {formatRupiah(250000000)} • Reimburse:{" "}
+            {formatRupiah(30000000)}
           </div>
         </CardFooter>
       </Card>
@@ -99,8 +112,11 @@ export function FinanceOverviewCards() {
             {formatRupiah(netIncome)}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline" className="text-emerald-600 border-emerald-200 bg-emerald-50 dark:bg-emerald-950/20">
-              <IconTrendingUp className="size-3.5 mr-1" aria-hidden="true" />
+            <Badge
+              variant="outline"
+              className="border-emerald-200 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20"
+            >
+              <IconTrendingUp className="mr-1 size-3.5" aria-hidden="true" />
               +15% vs Jan
             </Badge>
           </CardAction>
@@ -110,7 +126,8 @@ export function FinanceOverviewCards() {
             Pendapatan dikurangi Beban
           </div>
           <div className="text-muted-foreground">
-            Revenue: {formatRupiah(350000000)} • Beban: {formatRupiah(250000000)}
+            Revenue: {formatRupiah(350000000)} • Beban:{" "}
+            {formatRupiah(250000000)}
           </div>
         </CardFooter>
       </Card>

@@ -2,7 +2,10 @@ import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { PageHeader } from "@/components/page-header"
 import { PaymentsDataTable } from "@/components/payments-data-table"
-import { PaymentsFormSheet, type PaymentFormState } from "@/components/payments-form-sheet"
+import {
+  PaymentsFormSheet,
+  type PaymentFormState,
+} from "@/components/payments-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
 import { Separator } from "@workspace/ui/components/separator"
 import { Button } from "@workspace/ui/components/button"
@@ -29,8 +32,10 @@ export const Route = createFileRoute("/_auth/finance/payments")({
 
 function PaymentsPage() {
   const [payments, setPayments] = React.useState<Payment[]>(initialPayments)
-  const [selectedPayment, setSelectedPayment] = React.useState<Payment | null>(null)
-  
+  const [selectedPayment, setSelectedPayment] = React.useState<Payment | null>(
+    null
+  )
+
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
 
@@ -103,15 +108,12 @@ function PaymentsPage() {
             description="Daftar mutasi aliran dana masuk/keluar dari kas/bank atas pembayaran tagihan invoice, bill, kasbon, operasional."
           >
             <Button size="sm" onClick={handleAddPayment}>
-              <IconPlus className="size-4 mr-2" />
+              <IconPlus className="mr-2 size-4" />
               Catat Pembayaran
             </Button>
           </PageHeader>
 
-          <PaymentsDataTable
-            data={payments}
-            onViewDetail={handleViewDetail}
-          />
+          <PaymentsDataTable data={payments} onViewDetail={handleViewDetail} />
         </div>
       </div>
 
@@ -129,14 +131,21 @@ function PaymentsPage() {
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
           <SheetContent className="sm:max-w-md">
             <SheetHeader>
-              <SheetTitle className="font-mono">{selectedPayment.id}</SheetTitle>
-              <SheetDescription>Tercatat pada {selectedPayment.date}</SheetDescription>
+              <SheetTitle className="font-mono">
+                {selectedPayment.id}
+              </SheetTitle>
+              <SheetDescription>
+                Tercatat pada {selectedPayment.date}
+              </SheetDescription>
             </SheetHeader>
 
             <div className="mt-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
-                <Badge variant="outline" className={`ring-1 ${PAYMENT_STATUS_META[selectedPayment.status].chip}`}>
+                <Badge
+                  variant="outline"
+                  className={`ring-1 ${PAYMENT_STATUS_META[selectedPayment.status].chip}`}
+                >
                   {PAYMENT_STATUS_META[selectedPayment.status].label}
                 </Badge>
               </div>
@@ -145,40 +154,70 @@ function PaymentsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Arah Aliran</span>
-                  <Badge variant="outline" className={`ring-1 ${PAYMENT_DIRECTION_META[selectedPayment.direction].chip}`}>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Arah Aliran
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className={`ring-1 ${PAYMENT_DIRECTION_META[selectedPayment.direction].chip}`}
+                  >
                     {PAYMENT_DIRECTION_META[selectedPayment.direction].label}
                   </Badge>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Nominal</span>
-                  <span className={`text-sm font-bold font-mono ${selectedPayment.direction === "outgoing" ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Nominal
+                  </span>
+                  <span
+                    className={`font-mono text-sm font-bold ${selectedPayment.direction === "outgoing" ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}
+                  >
                     {selectedPayment.direction === "outgoing" ? "-" : ""}
                     {formatRupiah(selectedPayment.amount)}
                   </span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-xs text-muted-foreground block mb-0.5">Mitra / Partner</span>
-                  <p className="text-sm text-foreground font-semibold">{selectedPayment.partnerName}</p>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Mitra / Partner
+                  </span>
+                  <p className="text-sm font-semibold text-foreground">
+                    {selectedPayment.partnerName}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Metode Pembayaran</span>
-                  <p className="text-sm text-foreground font-medium">{PAYMENT_METHOD_META[selectedPayment.method].label}</p>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Metode Pembayaran
+                  </span>
+                  <p className="text-sm font-medium text-foreground">
+                    {PAYMENT_METHOD_META[selectedPayment.method].label}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Akun Kas/Bank</span>
-                  <p className="text-sm text-foreground font-medium font-mono">{selectedPayment.accountCode} - {selectedPayment.accountName}</p>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Akun Kas/Bank
+                  </span>
+                  <p className="font-mono text-sm font-medium text-foreground">
+                    {selectedPayment.accountCode} -{" "}
+                    {selectedPayment.accountName}
+                  </p>
                 </div>
                 {selectedPayment.reference && (
                   <div className="col-span-2">
-                    <span className="text-xs text-muted-foreground block mb-0.5">Referensi Dokumen</span>
-                    <p className="text-sm text-foreground font-mono font-medium">{selectedPayment.reference}</p>
+                    <span className="mb-0.5 block text-xs text-muted-foreground">
+                      Referensi Dokumen
+                    </span>
+                    <p className="font-mono text-sm font-medium text-foreground">
+                      {selectedPayment.reference}
+                    </p>
                   </div>
                 )}
                 {selectedPayment.note && (
                   <div className="col-span-2">
-                    <span className="text-xs text-muted-foreground block mb-0.5">Catatan</span>
-                    <p className="text-sm text-muted-foreground font-medium">{selectedPayment.note}</p>
+                    <span className="mb-0.5 block text-xs text-muted-foreground">
+                      Catatan
+                    </span>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {selectedPayment.note}
+                    </p>
                   </div>
                 )}
               </div>
@@ -186,28 +225,42 @@ function PaymentsPage() {
               <Separator />
 
               {/* Journal entry preview */}
-              <div className="rounded-lg border border-border p-3 text-xs bg-muted/20 space-y-1.5">
-                <span className="font-semibold block text-foreground">Auto Journal Entry Preview:</span>
+              <div className="space-y-1.5 rounded-lg border border-border bg-muted/20 p-3 text-xs">
+                <span className="block font-semibold text-foreground">
+                  Auto Journal Entry Preview:
+                </span>
                 {selectedPayment.direction === "incoming" ? (
                   <>
                     <div className="flex justify-between text-muted-foreground">
-                      <span>Dr. Kas / Bank ({selectedPayment.accountCode})</span>
-                      <span className="font-mono">{formatRupiah(selectedPayment.amount)}</span>
+                      <span>
+                        Dr. Kas / Bank ({selectedPayment.accountCode})
+                      </span>
+                      <span className="font-mono">
+                        {formatRupiah(selectedPayment.amount)}
+                      </span>
                     </div>
-                    <div className="flex justify-between text-muted-foreground pl-4">
+                    <div className="flex justify-between pl-4 text-muted-foreground">
                       <span>Cr. Piutang Usaha / Akun Terkait</span>
-                      <span className="font-mono">{formatRupiah(selectedPayment.amount)}</span>
+                      <span className="font-mono">
+                        {formatRupiah(selectedPayment.amount)}
+                      </span>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="flex justify-between text-muted-foreground">
                       <span>Dr. Hutang Usaha / Beban Terkait</span>
-                      <span className="font-mono">{formatRupiah(selectedPayment.amount)}</span>
+                      <span className="font-mono">
+                        {formatRupiah(selectedPayment.amount)}
+                      </span>
                     </div>
-                    <div className="flex justify-between text-muted-foreground pl-4">
-                      <span>Cr. Kas / Bank ({selectedPayment.accountCode})</span>
-                      <span className="font-mono">{formatRupiah(selectedPayment.amount)}</span>
+                    <div className="flex justify-between pl-4 text-muted-foreground">
+                      <span>
+                        Cr. Kas / Bank ({selectedPayment.accountCode})
+                      </span>
+                      <span className="font-mono">
+                        {formatRupiah(selectedPayment.amount)}
+                      </span>
                     </div>
                   </>
                 )}
@@ -215,7 +268,7 @@ function PaymentsPage() {
 
               <div className="flex gap-3">
                 <Button className="flex-1" variant="outline" size="sm">
-                  <IconDownload className="size-4 mr-2" />
+                  <IconDownload className="mr-2 size-4" />
                   Cetak Bukti Bayar
                 </Button>
               </div>

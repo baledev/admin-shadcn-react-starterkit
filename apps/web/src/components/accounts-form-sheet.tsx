@@ -61,16 +61,26 @@ export function AccountsFormSheet({
   }, [accounts, form.type])
 
   React.useEffect(() => {
-    if (!isEditing && form.parentCode && !form.code.startsWith(form.parentCode)) {
+    if (
+      !isEditing &&
+      form.parentCode &&
+      !form.code.startsWith(form.parentCode)
+    ) {
       const children = accounts.filter(
         (acc) => acc.parentCode === form.parentCode && acc.level === 3
       )
       const nextNum = children.length + 1
-      
+
       if (form.parentCode === "1100") {
-        onField("code", "11" + (children.length + 1).toString().padStart(2, "0"))
+        onField(
+          "code",
+          "11" + (children.length + 1).toString().padStart(2, "0")
+        )
       } else if (form.parentCode === "1200") {
-        onField("code", "12" + (children.length + 3).toString().padStart(2, "0"))
+        onField(
+          "code",
+          "12" + (children.length + 3).toString().padStart(2, "0")
+        )
       } else {
         onField("code", form.parentCode.slice(0, 3) + nextNum)
       }
@@ -80,7 +90,9 @@ export function AccountsFormSheet({
 
   const handleTypeChange = (value: AccountType) => {
     onField("type", value)
-    const validParents = accounts.filter((acc) => acc.level === 2 && acc.type === value)
+    const validParents = accounts.filter(
+      (acc) => acc.level === 2 && acc.type === value
+    )
     if (validParents.length > 0) {
       onField("parentCode", validParents[0].code)
     } else {
@@ -111,7 +123,9 @@ export function AccountsFormSheet({
               <FieldLabel htmlFor="account-type">Tipe Akun</FieldLabel>
               <Select
                 value={form.type}
-                onValueChange={(val) => { if (val) handleTypeChange(val as AccountType) }}
+                onValueChange={(val) => {
+                  if (val) handleTypeChange(val as AccountType)
+                }}
                 disabled={isEditing}
               >
                 <SelectTrigger id="account-type">
@@ -128,7 +142,9 @@ export function AccountsFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="account-parent">Sub-Grup Induk (Level 2)</FieldLabel>
+              <FieldLabel htmlFor="account-parent">
+                Sub-Grup Induk (Level 2)
+              </FieldLabel>
               <Select
                 value={form.parentCode}
                 onValueChange={(val) => onField("parentCode", val || "")}

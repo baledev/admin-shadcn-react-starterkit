@@ -34,7 +34,10 @@ export const TRANSFER_STATUS_META: Record<
   },
 }
 
-export const TRANSFER_STATUS_OPTIONS: { value: TransferStatus; label: string }[] = [
+export const TRANSFER_STATUS_OPTIONS: {
+  value: TransferStatus
+  label: string
+}[] = [
   { value: "draft", label: "Draft" },
   { value: "completed", label: "Selesai" },
   { value: "cancelled", label: "Batal" },

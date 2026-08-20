@@ -1,11 +1,7 @@
 import * as React from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { InvoiceDataTable } from "@/components/invoice-data-table"
-import {
-  type Invoice,
-  initialInvoices,
-  STATUS_META,
-} from "@/lib/invoices-data"
+import { type Invoice, initialInvoices, STATUS_META } from "@/lib/invoices-data"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { Separator } from "@workspace/ui/components/separator"
@@ -25,7 +21,9 @@ export const Route = createFileRoute("/_auth/finance/transactions/invoices")({
 
 function FinanceInvoicesPage() {
   const [invoices] = React.useState<Invoice[]>(initialInvoices)
-  const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(null)
+  const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(
+    null
+  )
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
 
   const handleViewDetail = (invoice: Invoice) => {
@@ -42,28 +40,36 @@ function FinanceInvoicesPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-sm font-medium text-foreground">Daftar Invoice Customer (Accounts Receivable)</h2>
-        <p className="text-sm text-muted-foreground">List piutang dari customer hasil dari transaksi penjualan jasa/produk.</p>
+        <h2 className="text-sm font-medium text-foreground">
+          Daftar Invoice Customer (Accounts Receivable)
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          List piutang dari customer hasil dari transaksi penjualan jasa/produk.
+        </p>
       </div>
 
-      <InvoiceDataTable
-        data={invoices}
-        onViewDetail={handleViewDetail}
-      />
+      <InvoiceDataTable data={invoices} onViewDetail={handleViewDetail} />
 
       {/* Invoice Detail Sheet */}
       {selectedInvoice && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md flex flex-col h-full">
+          <SheetContent className="flex h-full flex-col sm:max-w-md">
             <SheetHeader>
-              <SheetTitle className="font-mono">{selectedInvoice.id}</SheetTitle>
-              <SheetDescription>Dibuat pada {selectedInvoice.issuedAt}</SheetDescription>
+              <SheetTitle className="font-mono">
+                {selectedInvoice.id}
+              </SheetTitle>
+              <SheetDescription>
+                Dibuat pada {selectedInvoice.issuedAt}
+              </SheetDescription>
             </SheetHeader>
 
-            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
+            <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
-                <Badge variant="outline" className={`ring-1 ${STATUS_META[selectedInvoice.status].chip}`}>
+                <Badge
+                  variant="outline"
+                  className={`ring-1 ${STATUS_META[selectedInvoice.status].chip}`}
+                >
                   {STATUS_META[selectedInvoice.status].label}
                 </Badge>
               </div>
@@ -71,16 +77,20 @@ function FinanceInvoicesPage() {
               <Separator />
 
               <div>
-                <h4 className="text-sm font-semibold mb-2">Customer</h4>
-                <div className="text-sm bg-muted/50 rounded-lg p-3">
-                  <p className="font-medium text-foreground">{selectedInvoice.customerName}</p>
-                  <p className="text-muted-foreground text-xs">{selectedInvoice.customerEmail}</p>
+                <h4 className="mb-2 text-sm font-semibold">Customer</h4>
+                <div className="rounded-lg bg-muted/50 p-3 text-sm">
+                  <p className="font-medium text-foreground">
+                    {selectedInvoice.customerName}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {selectedInvoice.customerEmail}
+                  </p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold mb-2">Line Items</h4>
-                <div className="space-y-3 bg-muted/30 rounded-lg p-3">
+                <h4 className="mb-2 text-sm font-semibold">Line Items</h4>
+                <div className="space-y-3 rounded-lg bg-muted/30 p-3">
                   {selectedInvoice.lines.map((line, idx) => (
                     <div key={idx} className="flex justify-between text-sm">
                       <div>
@@ -116,29 +126,36 @@ function FinanceInvoicesPage() {
 
               {selectedInvoice.notes && (
                 <div>
-                  <h4 className="text-sm font-semibold mb-1">Catatan</h4>
-                  <p className="text-sm text-muted-foreground">{selectedInvoice.notes}</p>
+                  <h4 className="mb-1 text-sm font-semibold">Catatan</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedInvoice.notes}
+                  </p>
                 </div>
               )}
 
               {/* collapsible preview of double-entry */}
-              <div className="rounded-lg border border-border p-3 text-xs bg-muted/20 space-y-1.5">
-                <span className="font-semibold block text-foreground">Auto Journal Entry Preview:</span>
+              <div className="space-y-1.5 rounded-lg border border-border bg-muted/20 p-3 text-xs">
+                <span className="block font-semibold text-foreground">
+                  Auto Journal Entry Preview:
+                </span>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Dr. Piutang Usaha (1120)</span>
-                  <span className="font-mono">{fmt(selectedInvoice.total)}</span>
+                  <span className="font-mono">
+                    {fmt(selectedInvoice.total)}
+                  </span>
                 </div>
-                <div className="flex justify-between text-muted-foreground pl-4">
+                <div className="flex justify-between pl-4 text-muted-foreground">
                   <span>Cr. Pendapatan Jasa (4110)</span>
-                  <span className="font-mono">{fmt(selectedInvoice.total)}</span>
+                  <span className="font-mono">
+                    {fmt(selectedInvoice.total)}
+                  </span>
                 </div>
               </div>
-
-              </div>
+            </div>
 
             <SheetFooter className="mt-auto border-t border-border pt-4">
               <Button className="w-full" variant="outline" size="sm">
-                <IconDownload className="size-4 mr-2" />
+                <IconDownload className="mr-2 size-4" />
                 Cetak Invoice
               </Button>
             </SheetFooter>

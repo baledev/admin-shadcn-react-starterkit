@@ -1,9 +1,9 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type EquityType = 
-  | "initial_capital" 
-  | "capital_addition" 
-  | "prive" 
+export type EquityType =
+  | "initial_capital"
+  | "capital_addition"
+  | "prive"
   | "retained_earnings_distribution"
 
 export type EquityStatus = "draft" | "approved" | "cancelled"

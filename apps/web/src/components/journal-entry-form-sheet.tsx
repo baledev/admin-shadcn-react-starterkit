@@ -1,5 +1,10 @@
 import * as React from "react"
-import { IconPlus, IconTrash, IconCheck, IconAlertTriangle } from "@tabler/icons-react"
+import {
+  IconPlus,
+  IconTrash,
+  IconCheck,
+  IconAlertTriangle,
+} from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Textarea } from "@workspace/ui/components/textarea"
@@ -66,8 +71,14 @@ export function JournalEntryFormSheet({
   }, [accounts])
 
   const { totalDebit, totalCredit, isBalanced } = React.useMemo(() => {
-    const totalDebit = form.lines.reduce((sum, line) => sum + (line.debit || 0), 0)
-    const totalCredit = form.lines.reduce((sum, line) => sum + (line.credit || 0), 0)
+    const totalDebit = form.lines.reduce(
+      (sum, line) => sum + (line.debit || 0),
+      0
+    )
+    const totalCredit = form.lines.reduce(
+      (sum, line) => sum + (line.credit || 0),
+      0
+    )
     const isBalanced = totalDebit === totalCredit && totalDebit > 0
     return { totalDebit, totalCredit, isBalanced }
   }, [form.lines])
@@ -79,7 +90,7 @@ export function JournalEntryFormSheet({
     value: any
   ) => {
     const newLines = [...form.lines]
-    
+
     if (field === "debit" && value > 0) {
       newLines[index] = { ...newLines[index], [field]: value, credit: 0 }
     } else if (field === "credit" && value > 0) {
@@ -134,7 +145,9 @@ export function JournalEntryFormSheet({
                 <FieldLabel htmlFor="entry-type">Tipe Jurnal</FieldLabel>
                 <Select
                   value={form.type}
-                  onValueChange={(val) => { if (val) onField("type", val as JournalType) }}
+                  onValueChange={(val) => {
+                    if (val) onField("type", val as JournalType)
+                  }}
                 >
                   <SelectTrigger id="entry-type">
                     <SelectValue placeholder="Pilih Jurnal" />
@@ -150,7 +163,9 @@ export function JournalEntryFormSheet({
               </Field>
 
               <Field className="col-span-2">
-                <FieldLabel htmlFor="entry-ref">Referensi (ID/Kwitansi/No. Dokumen)</FieldLabel>
+                <FieldLabel htmlFor="entry-ref">
+                  Referensi (ID/Kwitansi/No. Dokumen)
+                </FieldLabel>
                 <Input
                   id="entry-ref"
                   placeholder="E.g., INV-001, CASH-OUT-02"
@@ -160,7 +175,9 @@ export function JournalEntryFormSheet({
               </Field>
 
               <Field className="col-span-2">
-                <FieldLabel htmlFor="entry-note">Catatan / Keterangan Jurnal</FieldLabel>
+                <FieldLabel htmlFor="entry-note">
+                  Catatan / Keterangan Jurnal
+                </FieldLabel>
                 <Textarea
                   id="entry-note"
                   placeholder="Deskripsi transaksi..."
@@ -174,27 +191,43 @@ export function JournalEntryFormSheet({
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-semibold">Daftar Akun Ledger (Baris Jurnal)</h4>
-                <Button type="button" variant="outline" size="sm" onClick={addLine}>
-                  <IconPlus className="size-4 mr-1.5" />
+                <h4 className="text-sm font-semibold">
+                  Daftar Akun Ledger (Baris Jurnal)
+                </h4>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addLine}
+                >
+                  <IconPlus className="mr-1.5 size-4" />
                   Tambah Baris
                 </Button>
               </div>
 
-              <div className="space-y-3 rounded-lg border border-border p-3 bg-muted/20 max-h-[300px] overflow-y-auto">
+              <div className="max-h-[300px] space-y-3 overflow-y-auto rounded-lg border border-border bg-muted/20 p-3">
                 {form.lines.map((line, idx) => (
-                  <div key={idx} className="flex gap-2 items-start border-b border-border pb-3 last:border-b-0 last:pb-0">
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2 border-b border-border pb-3 last:border-b-0 last:pb-0"
+                  >
                     <div className="flex-1 space-y-2">
                       <Select
                         value={line.accountCode}
-                        onValueChange={(val) => handleLineChange(idx, "accountCode", val)}
+                        onValueChange={(val) =>
+                          handleLineChange(idx, "accountCode", val)
+                        }
                       >
-                        <SelectTrigger className="w-full text-xs h-9">
+                        <SelectTrigger className="h-9 w-full text-xs">
                           <SelectValue placeholder="Pilih Akun" />
                         </SelectTrigger>
                         <SelectContent>
                           {level3Accounts.map((acc) => (
-                            <SelectItem key={acc.code} value={acc.code} className="text-xs">
+                            <SelectItem
+                              key={acc.code}
+                              value={acc.code}
+                              className="text-xs"
+                            >
                               {acc.code} - {acc.name}
                             </SelectItem>
                           ))}
@@ -204,7 +237,9 @@ export function JournalEntryFormSheet({
                       <Input
                         placeholder="Catatan baris (opsional)"
                         value={line.description}
-                        onChange={(e) => handleLineChange(idx, "description", e.target.value)}
+                        onChange={(e) =>
+                          handleLineChange(idx, "description", e.target.value)
+                        }
                         className="h-8 text-xs"
                       />
                     </div>
@@ -214,8 +249,10 @@ export function JournalEntryFormSheet({
                         type="number"
                         placeholder="Debet"
                         value={line.debit || ""}
-                        onChange={(e) => handleLineChange(idx, "debit", Number(e.target.value))}
-                        className="h-9 text-xs text-right font-mono"
+                        onChange={(e) =>
+                          handleLineChange(idx, "debit", Number(e.target.value))
+                        }
+                        className="h-9 text-right font-mono text-xs"
                       />
                     </div>
 
@@ -224,8 +261,14 @@ export function JournalEntryFormSheet({
                         type="number"
                         placeholder="Kredit"
                         value={line.credit || ""}
-                        onChange={(e) => handleLineChange(idx, "credit", Number(e.target.value))}
-                        className="h-9 text-xs text-right font-mono"
+                        onChange={(e) =>
+                          handleLineChange(
+                            idx,
+                            "credit",
+                            Number(e.target.value)
+                          )
+                        }
+                        className="h-9 text-right font-mono text-xs"
                       />
                     </div>
 
@@ -234,7 +277,7 @@ export function JournalEntryFormSheet({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="size-9 text-destructive hover:bg-destructive/15 mt-0 shrink-0"
+                        className="mt-0 size-9 shrink-0 text-destructive hover:bg-destructive/15"
                         onClick={() => removeLine(idx)}
                       >
                         <IconTrash className="size-4" />
@@ -244,15 +287,15 @@ export function JournalEntryFormSheet({
                 ))}
               </div>
 
-              <div className="flex items-center justify-between bg-muted/40 p-3 rounded-lg border border-border text-sm">
+              <div className="flex items-center justify-between rounded-lg border border-border bg-muted/40 p-3 text-sm">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 font-medium">
                     {isBalanced ? (
-                      <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                         <IconCheck className="size-4" /> Balanced
                       </span>
                     ) : (
-                      <span className="text-destructive flex items-center gap-1">
+                      <span className="flex items-center gap-1 text-destructive">
                         <IconAlertTriangle className="size-4" /> Unbalanced
                       </span>
                     )}
@@ -262,16 +305,29 @@ export function JournalEntryFormSheet({
                   </div>
                 </div>
 
-                <div className="text-right space-y-1 font-mono text-xs">
-                  <div>Debet: <span className="font-semibold tabular-nums text-foreground">{formatRupiah(totalDebit)}</span></div>
-                  <div>Kredit: <span className="font-semibold tabular-nums text-foreground">{formatRupiah(totalCredit)}</span></div>
+                <div className="space-y-1 text-right font-mono text-xs">
+                  <div>
+                    Debet:{" "}
+                    <span className="font-semibold text-foreground tabular-nums">
+                      {formatRupiah(totalDebit)}
+                    </span>
+                  </div>
+                  <div>
+                    Kredit:{" "}
+                    <span className="font-semibold text-foreground tabular-nums">
+                      {formatRupiah(totalCredit)}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <SheetFooter>
-            <Button type="submit" disabled={!isBalanced || form.lines.some(l => !l.accountCode)}>
+            <Button
+              type="submit"
+              disabled={!isBalanced || form.lines.some((l) => !l.accountCode)}
+            >
               Post Jurnal
             </Button>
             <SheetClose render={<Button type="button" variant="outline" />}>

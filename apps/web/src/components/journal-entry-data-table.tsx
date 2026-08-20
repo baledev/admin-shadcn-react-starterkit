@@ -16,12 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconBan,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconBan, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -64,7 +59,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -75,21 +70,28 @@ function buildColumns(
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("reference", {
       header: "Referensi",
       cell: ({ row }) => (
-        <span className="font-medium max-w-[150px] truncate block">
-          {row.original.reference || <span className="text-muted-foreground/50 italic">-</span>}
+        <span className="block max-w-[150px] truncate font-medium">
+          {row.original.reference || (
+            <span className="text-muted-foreground/50 italic">-</span>
+          )}
         </span>
       ),
     }),
     columnHelper.accessor("note", {
       header: "Keterangan / Catatan",
       cell: ({ row }) => (
-        <span className="max-w-[250px] truncate block" title={row.original.note}>
+        <span
+          className="block max-w-[250px] truncate"
+          title={row.original.note}
+        >
           {row.original.note}
         </span>
       ),
@@ -99,7 +101,10 @@ function buildColumns(
       cell: ({ row }) => {
         const typeMeta = JOURNAL_TYPE_META[row.original.type]
         return (
-          <Badge variant="secondary" className={`${typeMeta.color} font-medium`}>
+          <Badge
+            variant="secondary"
+            className={`${typeMeta.color} font-medium`}
+          >
             {typeMeta.label}
           </Badge>
         )
@@ -112,7 +117,7 @@ function buildColumns(
     columnHelper.accessor("totalDebit", {
       header: () => <div className="text-right">Total Debit/Kredit</div>,
       cell: ({ row }) => (
-        <div className="text-right font-mono text-sm tabular-nums font-semibold">
+        <div className="text-right font-mono text-sm font-semibold tabular-nums">
           {formatRupiah(row.original.totalDebit)}
         </div>
       ),
@@ -198,7 +203,9 @@ export function JournalEntryDataTable({
     pageSize: 10,
   })
   const [search, setSearch] = React.useState("")
-  const [pendingCancel, setPendingCancel] = React.useState<JournalEntry | null>(null)
+  const [pendingCancel, setPendingCancel] = React.useState<JournalEntry | null>(
+    null
+  )
 
   const columns = React.useMemo(
     () => buildColumns(onViewDetail, setPendingCancel),
@@ -231,7 +238,8 @@ export function JournalEntryDataTable({
     return columnFilteredRows.filter(
       (row) =>
         row.original.id.toLowerCase().includes(q) ||
-        (row.original.reference && row.original.reference.toLowerCase().includes(q)) ||
+        (row.original.reference &&
+          row.original.reference.toLowerCase().includes(q)) ||
         (row.original.note && row.original.note.toLowerCase().includes(q))
     )
   }, [search, columnFilteredRows])
@@ -344,7 +352,12 @@ export function JournalEntryDataTable({
         title="Batalkan Jurnal Transaksi?"
         description={
           <>
-            Jurnal <span className="font-medium text-foreground">{pendingCancel?.id}</span> akan dibatalkan. Tindakan ini akan membuat status jurnal menjadi Batal.
+            Jurnal{" "}
+            <span className="font-medium text-foreground">
+              {pendingCancel?.id}
+            </span>{" "}
+            akan dibatalkan. Tindakan ini akan membuat status jurnal menjadi
+            Batal.
           </>
         }
         confirmLabel="Batalkan"

@@ -7,7 +7,10 @@ import {
   EQUITY_STATUS_META,
   EQUITY_TYPE_META,
 } from "@/lib/equity-data"
-import { EquityFormSheet, type EquityFormState } from "@/components/equity-form-sheet"
+import {
+  EquityFormSheet,
+  type EquityFormState,
+} from "@/components/equity-form-sheet"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { IconPlus } from "@tabler/icons-react"
@@ -26,8 +29,12 @@ export const Route = createFileRoute("/_auth/finance/transactions/equity")({
 })
 
 function EquityPage() {
-  const [transactions, setTransactions] = React.useState<EquityTransaction[]>(initialEquityTransactions)
-  const [selectedTx, setSelectedTx] = React.useState<EquityTransaction | null>(null)
+  const [transactions, setTransactions] = React.useState<EquityTransaction[]>(
+    initialEquityTransactions
+  )
+  const [selectedTx, setSelectedTx] = React.useState<EquityTransaction | null>(
+    null
+  )
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
 
@@ -81,7 +88,9 @@ function EquityPage() {
 
   const handleApproveTransaction = (tx: EquityTransaction) => {
     setTransactions(
-      transactions.map((t) => (t.id === tx.id ? { ...t, status: "approved" as const } : t))
+      transactions.map((t) =>
+        t.id === tx.id ? { ...t, status: "approved" as const } : t
+      )
     )
   }
 
@@ -89,11 +98,16 @@ function EquityPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-medium text-foreground">Transaksi Modal & Struktur Ekuitas (Equity)</h2>
-          <p className="text-sm text-muted-foreground">Catat modal awal pendirian, penambahan modal pemilik, penarikan prive pribadi, serta distribusi laba ditahan.</p>
+          <h2 className="text-sm font-medium text-foreground">
+            Transaksi Modal & Struktur Ekuitas (Equity)
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Catat modal awal pendirian, penambahan modal pemilik, penarikan
+            prive pribadi, serta distribusi laba ditahan.
+          </p>
         </div>
         <Button size="sm" onClick={handleAddTransaction}>
-          <IconPlus className="size-4 mr-2" />
+          <IconPlus className="mr-2 size-4" />
           Input Transaksi Modal
         </Button>
       </div>
@@ -115,16 +129,21 @@ function EquityPage() {
       {/* Detail Sheet */}
       {selectedTx && (
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-          <SheetContent className="sm:max-w-md flex flex-col h-full">
+          <SheetContent className="flex h-full flex-col sm:max-w-md">
             <SheetHeader>
               <SheetTitle className="font-mono">{selectedTx.id}</SheetTitle>
-              <SheetDescription>Tercatat pada {selectedTx.date}</SheetDescription>
+              <SheetDescription>
+                Tercatat pada {selectedTx.date}
+              </SheetDescription>
             </SheetHeader>
 
-            <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
+            <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Status</span>
-                <Badge variant="outline" className={`ring-1 ${EQUITY_STATUS_META[selectedTx.status].chip}`}>
+                <Badge
+                  variant="outline"
+                  className={`ring-1 ${EQUITY_STATUS_META[selectedTx.status].chip}`}
+                >
                   {EQUITY_STATUS_META[selectedTx.status].label}
                 </Badge>
               </div>
@@ -133,25 +152,40 @@ function EquityPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Jenis Transaksi</span>
-                  <Badge variant="outline" className={`ring-1 ${EQUITY_TYPE_META[selectedTx.type].chip}`}>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Jenis Transaksi
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className={`ring-1 ${EQUITY_TYPE_META[selectedTx.type].chip}`}
+                  >
                     {EQUITY_TYPE_META[selectedTx.type].label}
                   </Badge>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-0.5">Nominal Transaksi</span>
-                  <span className="text-sm font-bold font-mono text-foreground">
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Nominal Transaksi
+                  </span>
+                  <span className="font-mono text-sm font-bold text-foreground">
                     {formatRupiah(selectedTx.amount)}
                   </span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-xs text-muted-foreground block mb-0.5">Pihak / Pemilik</span>
-                  <p className="text-sm text-foreground font-semibold">{selectedTx.investorName}</p>
+                  <span className="mb-0.5 block text-xs text-muted-foreground">
+                    Pihak / Pemilik
+                  </span>
+                  <p className="text-sm font-semibold text-foreground">
+                    {selectedTx.investorName}
+                  </p>
                 </div>
                 {selectedTx.note && (
                   <div className="col-span-2">
-                    <span className="text-xs text-muted-foreground block mb-0.5">Keterangan</span>
-                    <p className="text-sm text-muted-foreground font-medium">{selectedTx.note}</p>
+                    <span className="mb-0.5 block text-xs text-muted-foreground">
+                      Keterangan
+                    </span>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {selectedTx.note}
+                    </p>
                   </div>
                 )}
               </div>
@@ -159,15 +193,25 @@ function EquityPage() {
               <Separator />
 
               {/* Journal entry preview */}
-              <div className="rounded-lg border border-border p-3 text-xs bg-muted/20 space-y-1.5">
-                <span className="font-semibold block text-foreground">Auto Journal Entry Preview:</span>
+              <div className="space-y-1.5 rounded-lg border border-border bg-muted/20 p-3 text-xs">
+                <span className="block font-semibold text-foreground">
+                  Auto Journal Entry Preview:
+                </span>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Dr. Akun ({EQUITY_TYPE_META[selectedTx.type].drAccount})</span>
-                  <span className="font-mono">{formatRupiah(selectedTx.amount)}</span>
+                  <span>
+                    Dr. Akun ({EQUITY_TYPE_META[selectedTx.type].drAccount})
+                  </span>
+                  <span className="font-mono">
+                    {formatRupiah(selectedTx.amount)}
+                  </span>
                 </div>
-                <div className="flex justify-between text-muted-foreground pl-4">
-                  <span>Cr. Akun ({EQUITY_TYPE_META[selectedTx.type].crAccount})</span>
-                  <span className="font-mono">{formatRupiah(selectedTx.amount)}</span>
+                <div className="flex justify-between pl-4 text-muted-foreground">
+                  <span>
+                    Cr. Akun ({EQUITY_TYPE_META[selectedTx.type].crAccount})
+                  </span>
+                  <span className="font-mono">
+                    {formatRupiah(selectedTx.amount)}
+                  </span>
                 </div>
               </div>
             </div>

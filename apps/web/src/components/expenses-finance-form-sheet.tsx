@@ -60,7 +60,8 @@ export function ExpensesFinanceFormSheet({
         <SheetHeader>
           <SheetTitle>Pengajuan Klaim Expense (Reimburse)</SheetTitle>
           <SheetDescription>
-            Catat klaim pengeluaran pribadi karyawan yang akan diganti oleh perusahaan (Reimbursement).
+            Catat klaim pengeluaran pribadi karyawan yang akan diganti oleh
+            perusahaan (Reimbursement).
           </SheetDescription>
         </SheetHeader>
 
@@ -89,10 +90,14 @@ export function ExpensesFinanceFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="exp-category">Kategori Pengeluaran</FieldLabel>
+              <FieldLabel htmlFor="exp-category">
+                Kategori Pengeluaran
+              </FieldLabel>
               <Select
                 value={form.category}
-                onValueChange={(val) => { if (val) onField("category", val as ExpenseCategory) }}
+                onValueChange={(val) => {
+                  if (val) onField("category", val as ExpenseCategory)
+                }}
               >
                 <SelectTrigger id="exp-category">
                   <SelectValue placeholder="Pilih Kategori" />
@@ -143,7 +148,9 @@ export function ExpensesFinanceFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="exp-receipt">Nota Fisik / Bukti Pembayaran (URL/Nama File)</FieldLabel>
+              <FieldLabel htmlFor="exp-receipt">
+                Nota Fisik / Bukti Pembayaran (URL/Nama File)
+              </FieldLabel>
               <Input
                 id="exp-receipt"
                 placeholder="E.g., /receipts/exp-006.jpg"
@@ -154,7 +161,10 @@ export function ExpensesFinanceFormSheet({
           </div>
 
           <SheetFooter>
-            <Button type="submit" disabled={!form.employeeId || !form.amount || !form.description}>
+            <Button
+              type="submit"
+              disabled={!form.employeeId || !form.amount || !form.description}
+            >
               Ajukan Klaim
             </Button>
             <SheetClose render={<Button variant="outline" type="button" />}>

@@ -60,7 +60,10 @@ export function BillsFormSheet({
   onSave,
 }: BillsFormSheetProps) {
   const expenseAccounts = React.useMemo(() => {
-    return accounts.filter((acc) => acc.level === 3 && (acc.type === "expense" || acc.code.startsWith("12")))
+    return accounts.filter(
+      (acc) =>
+        acc.level === 3 && (acc.type === "expense" || acc.code.startsWith("12"))
+    )
   }, [accounts])
 
   const { subtotal, tax, total } = React.useMemo(() => {
@@ -103,7 +106,8 @@ export function BillsFormSheet({
         <SheetHeader>
           <SheetTitle>Catat Bill Vendor Baru (AP)</SheetTitle>
           <SheetDescription>
-            Masukkan tagihan yang diterima dari vendor/supplier untuk dicatat sebagai hutang usaha.
+            Masukkan tagihan yang diterima dari vendor/supplier untuk dicatat
+            sebagai hutang usaha.
           </SheetDescription>
         </SheetHeader>
 
@@ -161,35 +165,53 @@ export function BillsFormSheet({
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-semibold">Rincian Pembelian (Expense / Aset)</h4>
-                <Button type="button" variant="outline" size="sm" onClick={addLine}>
-                  <IconPlus className="size-4 mr-1.5" />
+                <h4 className="text-sm font-semibold">
+                  Rincian Pembelian (Expense / Aset)
+                </h4>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addLine}
+                >
+                  <IconPlus className="mr-1.5 size-4" />
                   Tambah Baris
                 </Button>
               </div>
 
-              <div className="space-y-3 rounded-lg border border-border p-3 bg-muted/20 max-h-[220px] overflow-y-auto">
+              <div className="max-h-[220px] space-y-3 overflow-y-auto rounded-lg border border-border bg-muted/20 p-3">
                 {form.lines.map((line, idx) => (
-                  <div key={idx} className="flex gap-2 items-start border-b border-border pb-3 last:border-b-0 last:pb-0">
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2 border-b border-border pb-3 last:border-b-0 last:pb-0"
+                  >
                     <div className="flex-1 space-y-2">
                       <Input
                         placeholder="Deskripsi barang/jasa"
                         value={line.description}
-                        onChange={(e) => handleLineChange(idx, "description", e.target.value)}
+                        onChange={(e) =>
+                          handleLineChange(idx, "description", e.target.value)
+                        }
                         className="h-9 text-xs"
                         required
                       />
 
                       <Select
                         value={line.accountCode}
-                        onValueChange={(val) => handleLineChange(idx, "accountCode", val)}
+                        onValueChange={(val) =>
+                          handleLineChange(idx, "accountCode", val)
+                        }
                       >
-                        <SelectTrigger className="w-full text-xs h-8">
+                        <SelectTrigger className="h-8 w-full text-xs">
                           <SelectValue placeholder="Alokasi Akun Beban/Aset" />
                         </SelectTrigger>
                         <SelectContent>
                           {expenseAccounts.map((acc) => (
-                            <SelectItem key={acc.code} value={acc.code} className="text-xs">
+                            <SelectItem
+                              key={acc.code}
+                              value={acc.code}
+                              className="text-xs"
+                            >
                               {acc.code} - {acc.name}
                             </SelectItem>
                           ))}
@@ -202,8 +224,10 @@ export function BillsFormSheet({
                         type="number"
                         placeholder="Qty"
                         value={line.qty || ""}
-                        onChange={(e) => handleLineChange(idx, "qty", Number(e.target.value))}
-                        className="h-9 text-xs text-right font-mono"
+                        onChange={(e) =>
+                          handleLineChange(idx, "qty", Number(e.target.value))
+                        }
+                        className="h-9 text-right font-mono text-xs"
                         required
                         min="1"
                       />
@@ -214,8 +238,14 @@ export function BillsFormSheet({
                         type="number"
                         placeholder="Harga Satuan"
                         value={line.unitPrice || ""}
-                        onChange={(e) => handleLineChange(idx, "unitPrice", Number(e.target.value))}
-                        className="h-9 text-xs text-right font-mono"
+                        onChange={(e) =>
+                          handleLineChange(
+                            idx,
+                            "unitPrice",
+                            Number(e.target.value)
+                          )
+                        }
+                        className="h-9 text-right font-mono text-xs"
                         required
                       />
                     </div>
@@ -225,7 +255,7 @@ export function BillsFormSheet({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="size-9 text-destructive hover:bg-destructive/15 mt-0 shrink-0"
+                        className="mt-0 size-9 shrink-0 text-destructive hover:bg-destructive/15"
                         onClick={() => removeLine(idx)}
                       >
                         <IconTrash className="size-4" />
@@ -236,7 +266,7 @@ export function BillsFormSheet({
               </div>
             </div>
 
-            <div className="bg-muted/40 p-4 rounded-lg border border-border space-y-2 text-sm font-mono">
+            <div className="space-y-2 rounded-lg border border-border bg-muted/40 p-4 font-mono text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>{formatRupiah(subtotal)}</span>
@@ -246,7 +276,7 @@ export function BillsFormSheet({
                 <span>{formatRupiah(tax)}</span>
               </div>
               <Separator />
-              <div className="flex justify-between font-bold text-foreground text-base">
+              <div className="flex justify-between text-base font-bold text-foreground">
                 <span>Total Bill (Hutang)</span>
                 <span>{formatRupiah(total)}</span>
               </div>
@@ -265,7 +295,12 @@ export function BillsFormSheet({
           </div>
 
           <SheetFooter>
-            <Button type="submit" disabled={form.lines.some(l => !l.accountCode || !l.description)}>
+            <Button
+              type="submit"
+              disabled={form.lines.some(
+                (l) => !l.accountCode || !l.description
+              )}
+            >
               Simpan Bill
             </Button>
             <SheetClose render={<Button variant="outline" type="button" />}>

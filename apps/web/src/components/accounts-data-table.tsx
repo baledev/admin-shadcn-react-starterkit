@@ -43,7 +43,7 @@ export function AccountsDataTable({
       const matchesSearch =
         acc.code.includes(search) ||
         acc.name.toLowerCase().includes(search.toLowerCase())
-      
+
       const matchesType = typeFilter === "all" || acc.type === typeFilter
 
       return matchesSearch && matchesType
@@ -54,8 +54,8 @@ export function AccountsDataTable({
     <div className="space-y-4">
       {/* Filters Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1 max-w-sm">
-          <IconSearch className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
+        <div className="relative max-w-sm flex-1">
+          <IconSearch className="absolute top-2.5 left-2.5 size-4 text-muted-foreground" />
           <Input
             placeholder="Cari kode atau nama akun..."
             value={search}
@@ -63,8 +63,11 @@ export function AccountsDataTable({
             className="pl-8"
           />
         </div>
-        
-        <Select value={typeFilter} onValueChange={(val) => setTypeFilter(val || "all")}>
+
+        <Select
+          value={typeFilter}
+          onValueChange={(val) => setTypeFilter(val || "all")}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Tipe Akun" />
           </SelectTrigger>
@@ -80,21 +83,24 @@ export function AccountsDataTable({
       </div>
 
       {/* Hierarchical Table */}
-      <div className="rounded-md border border-border overflow-hidden">
+      <div className="overflow-hidden rounded-md border border-border">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
               <TableHead className="w-[120px]">Kode</TableHead>
               <TableHead>Nama Akun</TableHead>
               <TableHead className="w-[150px]">Tipe</TableHead>
-              <TableHead className="text-right w-[200px]">Saldo</TableHead>
+              <TableHead className="w-[200px] text-right">Saldo</TableHead>
               <TableHead className="w-[100px] text-right">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredAccounts.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                <TableCell
+                  colSpan={5}
+                  className="h-24 text-center text-muted-foreground"
+                >
                   Tidak ada akun ditemukan.
                 </TableCell>
               </TableRow>
@@ -119,12 +125,14 @@ export function AccountsDataTable({
 
                 return (
                   <TableRow key={acc.code} className={rowBgClass}>
-                    <TableCell className="font-mono text-sm font-medium">{acc.code}</TableCell>
+                    <TableCell className="font-mono text-sm font-medium">
+                      {acc.code}
+                    </TableCell>
                     <TableCell className={indentClass}>
                       <div className="flex flex-col">
                         <span className={nameClass}>{acc.name}</span>
                         {acc.description && acc.level === 3 && (
-                          <span className="text-xs text-muted-foreground/80 font-normal">
+                          <span className="text-xs font-normal text-muted-foreground/80">
                             {acc.description}
                           </span>
                         )}
@@ -132,11 +140,14 @@ export function AccountsDataTable({
                     </TableCell>
                     <TableCell>
                       {acc.level === 3 ? (
-                        <Badge variant="outline" className={`ring-1 ${typeMeta.chip}`}>
+                        <Badge
+                          variant="outline"
+                          className={`ring-1 ${typeMeta.chip}`}
+                        >
                           {typeMeta.label}
                         </Badge>
                       ) : (
-                        <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+                        <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
                           {typeMeta.label}
                         </span>
                       )}
@@ -167,7 +178,9 @@ export function AccountsDataTable({
                           </Button>
                         </div>
                       ) : (
-                        <span className="text-xs text-muted-foreground/60 italic">-</span>
+                        <span className="text-xs text-muted-foreground/60 italic">
+                          -
+                        </span>
                       )}
                     </TableCell>
                   </TableRow>

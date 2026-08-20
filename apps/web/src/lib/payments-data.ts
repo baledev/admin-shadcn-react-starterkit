@@ -34,10 +34,7 @@ export const PAYMENT_DIRECTION_META: Record<
   },
 }
 
-export const PAYMENT_METHOD_META: Record<
-  PaymentMethod,
-  { label: string }
-> = {
+export const PAYMENT_METHOD_META: Record<PaymentMethod, { label: string }> = {
   cash: { label: "Tunai" },
   bank_transfer: { label: "Transfer Bank" },
   check: { label: "Cek / Giro" },
@@ -57,21 +54,26 @@ export const PAYMENT_STATUS_META: Record<
   },
 }
 
-export const PAYMENT_DIRECTION_OPTIONS: { value: PaymentDirection; label: string }[] = [
+export const PAYMENT_DIRECTION_OPTIONS: {
+  value: PaymentDirection
+  label: string
+}[] = [
   { value: "incoming", label: "Masuk (Penerimaan)" },
   { value: "outgoing", label: "Keluar (Pengeluaran)" },
 ]
 
-export const PAYMENT_METHOD_OPTIONS: { value: PaymentMethod; label: string }[] = [
-  { value: "cash", label: "Tunai" },
-  { value: "bank_transfer", label: "Transfer Bank" },
-  { value: "check", label: "Cek / Giro" },
-]
+export const PAYMENT_METHOD_OPTIONS: { value: PaymentMethod; label: string }[] =
+  [
+    { value: "cash", label: "Tunai" },
+    { value: "bank_transfer", label: "Transfer Bank" },
+    { value: "check", label: "Cek / Giro" },
+  ]
 
-export const PAYMENT_STATUS_OPTIONS: { value: PaymentStatus; label: string }[] = [
-  { value: "posted", label: "Posted" },
-  { value: "voided", label: "Batal (Void)" },
-]
+export const PAYMENT_STATUS_OPTIONS: { value: PaymentStatus; label: string }[] =
+  [
+    { value: "posted", label: "Posted" },
+    { value: "voided", label: "Batal (Void)" },
+  ]
 
 // ─── Static Data ──────────────────────────────────────────────────────────────
 

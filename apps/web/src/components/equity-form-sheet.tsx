@@ -59,7 +59,8 @@ export function EquityFormSheet({
         <SheetHeader>
           <SheetTitle>Input Transaksi Modal / Ekuitas</SheetTitle>
           <SheetDescription>
-            Catat mutasi dana modal, prive, atau laba ditahan. Transaksi disetujui akan men-generate journal entry secara otomatis.
+            Catat mutasi dana modal, prive, atau laba ditahan. Transaksi
+            disetujui akan men-generate journal entry secara otomatis.
           </SheetDescription>
         </SheetHeader>
 
@@ -72,7 +73,9 @@ export function EquityFormSheet({
               <FieldLabel htmlFor="eq-type">Jenis Transaksi</FieldLabel>
               <Select
                 value={form.type}
-                onValueChange={(val) => { if (val) onField("type", val as EquityType) }}
+                onValueChange={(val) => {
+                  if (val) onField("type", val as EquityType)
+                }}
               >
                 <SelectTrigger id="eq-type">
                   <SelectValue placeholder="Pilih Jenis Transaksi" />
@@ -88,7 +91,9 @@ export function EquityFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="eq-investor">Pihak / Nama Pemilik</FieldLabel>
+              <FieldLabel htmlFor="eq-investor">
+                Pihak / Nama Pemilik
+              </FieldLabel>
               <Input
                 id="eq-investor"
                 placeholder="E.g., Hendra Wijaya"
@@ -109,7 +114,9 @@ export function EquityFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="eq-amount">Nominal Transaksi (Rp)</FieldLabel>
+              <FieldLabel htmlFor="eq-amount">
+                Nominal Transaksi (Rp)
+              </FieldLabel>
               <Input
                 id="eq-amount"
                 type="number"
@@ -132,13 +139,17 @@ export function EquityFormSheet({
               />
             </Field>
 
-            <div className="bg-muted/40 rounded-lg p-3 border border-border text-xs text-muted-foreground leading-normal space-y-1">
-              <span className="font-semibold block text-foreground mb-1">Preview Double-Entry (Auto):</span>
+            <div className="space-y-1 rounded-lg border border-border bg-muted/40 p-3 text-xs leading-normal text-muted-foreground">
+              <span className="mb-1 block font-semibold text-foreground">
+                Preview Double-Entry (Auto):
+              </span>
               <div className="flex justify-between font-mono">
                 <span>Debit: {EQUITY_TYPE_META[form.type]?.drAccount}</span>
                 <span>Kredit: {EQUITY_TYPE_META[form.type]?.crAccount}</span>
               </div>
-              <span className="text-[10px] italic">*) Akun BCA (1112) dan Modal/Prive/Laba Ditahan di CoA.</span>
+              <span className="text-[10px] italic">
+                *) Akun BCA (1112) dan Modal/Prive/Laba Ditahan di CoA.
+              </span>
             </div>
           </div>
 

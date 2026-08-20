@@ -16,11 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -62,7 +58,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -89,9 +85,14 @@ function buildColumns(
       header: "Pihak / Pemilik",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-medium text-foreground">{row.original.investorName}</span>
+          <span className="font-medium text-foreground">
+            {row.original.investorName}
+          </span>
           {row.original.note && (
-            <span className="text-xs text-muted-foreground max-w-[200px] truncate" title={row.original.note}>
+            <span
+              className="max-w-[200px] truncate text-xs text-muted-foreground"
+              title={row.original.note}
+            >
               {row.original.note}
             </span>
           )}
@@ -101,16 +102,21 @@ function buildColumns(
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("amount", {
       header: () => <div className="text-right">Jumlah</div>,
       cell: ({ row }) => {
         const tx = row.original
-        const isReduction = tx.type === "prive" || tx.type === "retained_earnings_distribution"
+        const isReduction =
+          tx.type === "prive" || tx.type === "retained_earnings_distribution"
         return (
-          <div className={`text-right font-mono text-sm tabular-nums font-semibold ${isReduction ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}>
+          <div
+            className={`text-right font-mono text-sm font-semibold tabular-nums ${isReduction ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}
+          >
             {isReduction ? "-" : ""}
             {formatRupiah(tx.amount)}
           </div>
@@ -152,7 +158,7 @@ function buildColumns(
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs font-semibold text-emerald-700 border-emerald-200 hover:bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800"
+                className="h-8 border-emerald-200 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
                 onClick={() => onApproveTransaction(tx)}
               >
                 Setujui

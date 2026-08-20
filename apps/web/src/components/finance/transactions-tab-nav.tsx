@@ -52,7 +52,7 @@ const tabs = [
 export function TransactionsTabNav() {
   return (
     <nav
-      className="flex border-b border-border overflow-x-auto no-scrollbar gap-1"
+      className="no-scrollbar flex gap-1 overflow-x-auto border-b border-border"
       aria-label="Transactions tabs"
     >
       {tabs.map((tab) => {
@@ -62,9 +62,12 @@ export function TransactionsTabNav() {
             key={tab.id}
             to={tab.to}
             activeOptions={{ exact: true }}
-            activeProps={{ className: "border-primary border-b-2 font-medium text-foreground bg-muted/40" }}
+            activeProps={{
+              className:
+                "border-primary border-b-2 font-medium text-foreground bg-muted/40",
+            }}
             className={cn(
-              "flex items-center gap-2 rounded-t-md px-4 py-2.5 text-center text-sm transition-colors whitespace-nowrap",
+              "flex items-center gap-2 rounded-t-md px-4 py-2.5 text-center text-sm whitespace-nowrap transition-colors",
               "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
             )}
           >

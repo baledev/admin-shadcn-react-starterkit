@@ -4,7 +4,10 @@ import { IconPlus } from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import { PageHeader } from "@/components/page-header"
 import { AccountsDataTable } from "@/components/accounts-data-table"
-import { AccountsFormSheet, type AccountFormState } from "@/components/accounts-form-sheet"
+import {
+  AccountsFormSheet,
+  type AccountFormState,
+} from "@/components/accounts-form-sheet"
 import { ConfirmDialog } from "@workspace/ui/components/confirm-dialog"
 import {
   type Account,
@@ -20,7 +23,7 @@ function ChartOfAccountsPage() {
   const [accounts, setAccounts] = React.useState<Account[]>(() =>
     computeAccountBalances(initialAccounts)
   )
-  
+
   const [isFormOpen, setIsFormOpen] = React.useState(false)
   const [isEditing, setIsEditing] = React.useState(false)
   const [pendingDelete, setPendingDelete] = React.useState<Account | null>(null)
@@ -101,7 +104,7 @@ function ChartOfAccountsPage() {
         balance: formState.balance,
         description: formState.description,
       }
-      
+
       // Prohibit duplicate code
       if (accounts.some((acc) => acc.code === newAcc.code)) {
         alert("Kode akun sudah terpakai!")
@@ -123,7 +126,7 @@ function ChartOfAccountsPage() {
             description="Bagan Akun standar keuangan akuntansi perusahaan 3 level (Kelompok Utama, Sub-Grup, Buku Besar)."
           >
             <Button size="sm" onClick={handleAddAccount}>
-              <IconPlus className="size-4 mr-2" />
+              <IconPlus className="mr-2 size-4" />
               Tambah Akun
             </Button>
           </PageHeader>
@@ -154,7 +157,11 @@ function ChartOfAccountsPage() {
         title="Hapus Akun?"
         description={
           <>
-            Akun <span className="font-semibold text-foreground">{pendingDelete?.code} - {pendingDelete?.name}</span> akan dihapus dari Bagan Akun. Tindakan ini tidak dapat dibatalkan.
+            Akun{" "}
+            <span className="font-semibold text-foreground">
+              {pendingDelete?.code} - {pendingDelete?.name}
+            </span>{" "}
+            akan dihapus dari Bagan Akun. Tindakan ini tidak dapat dibatalkan.
           </>
         }
         confirmLabel="Hapus Akun"

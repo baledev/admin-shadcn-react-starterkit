@@ -42,7 +42,8 @@ export function FinanceRevenueChart() {
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle>Arus Kas & Kinerja Keuangan</CardTitle>
           <CardDescription>
-            Grafik perbandingan Pendapatan Jasa vs Beban Operasional bulanan (Semester I - 2026)
+            Grafik perbandingan Pendapatan Jasa vs Beban Operasional bulanan
+            (Semester I - 2026)
           </CardDescription>
         </div>
       </CardHeader>

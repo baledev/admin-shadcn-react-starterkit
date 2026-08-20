@@ -59,7 +59,8 @@ export function KasbonFormSheet({
         <SheetHeader>
           <SheetTitle>Pengajuan Kasbon Karyawan</SheetTitle>
           <SheetDescription>
-            Ajukan kasbon/pinjaman untuk karyawan. Transaksi ini akan tercatat sebagai Piutang Karyawan.
+            Ajukan kasbon/pinjaman untuk karyawan. Transaksi ini akan tercatat
+            sebagai Piutang Karyawan.
           </SheetDescription>
         </SheetHeader>
 
@@ -70,7 +71,10 @@ export function KasbonFormSheet({
           <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-2">
             <Field>
               <FieldLabel htmlFor="kasbon-employee">Karyawan</FieldLabel>
-              <Select value={form.employeeId} onValueChange={(val) => handleEmployeeChange(val || "")}>
+              <Select
+                value={form.employeeId}
+                onValueChange={(val) => handleEmployeeChange(val || "")}
+              >
                 <SelectTrigger id="kasbon-employee">
                   <SelectValue placeholder="Pilih Karyawan" />
                 </SelectTrigger>
@@ -95,7 +99,9 @@ export function KasbonFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="kasbon-amount">Jumlah Kasbon (Rp)</FieldLabel>
+              <FieldLabel htmlFor="kasbon-amount">
+                Jumlah Kasbon (Rp)
+              </FieldLabel>
               <Input
                 id="kasbon-amount"
                 type="number"
@@ -108,7 +114,9 @@ export function KasbonFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="kasbon-purpose">Keperluan / Tujuan</FieldLabel>
+              <FieldLabel htmlFor="kasbon-purpose">
+                Keperluan / Tujuan
+              </FieldLabel>
               <Input
                 id="kasbon-purpose"
                 placeholder="E.g., Perbaikan kendaraan operasional, berobat"
@@ -119,7 +127,9 @@ export function KasbonFormSheet({
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="kasbon-notes">Catatan Persetujuan / Tenor</FieldLabel>
+              <FieldLabel htmlFor="kasbon-notes">
+                Catatan Persetujuan / Tenor
+              </FieldLabel>
               <Textarea
                 id="kasbon-notes"
                 placeholder="E.g., Dicicil 5 bulan @ Rp 200.000 potong gaji"
@@ -131,7 +141,10 @@ export function KasbonFormSheet({
           </div>
 
           <SheetFooter>
-            <Button type="submit" disabled={!form.employeeId || !form.amount || !form.purpose}>
+            <Button
+              type="submit"
+              disabled={!form.employeeId || !form.amount || !form.purpose}
+            >
               Simpan Pengajuan
             </Button>
             <SheetClose render={<Button variant="outline" type="button" />}>

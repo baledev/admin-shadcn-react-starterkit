@@ -16,12 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconWallet,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconWallet, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -61,7 +56,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -73,21 +68,30 @@ function buildColumns(
       header: "Karyawan",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-medium text-foreground">{row.original.employeeName}</span>
-          <span className="text-xs text-muted-foreground">{row.original.employeeEmail}</span>
+          <span className="font-medium text-foreground">
+            {row.original.employeeName}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {row.original.employeeEmail}
+          </span>
         </div>
       ),
     }),
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("purpose", {
       header: "Tujuan / Keperluan",
       cell: ({ row }) => (
-        <span className="max-w-[200px] truncate block" title={row.original.purpose}>
+        <span
+          className="block max-w-[200px] truncate"
+          title={row.original.purpose}
+        >
           {row.original.purpose}
         </span>
       ),
@@ -103,7 +107,7 @@ function buildColumns(
     columnHelper.accessor("remainingAmount", {
       header: () => <div className="text-right">Sisa Tagihan</div>,
       cell: ({ row }) => (
-        <div className="text-right font-mono text-sm tabular-nums font-semibold text-amber-600 dark:text-amber-400">
+        <div className="text-right font-mono text-sm font-semibold text-amber-600 tabular-nums dark:text-amber-400">
           {formatRupiah(row.original.remainingAmount)}
         </div>
       ),
@@ -139,18 +143,20 @@ function buildColumns(
             >
               <IconEye className="size-4" />
             </Button>
-            {k.status === "active" && k.remainingAmount > 0 && onRecordRepayment && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs flex items-center gap-1"
-                onClick={() => onRecordRepayment(k)}
-                title="Bayar Cicilan"
-              >
-                <IconWallet className="size-3" />
-                Bayar
-              </Button>
-            )}
+            {k.status === "active" &&
+              k.remainingAmount > 0 &&
+              onRecordRepayment && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex h-8 items-center gap-1 text-xs"
+                  onClick={() => onRecordRepayment(k)}
+                  title="Bayar Cicilan"
+                >
+                  <IconWallet className="size-3" />
+                  Bayar
+                </Button>
+              )}
           </div>
         )
       },

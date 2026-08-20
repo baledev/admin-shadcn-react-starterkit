@@ -64,7 +64,13 @@ export const initialBills: Bill[] = [
     vendorEmail: "billing@biznet.id",
     status: "paid",
     lines: [
-      { description: "Internet Dedicated 50 Mbps - Jan", accountCode: "5230", qty: 1, unitPrice: 5000000, amount: 5000000 },
+      {
+        description: "Internet Dedicated 50 Mbps - Jan",
+        accountCode: "5230",
+        qty: 1,
+        unitPrice: 5000000,
+        amount: 5000000,
+      },
     ],
     subtotal: 5000000,
     tax: 500000,
@@ -79,8 +85,20 @@ export const initialBills: Bill[] = [
     vendorEmail: "aws-billing@amazon.com",
     status: "paid",
     lines: [
-      { description: "Cloud Hosting - EC2 & S3", accountCode: "5230", qty: 1, unitPrice: 7500000, amount: 7500000 },
-      { description: "Database Services RDS", accountCode: "5230", qty: 1, unitPrice: 3000000, amount: 3000000 },
+      {
+        description: "Cloud Hosting - EC2 & S3",
+        accountCode: "5230",
+        qty: 1,
+        unitPrice: 7500000,
+        amount: 7500000,
+      },
+      {
+        description: "Database Services RDS",
+        accountCode: "5230",
+        qty: 1,
+        unitPrice: 3000000,
+        amount: 3000000,
+      },
     ],
     subtotal: 10500000,
     tax: 1050000,
@@ -94,7 +112,13 @@ export const initialBills: Bill[] = [
     vendorEmail: "finance@cybermandiri.co.id",
     status: "overdue",
     lines: [
-      { description: "Sewa Kantor Bulanan - Feb", accountCode: "5220", qty: 1, unitPrice: 40000000, amount: 40000000 },
+      {
+        description: "Sewa Kantor Bulanan - Feb",
+        accountCode: "5220",
+        qty: 1,
+        unitPrice: 40000000,
+        amount: 40000000,
+      },
     ],
     subtotal: 40000000,
     tax: 4000000,
@@ -108,7 +132,13 @@ export const initialBills: Bill[] = [
     vendorEmail: "tagihan@pln.co.id",
     status: "received",
     lines: [
-      { description: "Listrik Kantor Gedung A - Jan", accountCode: "5230", qty: 1, unitPrice: 6200000, amount: 6200000 },
+      {
+        description: "Listrik Kantor Gedung A - Jan",
+        accountCode: "5230",
+        qty: 1,
+        unitPrice: 6200000,
+        amount: 6200000,
+      },
     ],
     subtotal: 6200000,
     tax: 620000,
@@ -122,7 +152,13 @@ export const initialBills: Bill[] = [
     vendorEmail: "billing@microsoft.com",
     status: "draft",
     lines: [
-      { description: "Lisensi Microsoft 365 Business (10 User)", accountCode: "5230", qty: 10, unitPrice: 250000, amount: 2500000 },
+      {
+        description: "Lisensi Microsoft 365 Business (10 User)",
+        accountCode: "5230",
+        qty: 10,
+        unitPrice: 250000,
+        amount: 2500000,
+      },
     ],
     subtotal: 2500000,
     tax: 250000,

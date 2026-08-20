@@ -29,10 +29,24 @@ export const JOURNAL_TYPE_META: Record<
   JournalType,
   { label: string; color: string }
 > = {
-  general: { label: "Umum", color: "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200" },
-  sales: { label: "Penjualan", color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300" },
-  purchase: { label: "Pembelian", color: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300" },
-  cash: { label: "Kas/Bank", color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300" },
+  general: {
+    label: "Umum",
+    color: "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200",
+  },
+  sales: {
+    label: "Penjualan",
+    color:
+      "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
+  },
+  purchase: {
+    label: "Pembelian",
+    color:
+      "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300",
+  },
+  cash: {
+    label: "Kas/Bank",
+    color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
+  },
 }
 
 export const ENTRY_STATUS_META: Record<
@@ -79,8 +93,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 800000000,
     totalCredit: 800000000,
     lines: [
-      { accountCode: "1112", accountName: "Bank BCA", description: "Setoran modal pemegang saham", debit: 800000000, credit: 0 },
-      { accountCode: "3100", accountName: "Modal Disetor", description: "Setoran modal pemegang saham", debit: 0, credit: 800000000 },
+      {
+        accountCode: "1112",
+        accountName: "Bank BCA",
+        description: "Setoran modal pemegang saham",
+        debit: 800000000,
+        credit: 0,
+      },
+      {
+        accountCode: "3100",
+        accountName: "Modal Disetor",
+        description: "Setoran modal pemegang saham",
+        debit: 0,
+        credit: 800000000,
+      },
     ],
   },
   {
@@ -93,8 +119,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 40000000,
     totalCredit: 40000000,
     lines: [
-      { accountCode: "5220", accountName: "Beban Sewa Kantor", description: "Sewa kantor tahun 2026", debit: 40000000, credit: 0 },
-      { accountCode: "1112", accountName: "Bank BCA", description: "Pembayaran sewa via BCA", debit: 0, credit: 40000000 },
+      {
+        accountCode: "5220",
+        accountName: "Beban Sewa Kantor",
+        description: "Sewa kantor tahun 2026",
+        debit: 40000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1112",
+        accountName: "Bank BCA",
+        description: "Pembayaran sewa via BCA",
+        debit: 0,
+        credit: 40000000,
+      },
     ],
   },
   {
@@ -107,8 +145,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 25000000,
     totalCredit: 25000000,
     lines: [
-      { accountCode: "1120", accountName: "Piutang Usaha", description: "Tagihan Web Design Alice", debit: 25000000, credit: 0 },
-      { accountCode: "4110", accountName: "Pendapatan Jasa", description: "Pendapatan jasa web design", debit: 0, credit: 25000000 },
+      {
+        accountCode: "1120",
+        accountName: "Piutang Usaha",
+        description: "Tagihan Web Design Alice",
+        debit: 25000000,
+        credit: 0,
+      },
+      {
+        accountCode: "4110",
+        accountName: "Pendapatan Jasa",
+        description: "Pendapatan jasa web design",
+        debit: 0,
+        credit: 25000000,
+      },
     ],
   },
   {
@@ -121,8 +171,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 5000000,
     totalCredit: 5000000,
     lines: [
-      { accountCode: "1130", accountName: "Piutang Karyawan", description: "Pinjaman kasbon Budi Utomo", debit: 5000000, credit: 0 },
-      { accountCode: "1111", accountName: "Kas Tunai", description: "Pengeluaran kasbon tunai", debit: 0, credit: 5000000 },
+      {
+        accountCode: "1130",
+        accountName: "Piutang Karyawan",
+        description: "Pinjaman kasbon Budi Utomo",
+        debit: 5000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1111",
+        accountName: "Kas Tunai",
+        description: "Pengeluaran kasbon tunai",
+        debit: 0,
+        credit: 5000000,
+      },
     ],
   },
   {
@@ -135,8 +197,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 15000000,
     totalCredit: 15000000,
     lines: [
-      { accountCode: "5110", accountName: "Beban Pokok Penjualan", description: "Membeli lisensi dev tool", debit: 15000000, credit: 0 },
-      { accountCode: "2110", accountName: "Hutang Usaha", description: "Kewajiban bayar tagihan lisensi", debit: 0, credit: 15000000 },
+      {
+        accountCode: "5110",
+        accountName: "Beban Pokok Penjualan",
+        description: "Membeli lisensi dev tool",
+        debit: 15000000,
+        credit: 0,
+      },
+      {
+        accountCode: "2110",
+        accountName: "Hutang Usaha",
+        description: "Kewajiban bayar tagihan lisensi",
+        debit: 0,
+        credit: 15000000,
+      },
     ],
   },
   {
@@ -149,8 +223,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 100000000,
     totalCredit: 100000000,
     lines: [
-      { accountCode: "1113", accountName: "Bank BRI", description: "Penerimaan mutasi ke BRI", debit: 100000000, credit: 0 },
-      { accountCode: "1112", accountName: "Bank BCA", description: "Pengiriman mutasi dari BCA", debit: 0, credit: 100000000 },
+      {
+        accountCode: "1113",
+        accountName: "Bank BRI",
+        description: "Penerimaan mutasi ke BRI",
+        debit: 100000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1112",
+        accountName: "Bank BCA",
+        description: "Pengiriman mutasi dari BCA",
+        debit: 0,
+        credit: 100000000,
+      },
     ],
   },
   {
@@ -163,8 +249,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 25000000,
     totalCredit: 25000000,
     lines: [
-      { accountCode: "1112", accountName: "Bank BCA", description: "Terima transfer Alice", debit: 25000000, credit: 0 },
-      { accountCode: "1120", accountName: "Piutang Usaha", description: "Penerimaan piutang Alice", debit: 0, credit: 25000000 },
+      {
+        accountCode: "1112",
+        accountName: "Bank BCA",
+        description: "Terima transfer Alice",
+        debit: 25000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1120",
+        accountName: "Piutang Usaha",
+        description: "Penerimaan piutang Alice",
+        debit: 0,
+        credit: 25000000,
+      },
     ],
   },
   {
@@ -177,8 +275,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 10000000,
     totalCredit: 10000000,
     lines: [
-      { accountCode: "3200", accountName: "Prive / Penarikan", description: "Keperluan pribadi pemilik", debit: 10000000, credit: 0 },
-      { accountCode: "1112", accountName: "Bank BCA", description: "Penarikan tunai BCA", debit: 0, credit: 10000000 },
+      {
+        accountCode: "3200",
+        accountName: "Prive / Penarikan",
+        description: "Keperluan pribadi pemilik",
+        debit: 10000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1112",
+        accountName: "Bank BCA",
+        description: "Penarikan tunai BCA",
+        debit: 0,
+        credit: 10000000,
+      },
     ],
   },
   {
@@ -191,8 +301,20 @@ export const initialJournalEntries: JournalEntry[] = [
     totalDebit: 1000000,
     totalCredit: 1000000,
     lines: [
-      { accountCode: "5210", accountName: "Beban Gaji Karyawan", description: "Potongan gaji cicilan kasbon", debit: 1000000, credit: 0 },
-      { accountCode: "1130", accountName: "Piutang Karyawan", description: "Pelunasan cicilan kasbon Budi", debit: 0, credit: 1000000 },
+      {
+        accountCode: "5210",
+        accountName: "Beban Gaji Karyawan",
+        description: "Potongan gaji cicilan kasbon",
+        debit: 1000000,
+        credit: 0,
+      },
+      {
+        accountCode: "1130",
+        accountName: "Piutang Karyawan",
+        description: "Pelunasan cicilan kasbon Budi",
+        debit: 0,
+        credit: 1000000,
+      },
     ],
   },
 ]

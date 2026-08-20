@@ -16,11 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -59,7 +55,7 @@ function buildColumns(onViewDetail: (payment: Payment) => void) {
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -70,13 +66,17 @@ function buildColumns(onViewDetail: (payment: Payment) => void) {
     columnHelper.accessor("date", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.date}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.date}
+        </span>
       ),
     }),
     columnHelper.accessor("partnerName", {
       header: "Mitra Bisnis / Partner",
       cell: ({ row }) => (
-        <span className="font-medium text-foreground">{row.original.partnerName}</span>
+        <span className="font-medium text-foreground">
+          {row.original.partnerName}
+        </span>
       ),
     }),
     columnHelper.accessor("accountName", {
@@ -84,14 +84,16 @@ function buildColumns(onViewDetail: (payment: Payment) => void) {
       cell: ({ row }) => (
         <div className="flex flex-col text-xs">
           <span className="font-medium">{row.original.accountName}</span>
-          <span className="font-mono text-muted-foreground">{row.original.accountCode}</span>
+          <span className="font-mono text-muted-foreground">
+            {row.original.accountCode}
+          </span>
         </div>
       ),
     }),
     columnHelper.accessor("reference", {
       header: "Referensi",
       cell: ({ row }) => (
-        <span className="font-mono text-xs tabular-nums text-muted-foreground">
+        <span className="font-mono text-xs text-muted-foreground tabular-nums">
           {row.original.reference || "-"}
         </span>
       ),
@@ -116,7 +118,9 @@ function buildColumns(onViewDetail: (payment: Payment) => void) {
       cell: ({ row }) => {
         const p = row.original
         return (
-          <div className={`text-right font-mono text-sm tabular-nums font-semibold ${p.direction === "outgoing" ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}>
+          <div
+            className={`text-right font-mono text-sm font-semibold tabular-nums ${p.direction === "outgoing" ? "text-destructive" : "text-emerald-600 dark:text-emerald-400"}`}
+          >
             {p.direction === "outgoing" ? "-" : ""}
             {formatRupiah(p.amount)}
           </div>
@@ -222,7 +226,8 @@ export function PaymentsDataTable({
       (row) =>
         row.original.id.toLowerCase().includes(q) ||
         row.original.partnerName.toLowerCase().includes(q) ||
-        (row.original.reference && row.original.reference.toLowerCase().includes(q)) ||
+        (row.original.reference &&
+          row.original.reference.toLowerCase().includes(q)) ||
         (row.original.note && row.original.note.toLowerCase().includes(q))
     )
   }, [search, columnFilteredRows])

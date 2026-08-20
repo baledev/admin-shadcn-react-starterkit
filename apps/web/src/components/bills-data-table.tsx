@@ -16,11 +16,7 @@ import {
   type ColumnVisibilityState,
   type SortingState,
 } from "@tanstack/react-table"
-import {
-  IconSearch,
-  IconEye,
-  IconX,
-} from "@tabler/icons-react"
+import { IconSearch, IconEye, IconX } from "@tabler/icons-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Badge } from "@workspace/ui/components/badge"
@@ -60,7 +56,7 @@ function buildColumns(
       cell: ({ row }) => (
         <button
           type="button"
-          className="text-primary hover:underline font-semibold font-mono text-sm"
+          className="font-mono text-sm font-semibold text-primary hover:underline"
           onClick={() => onViewDetail(row.original)}
         >
           {row.original.id}
@@ -72,27 +68,35 @@ function buildColumns(
       header: "Vendor",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-medium text-foreground">{row.original.vendorName}</span>
-          <span className="text-xs text-muted-foreground">{row.original.vendorEmail}</span>
+          <span className="font-medium text-foreground">
+            {row.original.vendorName}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {row.original.vendorEmail}
+          </span>
         </div>
       ),
     }),
     columnHelper.accessor("issuedAt", {
       header: "Tanggal",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.issuedAt}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.issuedAt}
+        </span>
       ),
     }),
     columnHelper.accessor("dueAt", {
       header: "Jatuh Tempo",
       cell: ({ row }) => (
-        <span className="font-mono text-sm tabular-nums">{row.original.dueAt}</span>
+        <span className="font-mono text-sm tabular-nums">
+          {row.original.dueAt}
+        </span>
       ),
     }),
     columnHelper.accessor("total", {
       header: () => <div className="text-right">Total</div>,
       cell: ({ row }) => (
-        <div className="text-right font-mono text-sm tabular-nums font-semibold">
+        <div className="text-right font-mono text-sm font-semibold tabular-nums">
           {formatRupiah(row.original.total)}
         </div>
       ),
