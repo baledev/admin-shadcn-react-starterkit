@@ -118,7 +118,12 @@ function InvoiceStatCards({ invoices }: { invoices: Invoice[] }) {
             Sent & draft invoices
           </div>
           <div className="text-muted-foreground">
-            {invoices.filter((i) => i.status === "sent" || i.status === "draft").length} unpaid invoices
+            {
+              invoices.filter(
+                (i) => i.status === "sent" || i.status === "draft"
+              ).length
+            }{" "}
+            unpaid invoices
           </div>
         </CardFooter>
       </Card>
@@ -131,7 +136,10 @@ function InvoiceStatCards({ invoices }: { invoices: Invoice[] }) {
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              <IconAlertTriangle className="size-3.5 text-destructive" aria-hidden="true" />
+              <IconAlertTriangle
+                className="size-3.5 text-destructive"
+                aria-hidden="true"
+              />
               Past Due
             </Badge>
           </CardAction>
@@ -141,7 +149,8 @@ function InvoiceStatCards({ invoices }: { invoices: Invoice[] }) {
             Requires attention
           </div>
           <div className="text-muted-foreground">
-            {invoices.filter((i) => i.status === "overdue").length} overdue invoices
+            {invoices.filter((i) => i.status === "overdue").length} overdue
+            invoices
           </div>
         </CardFooter>
       </Card>
@@ -177,9 +186,7 @@ function InvoiceDetailSheet({
           <SheetTitle className="flex items-center gap-2 font-mono">
             {invoice.id}
           </SheetTitle>
-          <SheetDescription>
-            Created on {invoice.issuedAt}
-          </SheetDescription>
+          <SheetDescription>Created on {invoice.issuedAt}</SheetDescription>
         </SheetHeader>
 
         <div className="mt-6 flex flex-col gap-6">
@@ -195,17 +202,21 @@ function InvoiceDetailSheet({
 
           {/* Customer Details */}
           <div>
-            <h4 className="text-sm font-semibold mb-2">Customer</h4>
-            <div className="text-sm bg-muted/50 rounded-lg p-3">
-              <p className="font-medium text-foreground">{invoice.customerName}</p>
-              <p className="text-muted-foreground text-xs">{invoice.customerEmail}</p>
+            <h4 className="mb-2 text-sm font-semibold">Customer</h4>
+            <div className="rounded-lg bg-muted/50 p-3 text-sm">
+              <p className="font-medium text-foreground">
+                {invoice.customerName}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {invoice.customerEmail}
+              </p>
             </div>
           </div>
 
           {/* Line Items */}
           <div>
-            <h4 className="text-sm font-semibold mb-2">Line Items</h4>
-            <div className="space-y-3 bg-muted/30 rounded-lg p-3">
+            <h4 className="mb-2 text-sm font-semibold">Line Items</h4>
+            <div className="space-y-3 rounded-lg bg-muted/30 p-3">
               {invoice.lines.map((line, idx) => (
                 <div key={idx} className="flex justify-between text-sm">
                   <div>
@@ -225,15 +236,21 @@ function InvoiceDetailSheet({
               <div className="space-y-1.5 pt-1.5">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span className="font-mono tabular-nums">{fmt(invoice.subtotal)}</span>
+                  <span className="font-mono tabular-nums">
+                    {fmt(invoice.subtotal)}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Tax (10%)</span>
-                  <span className="font-mono tabular-nums">{fmt(invoice.tax)}</span>
+                  <span className="font-mono tabular-nums">
+                    {fmt(invoice.tax)}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm font-semibold">
                   <span className="text-foreground">Total</span>
-                  <span className="font-mono tabular-nums text-foreground">{fmt(invoice.total)}</span>
+                  <span className="font-mono text-foreground tabular-nums">
+                    {fmt(invoice.total)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -241,14 +258,14 @@ function InvoiceDetailSheet({
 
           {invoice.notes && (
             <div>
-              <h4 className="text-sm font-semibold mb-1">Notes</h4>
+              <h4 className="mb-1 text-sm font-semibold">Notes</h4>
               <p className="text-sm text-muted-foreground">{invoice.notes}</p>
             </div>
           )}
 
-          <div className="flex gap-3 mt-4">
+          <div className="mt-4 flex gap-3">
             <Button className="flex-1" variant="outline" size="sm">
-              <IconDownload className="size-4 mr-2" />
+              <IconDownload className="mr-2 size-4" />
               Download PDF
             </Button>
           </div>
@@ -262,7 +279,9 @@ function InvoiceDetailSheet({
 
 function InvoicesPage() {
   const [invoices] = React.useState<Invoice[]>(initialInvoices)
-  const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(null)
+  const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(
+    null
+  )
   const [isDetailOpen, setIsDetailOpen] = React.useState(false)
 
   const handleViewDetail = (invoice: Invoice) => {
@@ -278,18 +297,13 @@ function InvoicesPage() {
             title="Invoices"
             description="Manage invoices, record payments, and track receivables."
           >
-            <Button size="sm">
-              Create Invoice
-            </Button>
+            <Button size="sm">Create Invoice</Button>
           </PageHeader>
 
           <InvoiceStatCards invoices={invoices} />
 
           <div className="rounded-xl border border-border bg-card p-4">
-            <InvoiceDataTable
-              data={invoices}
-              onViewDetail={handleViewDetail}
-            />
+            <InvoiceDataTable data={invoices} onViewDetail={handleViewDetail} />
           </div>
         </div>
       </div>

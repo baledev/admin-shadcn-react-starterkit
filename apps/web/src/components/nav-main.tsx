@@ -48,13 +48,7 @@ type NavGroup = {
   items: NavItem[]
 }
 
-function NavItem({
-  item,
-  pathname,
-}: {
-  item: NavItem
-  pathname: string
-}) {
+function NavItem({ item, pathname }: { item: NavItem; pathname: string }) {
   const hasChildren = Boolean(item.items && item.items.length > 0)
 
   const hasActiveChild =
